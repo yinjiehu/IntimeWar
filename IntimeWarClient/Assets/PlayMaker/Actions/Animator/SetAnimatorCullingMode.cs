@@ -61,7 +61,7 @@ namespace HutongGames.PlayMaker.Actions
 			#if UNITY_5
 			_animator.cullingMode = alwaysAnimate.Value?AnimatorCullingMode.AlwaysAnimate:AnimatorCullingMode.CullUpdateTransforms;
 			#else
-			_animator.cullingMode = alwaysAnimate.Value?AnimatorCullingMode.AlwaysAnimate:AnimatorCullingMode.BasedOnRenderers;
+			_animator.cullingMode = alwaysAnimate.Value?AnimatorCullingMode.AlwaysAnimate:AnimatorCullingMode.CullUpdateTransforms;
 			#endif
 			
 		}

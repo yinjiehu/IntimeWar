@@ -85,7 +85,7 @@ namespace HutongGames.PlayMaker.Actions
                 Debug.Log("TakeScreenshot: " + screenshotFullPath);
             }
 
-		    Application.CaptureScreenshot(screenshotFullPath, superSize.Value);
+		    ScreenCapture.CaptureScreenshot(screenshotFullPath, superSize.Value);
 
 		    Finish();
 		}
