@@ -20,9 +20,8 @@ ExportedObj/
 *.pidb
 *.booproj
 *.svd
-!/MechSquad/Assets/MechSquad/MechSquadShared.pdb
-/MechSquad/*.csproj
-/MechSquad/*.sln
+/IntimeWarClient/*.csproj
+/IntimeWarClient/*.sln
 
 # Unity3D generated meta files
 *.pidb.meta
