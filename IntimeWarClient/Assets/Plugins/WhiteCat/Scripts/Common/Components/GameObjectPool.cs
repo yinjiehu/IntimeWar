@@ -1,18 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-using WhiteCatEditor;
-#endif
-
 namespace WhiteCat
 {
 	/// <summary>
 	/// 游戏对象池
 	/// </summary>
 	[AddComponentMenu("White Cat/Common/Game Object Pool")]
-	public class GameObjectPool : ScriptableComponentWithEditor
+	public class GameObjectPool : ScriptableComponent
 	{
 		[SerializeField] [Editable(true, false)]
 		GameObject _originalObject;
@@ -20,7 +15,7 @@ namespace WhiteCat
 		[SerializeField] [Editable(true, false)]
 		int _startQuantity = 0;
 
-		[SerializeField]
+		[SerializeField, Toggle("enabled", false)]
 		float _autoRecycleCountdown = 10f;
 
 		LinkedList<RecyclableObject> _storedObjects;
@@ -204,50 +199,6 @@ namespace WhiteCat
 				}
 			}
 		}
-
-
-#if UNITY_EDITOR
-
-		SerializedProperty _originalObjectProperty;
-		SerializedProperty _startQuantityProperty;
-		SerializedProperty _autoRecycleCountdownProperty;
-
-
-		protected override void Editor_OnEnable()
-		{
-			_originalObjectProperty = editor.serializedObject.FindProperty("_originalObject");
-			_startQuantityProperty = editor.serializedObject.FindProperty("_startQuantity");
-			_autoRecycleCountdownProperty = editor.serializedObject.FindProperty("_autoRecycleCountdown");
-		}
-
-
-		protected override void Editor_OnDisable()
-		{
-			_originalObjectProperty = null;
-			_startQuantityProperty = null;
-			_autoRecycleCountdownProperty = null;
-		}
-
-
-		protected override void Editor_OnInspectorGUI()
-		{
-			editor.serializedObject.Update();
-
-			EditorGUILayout.PropertyField(_originalObjectProperty);
-			EditorGUILayout.PropertyField(_startQuantityProperty);
-
-			editor.DrawToggleLayout(enabled, value => enabled = value, "Auto-Recycle");
-			if (enabled)
-			{
-				EditorGUI.indentLevel++;
-				EditorGUILayout.PropertyField(_autoRecycleCountdownProperty, EditorKit.GlobalContent("Countdown"));
-				EditorGUI.indentLevel--;
-			}
-
-			editor.serializedObject.ApplyModifiedProperties();
-		}
-
-#endif
 
 	} // class GameObjectPool
 

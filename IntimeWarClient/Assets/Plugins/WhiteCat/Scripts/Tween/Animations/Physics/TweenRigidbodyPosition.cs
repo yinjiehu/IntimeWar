@@ -35,7 +35,20 @@ namespace WhiteCat.Tween
 		{
 			get
 			{
-				return space == Space.Self ? transform.localPosition : transform.position;
+#if UNITY_EDITOR
+				if (!Application.isPlaying)
+				{
+					return space == Space.Self
+						? transform.localPosition
+						: transform.position;
+				}
+				else
+#endif
+				{
+					return (space == Space.Self && transform.parent)
+						? transform.parent.InverseTransformPoint(targetRigidbody.position)
+						: targetRigidbody.position;
+				}
 			}
 			set
 			{
@@ -49,8 +62,9 @@ namespace WhiteCat.Tween
 #endif
 				{
 					targetRigidbody.MovePosition(
-						(space == Space.Self && transform.parent) ?
-						transform.parent.TransformPoint(value) : value);
+						(space == Space.Self && transform.parent)
+						? transform.parent.TransformPoint(value)
+						: value);
 				}
 			}
 		}

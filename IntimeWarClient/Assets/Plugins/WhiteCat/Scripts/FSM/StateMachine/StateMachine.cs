@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace WhiteCat.FSM
 {
@@ -20,6 +22,18 @@ namespace WhiteCat.FSM
 		public BaseState startState;
 
 
+		[Header("Sub-state Machine Events")]
+		[SerializeField]
+		UnityEvent _onEnter;
+
+		[SerializeField]
+		UnityEvent _onExit;
+
+
+		// 是否作为子状态机使用
+		bool _isSubStateMachine = false;
+
+
 		// 设置初始状态
 		void Start()
 		{
@@ -33,9 +47,9 @@ namespace WhiteCat.FSM
 		// Update 更新状态
 		void Update()
 		{
-			if (updateMode == UpdateMode.Update)
+			if (!_isSubStateMachine && updateMode == UpdateMode.Update)
 			{
-				UpdateCurrentState(Time.deltaTime);
+				OnUpdate(Time.deltaTime);
 			}
 		}
 
@@ -43,9 +57,9 @@ namespace WhiteCat.FSM
 		// LateUpdate 更新状态
 		void LateUpdate()
 		{
-			if (updateMode == UpdateMode.LateUpdate)
+			if (!_isSubStateMachine && updateMode == UpdateMode.LateUpdate)
 			{
-				UpdateCurrentState(Time.deltaTime);
+				OnUpdate(Time.deltaTime);
 			}
 		}
 
@@ -53,9 +67,96 @@ namespace WhiteCat.FSM
 		// FixedUpdate 更新状态
 		void FixedUpdate()
 		{
-			if (updateMode == UpdateMode.FixedUpdate)
+			if (!_isSubStateMachine && updateMode == UpdateMode.FixedUpdate)
 			{
-				UpdateCurrentState(Time.deltaTime);
+				OnUpdate(Time.deltaTime);
+			}
+		}
+
+
+		/// <summary>
+		/// 添加或移除更新状态触发的事件
+		/// </summary>
+		public event Action<float> onUpdate;
+
+
+		/// <summary>
+		/// 添加或移除进入状态触发的事件 (作为子状态机)
+		/// </summary>
+		public event UnityAction onEnter
+		{
+			add
+			{
+				if (_onEnter == null)
+				{
+					_onEnter = new UnityEvent();
+				}
+				_onEnter.AddListener(value);
+			}
+			remove
+			{
+				if (_onEnter != null)
+				{
+					_onEnter.RemoveListener(value);
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// 添加或移除离开状态触发的事件 (作为子状态机)
+		/// </summary>
+		public event UnityAction onExit
+		{
+			add
+			{
+				if (_onExit == null)
+				{
+					_onExit = new UnityEvent();
+				}
+				_onExit.AddListener(value);
+			}
+			remove
+			{
+				if (_onExit != null)
+				{
+					_onExit.RemoveListener(value);
+				}
+			}
+		}
+
+
+		// 当作为子状态机使用时, 需要停止主动调用 OnUpdate
+		public override void OnEnter()
+		{
+			_isSubStateMachine = true;
+
+			if (_onEnter != null)
+			{
+				_onEnter.Invoke();
+			}
+		}
+
+
+		// 当不再作为子状态机使用时, 才允许主动调用 OnUpdate
+		public override void OnExit()
+		{
+			_isSubStateMachine = false;
+
+			if (_onExit != null)
+			{
+				_onExit.Invoke();
+			}
+		}
+
+
+		public override void OnUpdate(float deltaTime)
+		{
+			base.OnUpdate(deltaTime);
+
+			if (onUpdate != null)
+			{
+				onUpdate(deltaTime);
 			}
 		}
 

@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WhiteCat.FSM
 {
 	/// <summary>
-	/// 栈状态机基类. 需要继承并调用 UpdateCurrentState 来更新当前状态
+	/// 栈状态机基类, 可作为顶层状态机或子状态机使用.
+	/// 顶层状态机需要手动调用 OnUpdate 来更新状态
 	/// </summary>
-	public abstract class BaseStackStateMachine : ScriptableComponentWithEditor
+	public class BaseStackStateMachine : BaseStackState
 	{
 		IStackState _currentState;
 		float _currentStateTime;
-		Stack<IStackState> _states = new Stack<IStackState>(8);
+		Stack<IStackState> _states = new Stack<IStackState>(4);
 
 
 		/// <summary>
@@ -118,9 +120,59 @@ namespace WhiteCat.FSM
 
 
 		/// <summary>
-		/// 调用以更新当前状态
+		/// 弹出所有状态
 		/// </summary>
-		protected void UpdateCurrentState(float deltaTime)
+		public void PopAllStates()
+		{
+			PopStates(_states.Count);
+		}
+
+
+		/// <summary>
+		/// 状态变化后触发的事件
+		/// </summary>
+		protected virtual void OnStateChanged(IStackState prevState, IStackState currentState)
+		{
+		}
+
+
+		/// <summary>
+		/// 当此状态机作为子状态机使用时, OnPop 通知状态出栈
+		/// </summary>
+		public override void OnPop()
+		{
+		}
+
+
+		/// <summary>
+		/// 当此状态机作为子状态机使用时, OnPush 通知状态入栈
+		/// </summary>
+		public override void OnPush()
+		{
+		}
+
+
+		/// <summary>
+		/// 当此状态机作为子状态机使用时, OnEnter 通知状态激活
+		/// </summary>
+		public override void OnEnter()
+		{
+		}
+
+
+		/// <summary>
+		/// 当此状态机作为子状态机使用时, OnExit 通知状态退出
+		/// </summary>
+		public override void OnExit()
+		{
+		}
+
+
+		/// <summary>
+		/// 更新当前状态. 子类实现必须调用父类方法
+		/// 注意: 仅顶层状态机需要手动调用此方法, 子状态机不应当调用
+		/// </summary>
+		public override void OnUpdate(float deltaTime)
 		{
 			_currentStateTime += deltaTime;
 			if (_currentState != null)
@@ -131,10 +183,13 @@ namespace WhiteCat.FSM
 
 
 		/// <summary>
-		/// 状态变化后触发的事件
+		/// 更新当前状态
+		/// 注意: 仅顶层状态机需要手动调用此方法, 子状态机不应当调用
 		/// </summary>
-		protected virtual void OnStateChanged(IStackState prevState, IStackState currentState)
+		[Obsolete("Please use OnUpdate instead.")]
+		protected void UpdateCurrentState(float deltaTime)
 		{
+			OnUpdate(deltaTime);
 		}
 
 	} // class BaseStackStateMachine

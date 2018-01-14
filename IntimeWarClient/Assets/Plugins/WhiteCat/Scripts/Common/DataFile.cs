@@ -42,7 +42,7 @@ namespace WhiteCat
 		}
 
 
-		string _filePath;
+		[NonSerialized] string _filePath;
 
 		static Queue<TaskItem> _requestedTasks;	// 请求的任务队列
 		static int _nextRequestedTaskIndex;     // 下一个请求的任务编号
@@ -54,8 +54,20 @@ namespace WhiteCat
 		static Thread _thread;
 
 
-		// 初始化文件路径
-		public DataFile(string filePath)
+        /// <summary>
+        /// 异步任务开始时触发
+        /// </summary>
+        public static event Action<Task> onAsyncTaskBegin;
+
+
+        /// <summary>
+        /// 异步任务结束时触发
+        /// </summary>
+        public static event Action<Task> onAsyncTaskEnd;
+
+
+        // 初始化文件路径
+        public DataFile(string filePath)
 		{
 			_filePath = filePath;
 		}
@@ -72,10 +84,12 @@ namespace WhiteCat
 
 			_semaphore = new Semaphore(0, 1);
 
-			_thread = new Thread(RunThread);
-			_thread.IsBackground = true;
-			_thread.Priority = ThreadPriority.Lowest;
-			_thread.Start();
+            _thread = new Thread(RunThread)
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.Lowest
+            };
+            _thread.Start();
 		}
 
 
@@ -117,11 +131,11 @@ namespace WhiteCat
 					{
 						_requestedTasks.Dequeue();
 						_finishedTasks.Enqueue(item);
-					}
 
-					if (item.task.type == TaskType.ExitAsync)
-					{
-						return;
+						if (item.task.type == TaskType.ExitAsync)
+						{
+							return;
+						}
 					}
 
 					if (_requestedTasks.Count > 0)
@@ -160,7 +174,9 @@ namespace WhiteCat
 				_requestedTasks.Enqueue(item);
 				SafeReleaseSemaphore();
 
-				return item.task.index;
+                if (onAsyncTaskBegin != null) onAsyncTaskBegin(item.task);
+
+                return item.task.index;
 			}
 		}
 
@@ -204,6 +220,7 @@ namespace WhiteCat
 					var item = _finishedTasks.Dequeue();
 					_lastfinishedTaskIndex = item.task.index;
 					if (item.callback != null) item.callback(item.task);
+                    if (onAsyncTaskEnd != null) onAsyncTaskEnd(item.task);
 				}
 			}
 		}

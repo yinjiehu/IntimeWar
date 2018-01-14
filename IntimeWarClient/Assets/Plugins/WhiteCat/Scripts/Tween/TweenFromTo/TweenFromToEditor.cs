@@ -1,5 +1,9 @@
 ﻿#if UNITY_EDITOR
 
+#if !UNITY_5_3_OR_NEWER && UNITY_5_3
+#define UNITY_5_3_OR_NEWER
+#endif
+
 using UnityEngine;
 using UnityEditor;
 using WhiteCatEditor;
@@ -23,17 +27,26 @@ namespace WhiteCat.Tween
 
 
 		SerializedProperty _tweenerProperty;
+		SerializedProperty _syncOnEnableProperty;
+		protected SerializedProperty _fromProperty;
+		protected SerializedProperty _toProperty;
 
 
 		protected override void Editor_OnEnable()
 		{
 			_tweenerProperty = editor.serializedObject.FindProperty("_tweener");
+			_syncOnEnableProperty = editor.serializedObject.FindProperty("syncOnEnable");
+			_fromProperty = editor.serializedObject.FindProperty("_from");
+			_toProperty = editor.serializedObject.FindProperty("_to");
 		}
 
 
 		protected override void Editor_OnDisable()
 		{
 			_tweenerProperty = null;
+			_syncOnEnableProperty = null;
+			_fromProperty = null;
+			_toProperty = null;
 		}
 
 
@@ -42,6 +55,7 @@ namespace WhiteCat.Tween
 			editor.serializedObject.Update();
 
 			EditorGUILayout.PropertyField(_tweenerProperty);
+			EditorGUILayout.PropertyField(_syncOnEnableProperty);
 			EditorGUILayout.Space();
 			DrawExtraFields();
 
@@ -49,7 +63,11 @@ namespace WhiteCat.Tween
 		}
 
 
-		protected abstract void DrawExtraFields();
+		protected virtual void DrawExtraFields()
+		{
+			EditorGUILayout.PropertyField(_fromProperty, true);
+			EditorGUILayout.PropertyField(_toProperty, true);
+		}
 
 
 		protected static void FloatChannelField(SerializedProperty toggle, string label, SerializedProperty from, SerializedProperty to)
@@ -72,51 +90,6 @@ namespace WhiteCat.Tween
 			_rect.x = _rect.xMax + _lineWidth * _intervalRatio;
 			_rect.width = _fieldWidth + _toLabelWidth;
 			to.floatValue = EditorGUI.FloatField(_rect, "To", to.floatValue);
-
-			EditorGUIUtility.labelWidth = _labelWidth;
-		}
-
-
-		protected static void ColorRGBField(SerializedProperty toggle, SerializedProperty from, SerializedProperty to, bool hdr)
-		{
-			_labelWidth = EditorGUIUtility.labelWidth;
-
-			_rect = EditorGUILayout.GetControlRect();
-			_lineWidth = _rect.width;
-			_fieldWidth = (_lineWidth * (1f - _intervalRatio - _intervalRatio - _toggleRatio) - _fromLabelWidth - _toLabelWidth) * 0.5f;
-
-			_rect.width = _lineWidth * _toggleRatio;
-			toggle.boolValue = EditorGUI.ToggleLeft(_rect, "RGB", toggle.boolValue);
-
-			EditorGUIUtility.labelWidth = _fromLabelWidth;
-			_rect.x = _rect.xMax + _lineWidth * _intervalRatio;
-			_rect.width = _fieldWidth + _fromLabelWidth;
-
-#if UNITY_5_3_OR_NEWER
-			if (hdr)
-			{
-				from.colorValue = EditorGUI.ColorField(_rect, EditorKit.GlobalContent("From"), from.colorValue, true, true, true, EditorKit.colorPickerHDRConfig);
-			}
-			else
-#endif
-			{
-				from.colorValue = EditorGUI.ColorField(_rect, "From", from.colorValue);
-			}
-
-			EditorGUIUtility.labelWidth = _toLabelWidth;
-			_rect.x = _rect.xMax + _lineWidth * _intervalRatio;
-			_rect.width = _fieldWidth + _toLabelWidth;
-
-#if UNITY_5_3_OR_NEWER
-			if (hdr)
-			{
-				to.colorValue = EditorGUI.ColorField(_rect, EditorKit.GlobalContent("To"), to.colorValue, true, true, true, EditorKit.colorPickerHDRConfig);
-			}
-			else
-#endif
-			{
-				to.colorValue = EditorGUI.ColorField(_rect, "To", to.colorValue);
-			}
 
 			EditorGUIUtility.labelWidth = _labelWidth;
 		}
@@ -147,33 +120,48 @@ namespace WhiteCat.Tween
 		}
 
 
-		protected static SerializedProperty[] GetVector2Properties(SerializedProperty vector2Property)
+		protected static void ColorRGBField(SerializedProperty toggle, SerializedProperty from, SerializedProperty to, bool hdr)
 		{
-			SerializedProperty[] properties = new SerializedProperty[2];
-			properties[0] = vector2Property.FindPropertyRelative("x");
-			properties[1] = vector2Property.FindPropertyRelative("y");
-			return properties;
-		}
+			_labelWidth = EditorGUIUtility.labelWidth;
 
+			_rect = EditorGUILayout.GetControlRect();
+			_lineWidth = _rect.width;
+			_fieldWidth = (_lineWidth * (1f - _intervalRatio - _intervalRatio - _toggleRatio) - _fromLabelWidth - _toLabelWidth) * 0.5f;
 
-		protected static SerializedProperty[] GetVector3Properties(SerializedProperty vector3Property)
-		{
-			SerializedProperty[] properties = new SerializedProperty[3];
-			properties[0] = vector3Property.FindPropertyRelative("x");
-			properties[1] = vector3Property.FindPropertyRelative("y");
-			properties[2] = vector3Property.FindPropertyRelative("z");
-			return properties;
-		}
+			_rect.width = _lineWidth * _toggleRatio;
+			toggle.boolValue = EditorGUI.ToggleLeft(_rect, "RGB", toggle.boolValue);
 
+			EditorGUIUtility.labelWidth = _fromLabelWidth;
+			_rect.x = _rect.xMax + _lineWidth * _intervalRatio;
+			_rect.width = _fieldWidth + _fromLabelWidth;
 
-		protected static SerializedProperty[] GetVector4Properties(SerializedProperty vector4Property)
-		{
-			SerializedProperty[] properties = new SerializedProperty[4];
-			properties[0] = vector4Property.FindPropertyRelative("x");
-			properties[1] = vector4Property.FindPropertyRelative("y");
-			properties[2] = vector4Property.FindPropertyRelative("z");
-			properties[3] = vector4Property.FindPropertyRelative("w");
-			return properties;
+#if UNITY_5_3_OR_NEWER
+			if (hdr)
+			{
+				from.colorValue = EditorGUI.ColorField(_rect, EditorKit.TempContent("From"), from.colorValue, true, true, true, EditorKit.colorPickerHDRConfig);
+			}
+			else
+#endif
+			{
+				from.colorValue = EditorGUI.ColorField(_rect, "From", from.colorValue);
+			}
+
+			EditorGUIUtility.labelWidth = _toLabelWidth;
+			_rect.x = _rect.xMax + _lineWidth * _intervalRatio;
+			_rect.width = _fieldWidth + _toLabelWidth;
+
+#if UNITY_5_3_OR_NEWER
+			if (hdr)
+			{
+				to.colorValue = EditorGUI.ColorField(_rect, EditorKit.TempContent("To"), to.colorValue, true, true, true, EditorKit.colorPickerHDRConfig);
+			}
+			else
+#endif
+			{
+				to.colorValue = EditorGUI.ColorField(_rect, "To", to.colorValue);
+			}
+
+			EditorGUIUtility.labelWidth = _labelWidth;
 		}
 
 	} // class TweenFromTo

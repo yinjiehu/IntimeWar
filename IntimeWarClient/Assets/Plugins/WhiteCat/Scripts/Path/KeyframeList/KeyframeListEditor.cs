@@ -14,7 +14,7 @@ namespace WhiteCat.Paths
 		public partial class KeyframeList
 		{
 			// 编辑器个性化颜色
-			public Color personalizedColor = EditorKit.randomColor;
+			public Color personalizedColor = EditorKit.GetRandomColor();
 
 
 			// 绘制额外的 Inspector
@@ -55,18 +55,18 @@ namespace WhiteCat.Paths
 				if (GUI.Button(rect2, GUIContent.none))
 				{
 					Undo.RecordObject(this, "Change Color");
-					personalizedColor = EditorKit.randomColor;
+					personalizedColor = EditorKit.GetRandomColor();
 					EditorUtility.SetDirty(this);
 				}
 
-				EditorKit.RecordAndSetGUIColor(EditorKit.defaultContentColor);
+				EditorKit.BeginGUIColor(EditorKit.defaultContentColor);
 				GUI.DrawTexture(rect2, EditorGUIUtility.whiteTexture);
-				EditorKit.RestoreGUIColor();
+				EditorKit.EndGUIColor();
 
-				EditorKit.RecordAndSetGUIColor(personalizedColor);
+				EditorKit.BeginGUIColor(personalizedColor);
 				rect2.Set(rect2.x + 1f, rect2.y + 1f, rect2.width - 2f, rect2.height - 2f);
 				GUI.DrawTexture(rect2, EditorGUIUtility.whiteTexture);
-				EditorKit.RestoreGUIColor();
+				EditorKit.EndGUIColor();
 
 				// Edit Button
 
@@ -74,9 +74,9 @@ namespace WhiteCat.Paths
 				_rect.width = _editButtonWidth;
 
 				EditorGUI.BeginChangeCheck();
-				EditorKit.RecordAndSetGUIContentColor(EditorKit.defaultContentColor);
+				EditorKit.BeginGUIContentColor(EditorKit.defaultContentColor);
 				bool edit = GUI.Toggle(_rect, _currentEditing == this, EditorAssets.editTexture, EditorKit.buttonStyle);
-				EditorKit.RestoreGUIContentColor();
+				EditorKit.EndGUIContentColor();
 				if (EditorGUI.EndChangeCheck())
 				{
 					SetCurrentEditing(edit ? this : null);
@@ -203,7 +203,12 @@ namespace WhiteCat.Paths
 					else Handles.color = personalizedColor;
 
 					handleSize = HandleUtility.GetHandleSize(_point);
+
+#if UNITY_5_6_OR_NEWER
+					Handles.FreeMoveHandle(_point, identityQuaternion, handleSize * _controlPointCapSize, zeroVector3, Handles.DotHandleCap);
+#else
 					Handles.FreeMoveHandle(_point, identityQuaternion, handleSize * _controlPointCapSize, zeroVector3, Handles.DotCap);
+#endif
 
 					if (EditorKit.EndHotControlChangeCheck() == HotControlEvent.MouseDown)
 					{
@@ -228,9 +233,9 @@ namespace WhiteCat.Paths
 				_lineRect.Set(guiPoint.x - 32f, guiPoint.y - 34f, 64f, 64f);
 
 				Handles.BeginGUI();
-				EditorKit.RecordAndSetGUIColor(_haloColor);
+				EditorKit.BeginGUIColor(_haloColor);
 				GUI.DrawTexture(_lineRect, EditorAssets.roundGradientTexture);
-				EditorKit.RestoreGUIColor();
+				EditorKit.EndGUIColor();
 				Handles.EndGUI();
 
 				// 居中元素
@@ -257,7 +262,7 @@ namespace WhiteCat.Paths
 			{
 				_selectedItem = Mathf.Clamp(_selectedItem, 0, count - 1);
 
-				EditorKit.RecordAndSetGUIContentColor(EditorKit.defaultContentColor);
+				EditorKit.BeginGUIContentColor(EditorKit.defaultContentColor);
 
 				// showKeyDetail
 
@@ -271,10 +276,10 @@ namespace WhiteCat.Paths
 
 				EditorGUI.BeginChangeCheck();
 
-				EditorKit.RecordAndSetLabelWidth(_distanceLabelWidth);
+				EditorKit.BeginLabelWidth(_distanceLabelWidth);
 				_lineRect.Set(rect.xMax + _toolBarHorizontalInterval, rect.y + (rect.height - _toolBarLineHeight) * 0.5f, _distanceWidth, _toolBarLineHeight);
 				float position = EditorGUI.FloatField(_lineRect, "Position", _keyframes[_selectedItem].position);
-				EditorKit.RestoreLabelWidth();
+				EditorKit.EndLabelWidth();
 
 				if (EditorGUI.EndChangeCheck())
 				{
@@ -371,7 +376,7 @@ namespace WhiteCat.Paths
 					_selectedItem = (_selectedItem == _keyframes.Count - 1) ? 0 : (_selectedItem + 1);
 				}
 
-				EditorKit.RestoreGUIContentColor();
+				EditorKit.EndGUIContentColor();
 			}
 
 

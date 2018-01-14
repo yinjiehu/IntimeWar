@@ -32,42 +32,6 @@ namespace WhiteCat
 			return collection == null || collection.Count == 0;
 		}
 
-
-		/// <summary>
-		/// 判断一个字符是否为阿拉伯数字字符
-		/// </summary>
-		public static bool IsDigit(char c)
-		{
-			return c >= '0' && c <= '9';
-		}
-
-
-		/// <summary>
-		/// 判断一个字符是否为英文小写字母
-		/// </summary>
-		public static bool IsLower(char c)
-		{
-			return c >= 'a' && c <= 'z';
-		}
-
-
-		/// <summary>
-		/// 判断一个字符是否为英文大写字母
-		/// </summary>
-		public static bool IsUpper(char c)
-		{
-			return c >= 'A' && c <= 'Z';
-		}
-
-
-		/// <summary>
-		/// 判断一个字符是否为英文字母
-		/// </summary>
-		public static bool IsLowerOrUpper(char c)
-		{
-			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-		}
-
 	} // struct Kit
 
 } // namespace WhiteCat

@@ -35,7 +35,20 @@ namespace WhiteCat.Tween
 		{
 			get
 			{
-				return space == Space.Self ? transform.localRotation : transform.rotation;
+#if UNITY_EDITOR
+				if (!Application.isPlaying)
+				{
+					return space == Space.Self
+						? transform.localRotation
+						: transform.rotation;
+				}
+				else
+#endif
+				{
+					return (space == Space.Self && transform.parent)
+						? Quaternion.Inverse(transform.parent.rotation) * targetRigidbody.rotation
+						: targetRigidbody.rotation;
+				}
 			}
 			set
 			{
@@ -49,8 +62,9 @@ namespace WhiteCat.Tween
 #endif
 				{
 					targetRigidbody.MoveRotation(
-						(space == Space.Self && transform.parent) ?
-						transform.parent.rotation * value : value);
+						(space == Space.Self && transform.parent)
+						? transform.parent.rotation * value
+						: value);
 				}
 			}
 		}

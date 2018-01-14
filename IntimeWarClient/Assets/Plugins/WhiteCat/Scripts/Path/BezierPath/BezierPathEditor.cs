@@ -147,9 +147,9 @@ namespace WhiteCat.Paths
 				_lineRect = new Rect(guiPoint.x - 32f, guiPoint.y - 34f, 64f, 64f);
 
 				Handles.BeginGUI();
-				EditorKit.RecordAndSetGUIColor(_haloColor);
+				EditorKit.BeginGUIColor(_haloColor);
 				GUI.DrawTexture(_lineRect, EditorAssets.roundGradientTexture);
-				EditorKit.RestoreGUIColor();
+				EditorKit.EndGUIColor();
 				Handles.EndGUI();
 
 				// 居中元素
@@ -179,8 +179,11 @@ namespace WhiteCat.Paths
 				else Handles.color = _capNormalColor;
 
 				_handleSize = HandleUtility.GetHandleSize(_middle = GetPoint(_location)) * _splineCapSize;
+#if UNITY_5_6_OR_NEWER
+				Handles.FreeMoveHandle(_middle, _identityQuaternion, _handleSize, _zeroVector3, Handles.CircleHandleCap);
+#else
 				Handles.FreeMoveHandle(_middle, _identityQuaternion, _handleSize, _zeroVector3, Handles.CircleCap);
-
+#endif
 				if (EditorKit.EndHotControlChangeCheck() == HotControlEvent.MouseDown)
 				{
 					_selectionType = SelectionType.Spline;
@@ -216,7 +219,12 @@ namespace WhiteCat.Paths
 				else Handles.color = _capNormalColor;
 
 				_handleSize = HandleUtility.GetHandleSize(_back) * _controlPointCapSize;
+
+#if UNITY_5_6_OR_NEWER
+				_back = Handles.FreeMoveHandle(_back, _identityQuaternion, _handleSize, _zeroVector3, Handles.DotHandleCap);
+#else
 				_back = Handles.FreeMoveHandle(_back, _identityQuaternion, _handleSize, _zeroVector3, Handles.DotCap);
+#endif
 
 				// 更新选择
 				if (EditorKit.EndHotControlChangeCheck() == HotControlEvent.MouseDown)
@@ -242,7 +250,12 @@ namespace WhiteCat.Paths
 				else Handles.color = _capNormalColor;
 
 				_handleSize = HandleUtility.GetHandleSize(_middle) * _controlPointCapSize;
+
+#if UNITY_5_6_OR_NEWER
+				_middle = Handles.FreeMoveHandle(_middle, _identityQuaternion, _handleSize, _zeroVector3, Handles.DotHandleCap);
+#else
 				_middle = Handles.FreeMoveHandle(_middle, _identityQuaternion, _handleSize, _zeroVector3, Handles.DotCap);
+#endif
 
 				// 更新选择
 				if (EditorKit.EndHotControlChangeCheck() == HotControlEvent.MouseDown)
@@ -268,7 +281,12 @@ namespace WhiteCat.Paths
 				else Handles.color = _capNormalColor;
 
 				_handleSize = HandleUtility.GetHandleSize(_forward) * _controlPointCapSize;
+
+#if UNITY_5_6_OR_NEWER
+				_forward = Handles.FreeMoveHandle(_forward, _identityQuaternion, _handleSize, _zeroVector3, Handles.DotHandleCap);
+#else
 				_forward = Handles.FreeMoveHandle(_forward, _identityQuaternion, _handleSize, _zeroVector3, Handles.DotCap);
+#endif
 
 				// 更新选择
 				if (EditorKit.EndHotControlChangeCheck() == HotControlEvent.MouseDown)
@@ -375,7 +393,7 @@ namespace WhiteCat.Paths
 		protected override void DrawToolBar(Rect rect)
 		{
 			ValidateSelectedItem();
-			EditorKit.RecordAndSetGUIContentColor(EditorKit.defaultContentColor);
+			EditorKit.BeginGUIContentColor(EditorKit.defaultContentColor);
 
 			// 主工具栏
 			rect.Set(rect.x + _toolBarHorizontalInterval, rect.y + (rect.height - _toolBarBigButtonHeight) * 0.5f, _toolBarBigButtonWidth * 4f, _toolBarBigButtonHeight);
@@ -429,7 +447,7 @@ namespace WhiteCat.Paths
                     }
 			}
 
-			EditorKit.RestoreGUIContentColor();
+			EditorKit.EndGUIContentColor();
         }
 
 
@@ -441,9 +459,9 @@ namespace WhiteCat.Paths
 			// Tension
 
 			EditorGUI.BeginChangeCheck();
-			EditorKit.RecordAndSetLabelWidth(_tensionLabelWidth);
+			EditorKit.BeginLabelWidth(_tensionLabelWidth);
 			float tension = EditorGUI.FloatField(_lineRect, "Tension", GetTension(_selectedItem));
-			EditorKit.RestoreLabelWidth();
+			EditorKit.EndLabelWidth();
 			if (EditorGUI.EndChangeCheck())
 			{
 				Undo.RecordObject(this, "Tension");
@@ -455,7 +473,7 @@ namespace WhiteCat.Paths
 
 			rect.Set(_lineRect.xMax + _toolBarHorizontalInterval, rect.y + (rect.height - _toolBarButtonHeight) * 0.5f, _toolBarButtonWidth, _toolBarButtonHeight);
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.insertNodeTexture, "Insert node"), EditorKit.buttonStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.insertNodeTexture, "Insert node"), EditorKit.buttonStyle))
 			{
 				Undo.RecordObject(this, "Insert Node");
 
@@ -472,7 +490,7 @@ namespace WhiteCat.Paths
 
 			rect.x = rect.xMax + _toolBarHorizontalInterval;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.prevTexture, "Previous segment"), EditorKit.buttonLeftStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.prevTexture, "Previous segment"), EditorKit.buttonLeftStyle))
 			{
 				_selectedItem = (_selectedItem == 0) ? (segmentCount - 1) : (_selectedItem - 1);
 			}
@@ -481,7 +499,7 @@ namespace WhiteCat.Paths
 
 			rect.x = rect.xMax;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.nextTexture, "Next segment"), EditorKit.buttonRightStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.nextTexture, "Next segment"), EditorKit.buttonRightStyle))
 			{
 				_selectedItem = (_selectedItem == segmentCount - 1) ? 0 : (_selectedItem + 1);
 			}
@@ -508,7 +526,7 @@ namespace WhiteCat.Paths
 
 			rect.Set(_lineRect.xMax + _toolBarHorizontalInterval, rect.y + (rect.height - _toolBarButtonHeight) * 0.5f, _toolBarButtonWidth, _toolBarButtonHeight);
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.prevTexture, "Previous forward control point"), EditorKit.buttonLeftStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.prevTexture, "Previous forward control point"), EditorKit.buttonLeftStyle))
 			{
 				_selectedItem = (_selectedItem == 0) ? (nodeCount - 1) : (_selectedItem - 1);
 			}
@@ -517,7 +535,7 @@ namespace WhiteCat.Paths
 
 			rect.x = rect.xMax;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.nextTexture, "Next forward control point"), EditorKit.buttonRightStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.nextTexture, "Next forward control point"), EditorKit.buttonRightStyle))
 			{
 				_selectedItem = (_selectedItem == nodeCount - 1) ? 0 : (_selectedItem + 1);
 			}
@@ -541,7 +559,7 @@ namespace WhiteCat.Paths
 			// 前一个
 			rect.Set(_lineRect.xMax + _toolBarHorizontalInterval, rect.y + (rect.height - _toolBarButtonHeight) * 0.5f, _toolBarButtonWidth, _toolBarButtonHeight);
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.prevTexture, "Previous back control point"), EditorKit.buttonLeftStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.prevTexture, "Previous back control point"), EditorKit.buttonLeftStyle))
 			{
 				_selectedItem = (_selectedItem == 0) ? (nodeCount - 1) : (_selectedItem - 1);
 			}
@@ -549,7 +567,7 @@ namespace WhiteCat.Paths
 			// 后一个
 			rect.x = rect.xMax;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.nextTexture, "Next back control point"), EditorKit.buttonRightStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.nextTexture, "Next back control point"), EditorKit.buttonRightStyle))
 			{
 				_selectedItem = (_selectedItem == nodeCount - 1) ? 0 : (_selectedItem + 1);
 			}
@@ -590,7 +608,7 @@ namespace WhiteCat.Paths
 
 			rect.Set(_lineRect.xMax + _toolBarHorizontalInterval, rect.y + (rect.height - _toolBarButtonHeight) * 0.5f, _toolBarButtonWidth, _toolBarButtonHeight);
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.insertNodeBackTexture, "Insert Back"), EditorKit.buttonLeftStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.insertNodeBackTexture, "Insert Back"), EditorKit.buttonLeftStyle))
 			{
 				Undo.RecordObject(this, "Insert Node");
 				InsertNode(_selectedItem);
@@ -603,7 +621,7 @@ namespace WhiteCat.Paths
 
 			rect.x = rect.xMax;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.insertNodeForwardTexture, "Insert Forward"), EditorKit.buttonRightStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.insertNodeForwardTexture, "Insert Forward"), EditorKit.buttonRightStyle))
 			{
 				Undo.RecordObject(this, "Insert Node");
 				InsertNode(_selectedItem += 1);
@@ -618,7 +636,7 @@ namespace WhiteCat.Paths
 
 			EditorGUI.BeginDisabledGroup(nodeCount <= 2);
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.removeNodeTexture, "Remove node"), EditorKit.buttonStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.removeNodeTexture, "Remove node"), EditorKit.buttonStyle))
 			{
 				Undo.RecordObject(this, "Remove Node");
 				RemoveNode(_selectedItem);
@@ -633,7 +651,7 @@ namespace WhiteCat.Paths
 
 			rect.x = rect.xMax + _toolBarHorizontalInterval;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.prevTexture, "Previous middle control point"), EditorKit.buttonLeftStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.prevTexture, "Previous middle control point"), EditorKit.buttonLeftStyle))
 			{
 				_selectedItem = (_selectedItem == 0) ? (nodeCount - 1) : (_selectedItem - 1);
 			}
@@ -642,7 +660,7 @@ namespace WhiteCat.Paths
 
 			rect.x = rect.xMax;
 
-			if (GUI.Button(rect, EditorKit.GlobalContent(null, EditorAssets.nextTexture, "Next middle control point"), EditorKit.buttonRightStyle))
+			if (GUI.Button(rect, EditorKit.TempContent(null, EditorAssets.nextTexture, "Next middle control point"), EditorKit.buttonRightStyle))
 			{
 				_selectedItem = (_selectedItem == nodeCount - 1) ? 0 : (_selectedItem + 1);
 			}

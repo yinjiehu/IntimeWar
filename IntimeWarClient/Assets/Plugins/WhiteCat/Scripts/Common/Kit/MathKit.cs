@@ -134,9 +134,30 @@ namespace WhiteCat
 
 
 		/// <summary>
-		/// 获得线段上距离指定点最近的点
+		/// 计算射线上距离指定点最近的点, 返回值是 origin + direction * t 中的 t
 		/// </summary>
-		public static float ClosestPoint01(Vector3 start, Vector3 end, Vector3 point)
+		public static float ClosestPointOnRayFloat(Vector3 point, Vector3 origin, Vector3 direction)
+		{
+			float t = direction.sqrMagnitude;
+			if (t < OneMillionth) return 0f;
+
+			return Mathf.Max(Vector3.Dot(point - origin, direction) / t, 0f);
+		}
+
+
+		/// <summary>
+		/// 计算射线上距离指定点最近的点
+		/// </summary>
+		public static Vector3 ClosestPointOnRay(Vector3 point, Vector3 origin, Vector3 direction)
+		{
+			return origin + direction * ClosestPointOnRayFloat(point, origin, direction);
+		}
+
+
+		/// <summary>
+		/// 计算线段上距离指定点最近的点,  返回值是 start + (end - start) * t 中的 t
+		/// </summary>
+		public static float ClosestPointOnSegmentFloat(Vector3 point, Vector3 start, Vector3 end)
 		{
 			Vector3 direction = end - start;
 
@@ -148,18 +169,76 @@ namespace WhiteCat
 
 
 		/// <summary>
-		/// 获得线段上距离指定点最近的点
+		/// 计算线段上距离指定点最近的点
 		/// </summary>
-		public static Vector3 ClosestPoint(Vector3 start, Vector3 end, Vector3 point)
+		public static Vector3 ClosestPointOnSegment(Vector3 point, Vector3 start, Vector3 end)
 		{
-			return start + (end - start) * ClosestPoint01(start, end, point);
+			return start + (end - start) * ClosestPointOnSegmentFloat(point, start, end);
 		}
 
 
 		/// <summary>
-		/// 获得两条线段上最近的两点
+		/// 计算圆内距离指定点最近的点
 		/// </summary>
-		public static void ClosestPoint(
+		public static Vector3 ClosestPointOnCircle(Vector3 point, Vector3 center, Vector3 normal, float radius)
+		{
+			point = ProjectOnPlane(point, center, normal);
+			normal = point - center;
+			float sqrMagnitude = normal.sqrMagnitude;
+			if (sqrMagnitude > radius * radius)
+			{
+				return radius / Mathf.Sqrt(sqrMagnitude) * normal + center;
+			}
+			else return point;
+		}
+
+
+		/// <summary>
+		/// 计算球内距离指定点最近的点
+		/// </summary>
+		public static Vector3 ClosestPointInSphere(Vector3 point, Vector3 center, float radius)
+		{
+			Vector3 direction = point - center;
+			float sqrMagnitude = direction.sqrMagnitude;
+			if (sqrMagnitude > radius * radius)
+			{
+				return radius / Mathf.Sqrt(sqrMagnitude) * direction + center;
+			}
+			else return point;
+		}
+
+
+		/// <summary>
+		/// 计算轴对齐的长方体内距离指定点最近的点
+		/// </summary>
+		public static Vector3 ClosestPointInCuboid(Vector3 point, Vector3 cuboidMin, Vector3 cuboidMax)
+		{
+			point.x = Mathf.Clamp(point.x, cuboidMin.x, cuboidMax.x);
+			point.y = Mathf.Clamp(point.y, cuboidMin.y, cuboidMax.y);
+			point.z = Mathf.Clamp(point.z, cuboidMin.z, cuboidMax.z);
+			return point;
+		}
+
+
+        /// <summary>
+        /// 计算向量与扇形的夹角
+        /// </summary>
+        public static float AngleBetweenVectorAndSector(Vector3 vector, Vector3 sectorNormal, Vector3 sectorDirection, float sectorAngle)
+        {
+            return Vector3.Angle(
+                Vector3.RotateTowards(
+                    sectorDirection,
+                    Vector3.ProjectOnPlane(vector, sectorNormal),
+                    sectorAngle * 0.5f * Mathf.Deg2Rad,
+                    0f),
+                vector);
+        }
+
+
+        /// <summary>
+        /// 获得两条线段上最近的两点
+        /// </summary>
+        public static void ClosestPointBetweenSegments(
 			Vector3 startA, Vector3 endA,
 			Vector3 startB, Vector3 endB,
 			out Vector3 pointA, out Vector3 pointB)
@@ -179,8 +258,8 @@ namespace WhiteCat
 
 			if (float.IsNaN(a) || float.IsNaN(b))
 			{
-				pointB = ClosestPoint(startB, endB, startA);
-				pointA = ClosestPoint(startB, endB, endA);
+				pointB = ClosestPointOnSegment(startB, endB, startA);
+				pointA = ClosestPointOnSegment(startB, endB, endA);
 
 				if ((pointB - startA).sqrMagnitude < (pointA - endA).sqrMagnitude)
 				{
@@ -198,8 +277,8 @@ namespace WhiteCat
 			{
 				if (b < 0f)
 				{
-					pointA = ClosestPoint(startA, endA, startB);
-					pointB = ClosestPoint(startB, endB, startA);
+					pointA = ClosestPointOnSegment(startA, endA, startB);
+					pointB = ClosestPointOnSegment(startB, endB, startA);
 
 					if ((pointA - startB).sqrMagnitude < (pointB - startA).sqrMagnitude)
 					{
@@ -209,8 +288,8 @@ namespace WhiteCat
 				}
 				else if (b > 1f)
 				{
-					pointA = ClosestPoint(startA, endA, endB);
-					pointB = ClosestPoint(startB, endB, startA);
+					pointA = ClosestPointOnSegment(startA, endA, endB);
+					pointB = ClosestPointOnSegment(startB, endB, startA);
 
 					if ((pointA - endB).sqrMagnitude < (pointB - startA).sqrMagnitude)
 					{
@@ -221,15 +300,15 @@ namespace WhiteCat
 				else
 				{
 					pointA = startA;
-					pointB = ClosestPoint(startB, endB, startA);
+					pointB = ClosestPointOnSegment(startB, endB, startA);
 				}
 			}
 			else if (a > 1f)
 			{
 				if (b < 0f)
 				{
-					pointA = ClosestPoint(startA, endA, startB);
-					pointB = ClosestPoint(startB, endB, endA);
+					pointA = ClosestPointOnSegment(startA, endA, startB);
+					pointB = ClosestPointOnSegment(startB, endB, endA);
 
 					if ((pointA - startB).sqrMagnitude < (pointB - endA).sqrMagnitude)
 					{
@@ -239,8 +318,8 @@ namespace WhiteCat
 				}
 				else if (b > 1f)
 				{
-					pointA = ClosestPoint(startA, endA, endB);
-					pointB = ClosestPoint(startB, endB, endA);
+					pointA = ClosestPointOnSegment(startA, endA, endB);
+					pointB = ClosestPointOnSegment(startB, endB, endA);
 
 					if ((pointA - endB).sqrMagnitude < (pointB - endA).sqrMagnitude)
 					{
@@ -251,7 +330,7 @@ namespace WhiteCat
 				else
 				{
 					pointA = endA;
-					pointB = ClosestPoint(startB, endB, endA);
+					pointB = ClosestPointOnSegment(startB, endB, endA);
 				}
 			}
 			else
@@ -259,12 +338,12 @@ namespace WhiteCat
 				if (b < 0f)
 				{
 					pointB = startB;
-					pointA = ClosestPoint(startA, endA, startB);
+					pointA = ClosestPointOnSegment(startA, endA, startB);
 				}
 				else if (b > 1f)
 				{
 					pointB = endB;
-					pointA = ClosestPoint(startA, endA, endB);
+					pointA = ClosestPointOnSegment(startA, endA, endB);
 				}
 				else
 				{
@@ -272,6 +351,17 @@ namespace WhiteCat
 					pointB = startB + b * directionB;
 				}
 			}
+		}
+
+
+		/// <summary>
+		/// 计算点在平面上的投影位置
+		/// </summary>
+		public static Vector3 ProjectOnPlane(Vector3 point, Vector3 planePoint, Vector3 planeNormal)
+		{
+			float normalSqrMagnitude = planeNormal.sqrMagnitude;
+			if (normalSqrMagnitude == 0) return point;
+			return Vector3.Dot(planePoint - point, planeNormal) / normalSqrMagnitude * planeNormal + point;
 		}
 
 
@@ -294,9 +384,35 @@ namespace WhiteCat
 
 
 		/// <summary>
-		/// 从矩阵中获取位置
+		/// 找到一组元素中最接近的一个
 		/// </summary>
-		public static Vector3 GetPositionOfMatrix(ref Matrix4x4 matrix)
+		/// <returns> 最接近的元素下标 </returns>
+		public static int FindNearestIndex(float[] items, float value)
+		{
+			if (IsNullOrEmpty(items)) return -1;
+
+			int result = 0;
+			float minError = Mathf.Abs(value - items[0]);
+			float error;
+
+			for (int i = 1; i < items.Length; i++)
+			{
+				error = Mathf.Abs(value - items[i]);
+				if (error < minError)
+				{
+					minError = error;
+					result = i;
+				}
+			}
+
+			return result;
+		}
+
+
+        /// <summary>
+        /// 从矩阵中获取位置
+        /// </summary>
+        public static Vector3 GetPositionOfMatrix(ref Matrix4x4 matrix)
 		{
 			return new Vector3(matrix.m03, matrix.m13, matrix.m23);
 		}

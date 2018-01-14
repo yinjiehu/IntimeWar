@@ -4,13 +4,34 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
-using WhiteCat;
 using UnityEditor;
+using WhiteCat;
 
 namespace WhiteCatEditor
 {
-	class ScriptGenerater
+	partial class ScriptGenerater
 	{
+		[MenuItem("Assets/Create/White Cat/Layers Script", priority = 1000)]
+		static void CreateLayersScript()
+		{
+			CreateMaskScript("WhiteCat", "Layers", "Layer", LayerMask.LayerToName);
+		}
+
+
+		[MenuItem("Assets/Create/White Cat/Scenes Script (File Name)", priority = 1000)]
+		static void CreateScenesScriptFileName()
+		{
+			CreateSceneScript(0);
+		}
+
+
+		[MenuItem("Assets/Create/White Cat/Scenes Script (Folder + File Name)", priority = 1000)]
+		static void CreateScenesScriptFolderFileName()
+		{
+			CreateSceneScript(1);
+		}
+
+
 		static void CreateScript(string className, Action<StreamWriter> write)
 		{
 			string path = string.Format("{0}/{1}.cs", EditorKit.activeDirectory, className);
@@ -28,48 +49,47 @@ namespace WhiteCatEditor
 		}
 
 
-		[MenuItem("Assets/Create/White Cat/Layers Script")]
-		static void CreateLayerScript()
+		static void CreateMaskScript(string namespaceName, string className, string contentName, Func<int, string> bitToName)
 		{
-			CreateScript("Layers", writer =>
+			CreateScript(className, writer =>
 			{
-				writer.Write(
+				writer.Write(string.Format(
 @"
-namespace WhiteCat
-{
-	/// <summary> Constants of Layers. </summary>
-	public struct Layers
-	{"				);
+namespace {0}
+{{
+	/// <summary> Constants of {1}. </summary>
+	public struct {2}
+	{{", namespaceName, contentName, className));
 
 				List<string> list = new List<string>(32);
 
 				for (int i = 0; i < 32; i++)
 				{
-					var name = LayerMask.LayerToName(i);
+					var name = bitToName(i);
 
 					writer.Write(string.Format(
 		@"
-		/// <summary> Layer {0}, Name: {1} </summary>
-		public const int {2} = {0};
-"						, i, string.IsNullOrEmpty(name) ? "(none)" : name, GetVariableName(name, "Layer"+i, list)));
+		/// <summary> {0} {1}, Name: {2} </summary>
+		public const int {3} = {1};
+"						, contentName, i, string.IsNullOrEmpty(name) ? "(none)" : name, GetVariableName(name, contentName+i, list)));
 				}
 
-				writer.Write(
+				writer.Write(string.Format(
 		@"
 
-		/// <summary> Constants of LayerMasks. </summary>
+		/// <summary> Constants of Mask of {0}. </summary>
 		public struct Masks
-		{"			);
+		{{", contentName));
 
 				for (int i = 0; i < 32; i++)
 				{
-					var name = LayerMask.LayerToName(i);
+					var name = bitToName(i);
 
 					writer.Write(string.Format(
 			@"
-			/// <summary> Mask of Layer {0}, Name: {1} </summary>
-			public const int {2} = {3};
-"						, i, string.IsNullOrEmpty(name) ? "(none)" : name, list[i], 1 << i));
+			/// <summary> Mask of {0} {1}, Name: {2} </summary>
+			public const int {3} = {4};
+"						, contentName, i, string.IsNullOrEmpty(name) ? "(none)" : name, list[i], 1 << i));
 				}
 
 				writer.Write(
@@ -77,20 +97,6 @@ namespace WhiteCat
 	}
 }"					);
 			});
-		}
-
-
-		[MenuItem("Assets/Create/White Cat/Scenes Script (File Name)")]
-		static void CreateSceneScriptFileName()
-		{
-			CreateSceneScript(0);
-		}
-
-
-		[MenuItem("Assets/Create/White Cat/Scenes Script (Folder + File Name)")]
-		static void CreateSceneScriptFolderFileName()
-		{
-			CreateSceneScript(1);
 		}
 
 
@@ -141,8 +147,8 @@ namespace WhiteCat
 			{
 				var c = chars[i];
 
-				if (i == 0) invalid = (c != '_' && !Kit.IsLowerOrUpper(c));
-				else invalid = (c != '_' && !Kit.IsDigit(c) && !Kit.IsLowerOrUpper(c));
+				if (i == 0) invalid = (c != '_' && !Kit.IsEnglishLetter(c));
+				else invalid = (c != '_' && !Kit.IsDigit(c) && !Kit.IsEnglishLetter(c));
 
 				if (invalid)
 				{
@@ -151,7 +157,7 @@ namespace WhiteCat
 				}
 				else if (upper)
 				{
-					if (Kit.IsLower(c))
+					if (Kit.IsEnglishLower(c))
 					{
 						chars[i] = (char)(c + 'A' - 'a');
 					}

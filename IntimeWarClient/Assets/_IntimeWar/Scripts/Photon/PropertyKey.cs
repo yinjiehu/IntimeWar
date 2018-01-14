@@ -15,8 +15,7 @@ namespace MechSquad
         public const string SeqInTeam = "SeqInTeam";
         public const string Score = "score";
         public const string BattleState = "PlayerBattleState";
-        public const string VehicleID = "VehicleID";
-        public const string PaintID = "PaintID";
+        public const string ClassifyID = "ClassifyID";
         public const string InitialParam = "InitialParam";
         public const string KillCount = "KillCount";
         public const string DeathCount = "DeathCount";

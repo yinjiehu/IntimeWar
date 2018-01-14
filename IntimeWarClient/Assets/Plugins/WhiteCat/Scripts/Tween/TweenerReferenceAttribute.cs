@@ -47,19 +47,19 @@ namespace WhiteCat.Tween
 				{
 					// 绘制个性化颜色块
 
-					EditorKit.RecordAndSetGUIColor(EditorKit.defaultContentColor);
+					EditorKit.BeginGUIColor(EditorKit.defaultContentColor);
 					GUI.DrawTexture(rect, EditorAssets.bigDiamondTexture);
-					EditorKit.RestoreGUIColor();
+					EditorKit.EndGUIColor();
 
-					EditorKit.RecordAndSetGUIColor(target.tweener._personalizedColor);
+					EditorKit.BeginGUIColor(target.tweener._personalizedColor);
 					GUI.DrawTexture(rect, EditorAssets.smallDiamondTexture);
-					EditorKit.RestoreGUIColor();
+					EditorKit.EndGUIColor();
 				}
 				else
 				{
 					// 绘制 + 按钮
 
-					EditorKit.RecordAndSetGUIContentColor(EditorKit.defaultContentColor);
+					EditorKit.BeginGUIContentColor(EditorKit.defaultContentColor);
 
 					if (GUI.Button(rect, EditorAssets.addTexture, GUIStyle.none))
 					{
@@ -70,7 +70,7 @@ namespace WhiteCat.Tween
 						EditorUtility.SetDirty(target);
 					}
 
-					EditorKit.RestoreGUIContentColor();
+					EditorKit.EndGUIContentColor();
 				}
 			}
 

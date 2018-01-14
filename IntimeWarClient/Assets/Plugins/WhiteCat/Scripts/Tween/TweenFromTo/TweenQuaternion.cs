@@ -19,32 +19,12 @@ namespace WhiteCat.Tween
 		}
 
 #if UNITY_EDITOR
-
-		SerializedProperty _fromProperty;
-		SerializedProperty _toProperty;
-
+		
 		Quaternion _formQuaternion = Quaternion.identity;
 		Quaternion _toQuaternion = Quaternion.identity;
 
 		Vector3 _fromAngle;
 		Vector3 _toAngle;
-
-
-		protected override void Editor_OnEnable()
-		{
-			base.Editor_OnEnable();
-
-			_fromProperty = editor.serializedObject.FindProperty("_from");
-			_toProperty = editor.serializedObject.FindProperty("_to");
-		}
-
-
-		protected override void Editor_OnDisable()
-		{
-			base.Editor_OnDisable();
-			_fromProperty = null;
-			_toProperty = null;
-		}
 
 
 		protected override void DrawExtraFields()
@@ -67,8 +47,8 @@ namespace WhiteCat.Tween
 				_toAngle = _toQuaternion.eulerAngles;
 			}
 
-			EditorKit.RecordAndSetLabelWidth(EditorGUIUtility.currentViewWidth * 0.2f);
-			EditorKit.RecordAndSetWideMode(true);
+			EditorKit.BeginLabelWidth(EditorGUIUtility.currentViewWidth * 0.2f);
+			EditorKit.BeginWideMode(true);
 
 			EditorGUI.BeginChangeCheck();
 			_fromAngle = EditorGUILayout.Vector3Field("From", _fromAngle);
@@ -84,8 +64,8 @@ namespace WhiteCat.Tween
 				_toProperty.quaternionValue = _toQuaternion = Quaternion.Euler(_toAngle);
 			}
 
-			EditorKit.RestoreLabelWidth();
-			EditorKit.RestoreWideMode();
+			EditorKit.EndLabelWidth();
+			EditorKit.EndWideMode();
 		}
 
 #endif // UNITY_EDITOR

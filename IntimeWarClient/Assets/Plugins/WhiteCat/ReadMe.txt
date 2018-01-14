@@ -1,3 +1,40 @@
+White Cat's Toolbox
+
+Asset Store: https://www.assetstore.unity3d.com/#!/content/32356?aid=1101lGxh
+Documentation: https://github.com/silentlamb1991/WhiteCatToolbox/wiki
+Support E-mail: whitecat1991@outlook.com
+
+
+
+
+---------- Version 3.7 ----------
+
+Cautions:
+	Please remove old version before importing new version of this asset.
+	Some static methods in Kit now changed as extensions (see Extensions class).
+
+Detail:
+	Add "Sync On Enable" option for tween animations.
+	Add onAsyncTaskBegin and onAsyncTaskEnd event for DataFile.
+	Improve ScriptableAssetSingletonWithEditor.
+
+
+
+
+---------- Version 3.6 ----------
+
+Detail:
+	Now state machine supports sub-state machine.
+	Add dynamic GI updating option for material properties animations.
+	Remove TypedUnionValue, rename UnionValue to Union8.
+	Improve editor scripts of Tween.
+	Improve ScriptableAssetSingletonWithEditor.
+	Add namespace for example scripts.
+	Fix HDR color picker not working in Unity 5.3.
+
+
+
+
 ---------- Version 3.5 ----------
 
 Cautions:
@@ -32,7 +69,6 @@ Detail:
 	Fix Path gizmos error.
 	Fix CreateAsset error.
 	Improve FSM.
-	ViewDetector was removed.
 
 
 
@@ -41,7 +77,6 @@ Detail:
 
 Detail:
 	Fix bug of multi-inspector drawing.
-	Repaint Inspector when Toggle.currentValue changed.
 	Modify file extensions of assets which created by QuickCreateAsset.
 
 
@@ -61,16 +96,13 @@ Detail:
 ---------- Version 3.1 ----------
 
 Detail:
-	Add ViewDetector component (and example).
 	Add GameObjectPool component (and example).
-	Add Toggle component.
 	Add MoveSpeedKeyframeList component.
 	Add global Tween animations (ambient, fog, etc).
 	Add TweenCameraFieldOfView component.
 	Add TweenCameraBackgroundColor component.
 	Add TweenLightShadowStrength component (update example).
 	Add TweenSpriteRendererColor component (update example).
-	Change base class of State and stateMachine.
 	Draw an arrow at end of path, for distinguishing direction.
 
 

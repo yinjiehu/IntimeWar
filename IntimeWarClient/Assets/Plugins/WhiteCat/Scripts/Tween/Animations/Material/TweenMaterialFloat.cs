@@ -45,7 +45,11 @@ namespace WhiteCat.Tween
 			set
 			{
 				var material = _property.material;
-				if (material) material.SetFloat(_property.propertyID, value);
+				if (material)
+				{
+					material.SetFloat(_property.propertyID, value);
+					_property.ValidateDynamicGI();
+				}
 			}
 		}
 
@@ -72,7 +76,7 @@ namespace WhiteCat.Tween
 		{
 			EditorGUILayout.PropertyField(_serializedProperty);
 			EditorGUILayout.Space();
-			DrawFromToValues();
+			base.DrawExtraFields();
 		}
 
 #endif // UNITY_EDITOR

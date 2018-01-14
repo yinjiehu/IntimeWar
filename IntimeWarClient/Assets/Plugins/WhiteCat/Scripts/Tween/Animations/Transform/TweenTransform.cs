@@ -104,6 +104,7 @@ namespace WhiteCat.Tween
 #if UNITY_EDITOR
 
 		SerializedProperty _tweenerProperty;
+		SerializedProperty _syncOnEnableProperty;
 		SerializedProperty _fromProperty;
 		SerializedProperty _toProperty;
 
@@ -111,6 +112,7 @@ namespace WhiteCat.Tween
 		protected override void Editor_OnEnable()
 		{
 			_tweenerProperty = editor.serializedObject.FindProperty("_tweener");
+			_syncOnEnableProperty = editor.serializedObject.FindProperty("syncOnEnable");
 			_fromProperty = editor.serializedObject.FindProperty("from");
 			_toProperty = editor.serializedObject.FindProperty("to");
 		}
@@ -119,6 +121,7 @@ namespace WhiteCat.Tween
 		protected override void Editor_OnDisable()
 		{
 			_tweenerProperty = null;
+			_syncOnEnableProperty = null;
 			_fromProperty = null;
 			_toProperty = null;
 		}
@@ -128,6 +131,7 @@ namespace WhiteCat.Tween
 		{
 			editor.serializedObject.Update();
 			EditorGUILayout.PropertyField(_tweenerProperty);
+			EditorGUILayout.PropertyField(_syncOnEnableProperty);
 			EditorGUILayout.Space();
 			EditorGUILayout.PropertyField(_fromProperty);
 			EditorGUILayout.PropertyField(_toProperty);

@@ -181,7 +181,7 @@ namespace WhiteCat.Tween
 			last.x = origin.x + last.x * scale.x;
 			last.y = origin.y + (_maxValue - last.y) * scale.y;
 
-			EditorKit.RecordAndSetHandlesColor(curveColor);
+			EditorKit.BeginHandlesColor(curveColor);
 			Vector3 point;
 
 			for (int i = 1; i < _samples.Count; i++)
@@ -194,7 +194,7 @@ namespace WhiteCat.Tween
 				last = point;
 			}
 
-			EditorKit.RestoreHandlesColor();
+			EditorKit.EndHandlesColor();
 			EditorKit.DrawWireRect(rect, borderColor);
 		}
 

@@ -11,9 +11,10 @@ namespace WhiteCat.Tween
 		[ExecuteInEditMode]
 		public abstract partial class TweenAnimation : ScriptableComponentWithEditor
 		{
-			[SerializeField]
-			[TweenerReference]
+			[SerializeField, TweenerReference]
 			Tweener _tweener;
+
+			public bool syncOnEnable;
 
 			bool _attached = false;
 
@@ -77,14 +78,20 @@ namespace WhiteCat.Tween
 			void OnEnable()
 			{
 				Attach();
-            }
+
+				if (_attached && syncOnEnable && Application.isPlaying)
+				{
+					float factor = _tweener._interpolator.Evaluate(_tweener._normalizedTime);
+					OnTween(factor);
+				}
+			}
 
 
 			// 关闭组件时从插值器移除动画
 			void OnDisable()
 			{
 				Detach();
-            }
+			}
 
 
 			/// <summary>
@@ -115,9 +122,9 @@ namespace WhiteCat.Tween
 				if (_lastTweener != _tweener)
 				{
 					var value = _tweener;
-                    _tweener = _lastTweener;
+					_tweener = _lastTweener;
 					tweener = value;
-                }
+				}
 			}
 
 #endif // UNITY_EDITOR

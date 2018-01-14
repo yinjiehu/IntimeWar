@@ -45,7 +45,11 @@ namespace WhiteCat.Tween
 			set
 			{
 				var material = _property.material;
-				if (material) material.SetFloat(_property.propertyID, value);
+				if (material)
+				{
+					material.SetFloat(_property.propertyID, value);
+					_property.ValidateDynamicGI();
+				}
 			}
 		}
 
@@ -80,7 +84,7 @@ namespace WhiteCat.Tween
 					ShaderUtil.GetRangeLimits(_property.editor_shader, index, 1),
 					ShaderUtil.GetRangeLimits(_property.editor_shader, index, 2));
 			}
-			else DrawFromToValues();
+			else base.DrawExtraFields();
 		}
 
 #endif // UNITY_EDITOR

@@ -370,6 +370,19 @@ namespace WhiteCat.Tween
 			}
 		}
 
+		public void PlayForward(float startNormalizedTime = 0)
+		{
+			isForward = true;
+			normalizedTime = startNormalizedTime;
+			enabled = true;
+		}
+		public void PlayBackward(float startNormalizedTime = 1)
+		{
+			isForward = false;
+			normalizedTime = startNormalizedTime;
+			enabled = true;
+		}
+
 		#endregion // Methods
 
 	} // class Tweener

@@ -45,7 +45,11 @@ namespace WhiteCat.Tween
 			set
 			{
 				var material = _property.material;
-				if (material) material.SetTextureOffset(_property.propertyName, value);
+				if (material)
+				{
+					material.SetTextureOffset(_property.propertyName, value);
+					_property.ValidateDynamicGI();
+				}
 			}
 		}
 

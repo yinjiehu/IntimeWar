@@ -16,7 +16,7 @@ namespace WhiteCat
 
 
 		// 全局 Random 实例
-		static readonly Random _global = new Random((uint)(DateTime.Now.Ticks & 0xFFFFFFFF));
+		static readonly Random _static = new Random((uint)(DateTime.Now.Ticks & 0xFFFFFFFF));
 
 
 		/// <summary>
@@ -24,8 +24,8 @@ namespace WhiteCat
 		/// </summary>
 		public Random()
 		{
-			_global.Range01();
-			seed = ~_global.seed;
+			_static.Range01();
+			seed = ~_static.seed;
 		}
 
 

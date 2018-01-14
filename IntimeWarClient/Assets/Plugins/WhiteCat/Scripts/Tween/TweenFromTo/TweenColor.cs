@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿#if !UNITY_5_3_OR_NEWER && UNITY_5_3
+#define UNITY_5_3_OR_NEWER
+#endif
+
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -69,8 +73,6 @@ namespace WhiteCat.Tween
 		SerializedProperty _hdrProperty;
 		SerializedProperty _toggleRGBProperty;
 		SerializedProperty _toggleAlphaProperty;
-		SerializedProperty _fromProperty;
-		SerializedProperty _toProperty;
 		SerializedProperty _fromAlphaProperty;
 		SerializedProperty _toAlphaProperty;
 		SerializedProperty _gradientProperty;
@@ -84,8 +86,6 @@ namespace WhiteCat.Tween
 			_hdrProperty = editor.serializedObject.FindProperty("hdr");
 			_toggleRGBProperty = editor.serializedObject.FindProperty("toggleRGB");
 			_toggleAlphaProperty = editor.serializedObject.FindProperty("toggleAlpha");
-			_fromProperty = editor.serializedObject.FindProperty("_from");
-			_toProperty = editor.serializedObject.FindProperty("_to");
 			_fromAlphaProperty = _fromProperty.FindPropertyRelative("a");
 			_toAlphaProperty = _toProperty.FindPropertyRelative("a");
 			_gradientProperty = editor.serializedObject.FindProperty("_gradient");
@@ -100,8 +100,6 @@ namespace WhiteCat.Tween
 			_hdrProperty = null;
 			_toggleRGBProperty = null;
 			_toggleAlphaProperty = null;
-			_fromProperty = null;
-			_toProperty = null;
 			_fromAlphaProperty = null;
 			_toAlphaProperty = null;
 			_gradientProperty = null;
@@ -119,7 +117,7 @@ namespace WhiteCat.Tween
 			else
 			{
 				EditorGUI.BeginChangeCheck();
-				EditorGUILayout.PropertyField(_hdrProperty, EditorKit.GlobalContent("HDR"));
+				EditorGUILayout.PropertyField(_hdrProperty, EditorKit.TempContent("HDR"));
 				if (EditorGUI.EndChangeCheck() && !_hdrProperty.boolValue)
 				{
 					if (_from.maxColorComponent > 1f)

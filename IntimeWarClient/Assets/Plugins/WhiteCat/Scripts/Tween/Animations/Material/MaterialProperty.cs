@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if !UNITY_5_6_OR_NEWER && UNITY_5_6
+#define UNITY_5_6_OR_NEWER
+#endif
+
+using System;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -17,6 +21,7 @@ namespace WhiteCat.Tween
 	{
 		// 材质类型
 		[SerializeField] MaterialType _materialType = MaterialType.Specified;
+		[SerializeField] bool _updateDynamicGI;
 
 		// 指定材质
 		[SerializeField] Material _specifiedMaterial;
@@ -73,6 +78,22 @@ namespace WhiteCat.Tween
 			{
 				_renderer = value;
 				_material = null;
+			}
+		}
+
+
+		/// <summary>
+		/// 检查动态 GI 是否需要更新
+		/// </summary>
+		public void ValidateDynamicGI()
+		{
+			if (_updateDynamicGI && _materialType != MaterialType.Specified)
+			{
+#if UNITY_5_6_OR_NEWER
+				RendererExtensions.UpdateGIMaterials(_renderer);
+#else
+				DynamicGI.UpdateMaterials(_renderer);
+#endif
 			}
 		}
 
@@ -245,7 +266,7 @@ namespace WhiteCat.Tween
 		// 获取编辑器高度
 		protected override float Editor_GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
-			float lines = _materialType == MaterialType.Specified ? 4f : 5f;
+			float lines = _materialType == MaterialType.Specified ? 4f : 6f;
 			return lines * (EditorGUIUtility.singleLineHeight + _lineInterval) - _lineInterval;
 		}
 
@@ -286,6 +307,19 @@ namespace WhiteCat.Tween
 			}
 			else
 			{
+				// 动态 GI
+
+				EditorGUI.BeginChangeCheck();
+				bool newUpdateDynamicGI = EditorGUI.Toggle(rect, "Update Dynamic GI", _updateDynamicGI);
+				if (EditorGUI.EndChangeCheck())
+				{
+					Undo.RecordObject(target, "Update Dynamic GI");
+					_updateDynamicGI = newUpdateDynamicGI;
+					EditorUtility.SetDirty(target);
+				}
+
+				rect.y = rect.yMax + _lineInterval;
+
 				// 渲染器
 
 				EditorGUI.BeginChangeCheck();
@@ -327,14 +361,14 @@ namespace WhiteCat.Tween
 				// 刷新按钮
 
 				EditorGUI.DrawRect(refreshRect, EditorKit.defaultBackgroundColor);
-				EditorKit.RecordAndSetGUIContentColor(EditorKit.defaultContentColor);
+				EditorKit.BeginGUIContentColor(EditorKit.defaultContentColor);
                 if (GUI.Button(refreshRect, EditorAssets.refreshTexture, GUIStyle.none))
 				{
 					UpdateMaterial();
 					_shader = null;
 					UpdateShader();
 				}
-				EditorKit.RestoreGUIContentColor();
+				EditorKit.EndGUIContentColor();
             }
 
 			rect.y = rect.yMax + _lineInterval;

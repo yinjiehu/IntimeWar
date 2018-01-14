@@ -45,7 +45,11 @@ namespace WhiteCat.Tween
 			set
 			{
 				var material = _property.material;
-				if (material) material.SetVector(_property.propertyID, value);
+				if (material)
+				{
+					material.SetVector(_property.propertyID, value);
+					_property.ValidateDynamicGI();
+				}
 			}
 		}
 

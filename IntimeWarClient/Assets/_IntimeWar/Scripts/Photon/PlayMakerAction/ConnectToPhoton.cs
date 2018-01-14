@@ -11,7 +11,7 @@ namespace MechSquad.RealTime
 		public FsmInt ServerPort;
 		public FsmString PlayerNickName;
 
-		public const string AppID = "287b0a91-812a-44a6-9092-796839dd23be";
+		public const string AppID = "4eab3524-c699-4953-aad2-c5bbf341ebc8";
 
 		public FsmEvent OnJoinLobby;
 		public FsmEvent OnReachMaxCCU;
@@ -30,7 +30,7 @@ namespace MechSquad.RealTime
 				return;
             }
 
-			var serverAddress = "";
+			var serverAddress = "192.168.1.3";
 			Debug.LogFormat("connect to photon server {0} {1}", serverAddress, ServerPort.Value);
 
             PhotonNetwork.sendRate = 10;
@@ -50,11 +50,11 @@ namespace MechSquad.RealTime
             PhotonNetwork.ConnectToMaster(serverAddress, ServerPort.Value, AppID, Application.version);
 		}
 
-        //public void OnDisconnectedFromPhoton()
-        //{
-        //    ErrorMessage = "登录对战服务器失败";
-        //    Fsm.Event(OnConnectionError);
-        //}
+        public void OnDisconnectedFromPhoton()
+        {
+            ErrorMessage = "登录对战服务器失败";
+            Fsm.Event(OnConnectionError);
+        }
 
 
         private void OnConnectedToPhoton()

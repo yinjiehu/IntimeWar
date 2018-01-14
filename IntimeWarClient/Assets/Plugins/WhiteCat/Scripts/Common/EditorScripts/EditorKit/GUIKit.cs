@@ -19,57 +19,27 @@ namespace WhiteCatEditor
 
 
 	/// <summary>
-	/// Hot Control 事件
-	/// </summary>
-	public enum HotControlEvent
-	{
-		None,
-		MouseDown,
-		MouseUp,
-	}
-
-
-	/// <summary>
 	/// GUI 相关的编辑器方法
 	/// </summary>
 	public partial struct EditorKit
 	{
-		static float _lastRecordedLabelWidth;
-		static bool _lastRecordedWideMode;
-		static Color _lastRecordedContentColor;
-		static Color _lastRecordedBackgroundColor;
-		static Color _lastRecordedColor;
-		static Color _lastRecordedHandlesColor;
-		static int _lastRecordedHotControl;
-		static Matrix4x4 _lastHandlesMatrix;
-
-		static GUIStyle _buttonStyle;
-		static GUIStyle _buttonLeftStyle;
-		static GUIStyle _buttonMiddleStyle;
-		static GUIStyle _buttonRightStyle;
-
-		static GUIStyle _centeredBoldLabelStyle;
+		static GUIContent _tempContent;
 
 		static Vector3[] _lineVertices = new Vector3[2];
 		static Vector3[] _boundsVertices = new Vector3[10];
-
-		static GUIContent _globalContent;
-		static ColorPickerHDRConfig _colorPickerHDRConfig;
 
 
 		/// <summary>
 		/// 获取一个随机颜色, 这个颜色具有一定的饱和度和明度
 		/// </summary>
-		public static Color randomColor
+		public static Color GetRandomColor()
 		{
-			get
-			{
 #if UNITY_5_3 || UNITY_5_3_OR_NEWER
 
-				return Color.HSVToRGB(
-					(float)Kit.random.Range01(),
-					Kit.random.Range(0.5f, 1f),
-					Kit.random.Range(0.5f, 1f));
+			return Color.HSVToRGB(
+				(float)Kit.random.Range01(),
+				Kit.random.Range(0.5f, 1f),
+				Kit.random.Range(0.5f, 1f));
 
 #else
 
@@ -84,296 +54,21 @@ namespace WhiteCatEditor
 				return color;
 
 #endif
-			}
 		}
 
 
 		/// <summary>
-		/// 编辑器默认内容颜色 (文本, 按钮图片等)
+		/// 获取临时的 GUIContent
 		/// </summary>
-		public static Color defaultContentColor
+		public static GUIContent TempContent(string text = null, Texture image = null, string tooltip = null)
 		{
-			get { return EditorStyles.label.normal.textColor; }
-		}
+			if (_tempContent == null) _tempContent = new GUIContent();
 
+			_tempContent.text = text;
+			_tempContent.image = image;
+			_tempContent.tooltip = tooltip;
 
-		/// <summary>
-		/// 编辑器默认背景颜色
-		/// </summary>
-		public static Color defaultBackgroundColor
-		{
-			get
-			{
-				float rgb = EditorGUIUtility.isProSkin ? 56f : 194f;
-				rgb /= 255f;
-				return new Color(rgb, rgb, rgb, 1f);
-			}
-		}
-
-
-		/// <summary>
-		/// 记录并设置 LabelWidth
-		/// </summary>
-		public static void RecordAndSetLabelWidth(float newWidth)
-		{
-			_lastRecordedLabelWidth = EditorGUIUtility.labelWidth;
-			EditorGUIUtility.labelWidth = newWidth;
-        }
-
-
-		/// <summary>
-		/// 恢复 LabelWidth
-		/// </summary>
-		public static void RestoreLabelWidth()
-		{
-			EditorGUIUtility.labelWidth = _lastRecordedLabelWidth;
-		}
-
-
-		/// <summary>
-		/// 记录并设置 WideMode
-		/// </summary>
-		public static void RecordAndSetWideMode(bool newWideMode)
-		{
-			_lastRecordedWideMode = EditorGUIUtility.wideMode;
-			EditorGUIUtility.wideMode = newWideMode;
-		}
-
-
-		/// <summary>
-		/// 恢复 WideMode
-		/// </summary>
-		public static void RestoreWideMode()
-		{
-			EditorGUIUtility.wideMode = _lastRecordedWideMode;
-		}
-
-
-		/// <summary>
-		/// 记录并设置 ContentColor
-		/// </summary>
-		public static void RecordAndSetGUIContentColor(Color newColor)
-		{
-			_lastRecordedContentColor = GUI.contentColor;
-			GUI.contentColor = newColor;
-		}
-
-
-		/// <summary>
-		/// 恢复 BackgroundColor
-		/// </summary>
-		public static void RestoreGUIContentColor()
-		{
-			GUI.contentColor = _lastRecordedContentColor;
-		}
-
-
-		/// <summary>
-		/// 记录并设置 BackgroundColor
-		/// </summary>
-		public static void RecordAndSetGUIBackgroundColor(Color newColor)
-		{
-			_lastRecordedBackgroundColor = GUI.backgroundColor;
-			GUI.backgroundColor = newColor;
-        }
-
-
-		/// <summary>
-		/// 恢复 BackgroundColor
-		/// </summary>
-		public static void RestoreGUIBackgroundColor()
-		{
-			GUI.backgroundColor = _lastRecordedBackgroundColor;
-        }
-
-
-		/// <summary>
-		/// 记录并设置 Color
-		/// </summary>
-		public static void RecordAndSetGUIColor(Color newColor)
-		{
-			_lastRecordedColor = GUI.color;
-			GUI.color = newColor;
-		}
-
-
-		/// <summary>
-		/// 恢复 Color
-		/// </summary>
-		public static void RestoreGUIColor()
-		{
-			GUI.color = _lastRecordedColor;
-		}
-
-
-		/// <summary>
-		/// 记录并设置 Handles.color
-		/// </summary>
-		public static void RecordAndSetHandlesColor(Color newColor)
-		{
-			_lastRecordedHandlesColor = Handles.color;
-			Handles.color = newColor;
-		}
-
-
-		/// <summary>
-		/// 恢复 Handles.color
-		/// </summary>
-		public static void RestoreHandlesColor()
-		{
-			Handles.color = _lastRecordedHandlesColor;
-		}
-
-
-		/// <summary>
-		/// 记录并设置 Handles.matrix
-		/// </summary>
-		public static void RecordAndSetHandlesMatrix(ref Matrix4x4 newMatrix)
-		{
-			_lastHandlesMatrix = Handles.matrix;
-			Handles.matrix = newMatrix;
-		}
-
-
-		/// <summary>
-		/// 记录并设置 Handles.matrix
-		/// </summary>
-		public static void RecordAndSetHandlesMatrix(Matrix4x4 newMatrix)
-		{
-			_lastHandlesMatrix = Handles.matrix;
-			Handles.matrix = newMatrix;
-		}
-
-
-		/// <summary>
-		/// 恢复 Handles.matrix
-		/// </summary>
-		public static void RestoreHandlesMatrix()
-		{
-			Handles.matrix = _lastHandlesMatrix;
-		}
-
-
-		/// <summary>
-		/// 在绘制控件之前调用, 用以检查控件是否被鼠标选中
-		/// </summary>
-		public static void BeginHotControlChangeCheck()
-		{
-			_lastRecordedHotControl = GUIUtility.hotControl;
-        }
-
-
-		/// <summary>
-		/// 在绘制控件之后调用, 返回该控件被鼠标选中的事件
-		/// </summary>
-		public static HotControlEvent EndHotControlChangeCheck()
-		{
-			if (_lastRecordedHotControl == GUIUtility.hotControl)
-			{
-				return HotControlEvent.None;
-			}
-
-			return GUIUtility.hotControl == 0 ? HotControlEvent.MouseUp : HotControlEvent.MouseDown;
-        }
-
-
-		/// <summary>
-		/// 按钮 GUIStyle
-		/// </summary>
-		public static GUIStyle buttonStyle
-		{
-			get
-			{
-				if (_buttonStyle == null) _buttonStyle = "Button";
-				return _buttonStyle;
-            }
-		}
-
-
-		/// <summary>
-		/// 左侧按钮 GUIStyle
-		/// </summary>
-		public static GUIStyle buttonLeftStyle
-		{
-			get
-			{
-				if (_buttonLeftStyle == null) _buttonLeftStyle = "ButtonLeft";
-				return _buttonLeftStyle;
-			}
-		}
-
-
-		/// <summary>
-		/// 中部按钮 GUIStyle
-		/// </summary>
-		public static GUIStyle buttonMiddleStyle
-		{
-			get
-			{
-				if (_buttonMiddleStyle == null) _buttonMiddleStyle = "ButtonMid";
-				return _buttonMiddleStyle;
-			}
-		}
-
-
-		/// <summary>
-		/// 右侧按钮 GUIStyle
-		/// </summary>
-		public static GUIStyle buttonRightStyle
-		{
-			get
-			{
-				if (_buttonRightStyle == null) _buttonRightStyle = "ButtonRight";
-				return _buttonRightStyle;
-			}
-		}
-
-
-		/// <summary>
-		/// 居中且加粗的 Label
-		/// </summary>
-		public static GUIStyle centeredBoldLabelStyle
-		{
-			get
-			{
-				if (_centeredBoldLabelStyle == null)
-				{
-					_centeredBoldLabelStyle = new GUIStyle(EditorStyles.boldLabel);
-					_centeredBoldLabelStyle.alignment = TextAnchor.MiddleCenter;
-				}
-				return _centeredBoldLabelStyle;
-			}
-		}
-
-
-		/// <summary>
-		/// 获取全局唯一的 GUIContent
-		/// </summary>
-		public static GUIContent GlobalContent(string text = null, Texture image = null, string tooltip = null)
-		{
-			if (_globalContent == null) _globalContent = new GUIContent();
-
-			_globalContent.text = text;
-			_globalContent.image = image;
-			_globalContent.tooltip = tooltip;
-
-			return _globalContent;
-		}
-
-
-		/// <summary>
-		/// HDR 拾色器设置
-		/// </summary>
-		public static ColorPickerHDRConfig colorPickerHDRConfig
-		{
-			get
-			{
-				if (_colorPickerHDRConfig == null)
-				{
-					_colorPickerHDRConfig = new ColorPickerHDRConfig(0f, 8f, 0.125f, 3f);
-				}
-				return _colorPickerHDRConfig;
-			}
+			return _tempContent;
 		}
 
 

@@ -78,21 +78,6 @@ namespace MechSquad
 		public bool SendPhotonEventToTask(PlayMakerFSM fsm, FsmStateAction action, string methodName, object[] parameters)
 		{
 			var type = action.GetType();
-			//if(type == typeof(RunTimeFsmStateActionProxy))
-			//{
-			//	if (parameters == null || parameters.Length == 0)
-			//	{
-			//		return ((RunTimeFsmStateActionProxy)action).OnReceivePhotonMessage(methodName);
-			//	}
-			//	else if (parameters.Length == 1)
-			//	{
-			//		return ((RunTimeFsmStateActionProxy)action).OnReceivePhotonMessage(methodName, parameters);
-			//	}
-			//	else
-			//	{
-			//		return ((RunTimeFsmStateActionProxy)action).OnReceivePhotonMessage(methodName, new object[] { parameters });
-			//	}
-			//}
 
 			var method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 			if (method != null)

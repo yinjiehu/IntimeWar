@@ -12,7 +12,7 @@ namespace WhiteCat.Tween
 	/// </summary>
 	public partial class Tweener
 	{
-		[SerializeField] Color _personalizedColor = EditorKit.randomColor;
+		[SerializeField] Color _personalizedColor = EditorKit.GetRandomColor();
 
 		int _selectedPageIndex = 1;
 		bool _showAnimations = false;
@@ -31,7 +31,7 @@ namespace WhiteCat.Tween
 		SerializedProperty _onForwardToEndingProp;
 		SerializedProperty _onBackToBeginningProp;
 
-		static string[] pageTitles = { "Interpolator", "Settings", "Event" };
+		static string[] pageTitles = { "Interpolator", "Settings", "Events" };
 		static Color progressBackground = new Color(0, 0, 0, 0.15f);
 		static StringBuilder stringBuilder = new StringBuilder("Element ", 16);
 
@@ -230,15 +230,15 @@ namespace WhiteCat.Tween
 
 			if (Application.isPlaying)
 			{
-				EditorKit.RecordAndSetGUIBackgroundColor(enabled ? _personalizedColor : GUI.backgroundColor);
+				EditorKit.BeginGUIBackgroundColor(enabled ? _personalizedColor : GUI.backgroundColor);
 				enabled = GUI.Toggle(previewRect, enabled, "Play", EditorStyles.miniButton);
-				EditorKit.RestoreGUIBackgroundColor();
+				EditorKit.EndGUIBackgroundColor();
 			}
 			else
 			{
-				EditorKit.RecordAndSetGUIBackgroundColor(_isPreviewInEditor ? _personalizedColor : GUI.backgroundColor);
+				EditorKit.BeginGUIBackgroundColor(_isPreviewInEditor ? _personalizedColor : GUI.backgroundColor);
 				previewInEditor = GUI.Toggle(previewRect, _isPreviewInEditor, "Preview", EditorStyles.miniButton);
-				EditorKit.RestoreGUIBackgroundColor();
+				EditorKit.EndGUIBackgroundColor();
 			}
 
 			// 进度条
@@ -276,19 +276,19 @@ namespace WhiteCat.Tween
 			if(GUI.Button(rect, GUIContent.none))
 			{
 				Undo.RecordObject(this, "Change Color");
-				_personalizedColor = EditorKit.randomColor;
+				_personalizedColor = EditorKit.GetRandomColor();
 				EditorUtility.SetDirty(this);
 			}
 				
 			// 绘制颜色块
-			EditorKit.RecordAndSetGUIColor(foregroundColor);
+			EditorKit.BeginGUIColor(foregroundColor);
 			GUI.DrawTexture(rect, EditorGUIUtility.whiteTexture);
-			EditorKit.RestoreGUIColor();
+			EditorKit.EndGUIColor();
 
-			EditorKit.RecordAndSetGUIColor(_personalizedColor);
+			EditorKit.BeginGUIColor(_personalizedColor);
 			previewRect.Set(rect.x + 1f, rect.y + 1f, rect.width - 2f, rect.height - 2f);
             GUI.DrawTexture(previewRect, EditorGUIUtility.whiteTexture);
-			EditorKit.RestoreGUIColor();
+			EditorKit.EndGUIColor();
 
 			EditorGUILayout.Space();
 		}

@@ -2,36 +2,43 @@
 using WhiteCat;
 using WhiteCat.Paths;
 
-[RequireComponent(typeof(CardinalPath))]
-public class CreateRandomPath : MonoBehaviour
+namespace WhiteCat.Example
 {
-	[Range(4, 32)] public int nodeCount = 16;
-	[Range(20, 60)] public float minRadius = 25;
-	[Range(20, 60)] public float maxRadius = 55;
-	[Range(0, 20)] public float maxHeight = 10;
-
-
-	public void Generate()
+	[RequireComponent(typeof(CardinalPath))]
+	public class CreateRandomPath : MonoBehaviour
 	{
-		Vector3[] nodes = new Vector3[nodeCount];
+		[Range(4, 32)]
+		public int nodeCount = 16;
+		[Range(20, 60)]
+		public float minRadius = 25;
+		[Range(20, 60)]
+		public float maxRadius = 55;
+		[Range(0, 20)]
+		public float maxHeight = 10;
 
-		Vector3 point;
-		float radian;
-		float radius;
 
-		for (int i = 0; i < nodeCount; i++)
+		public void Generate()
 		{
-			radian = 2 * Mathf.PI * i / nodeCount;
-			radius = UnityEngine.Random.Range(minRadius, maxRadius);
+			Vector3[] nodes = new Vector3[nodeCount];
 
-			point.x = Mathf.Cos(radian) * radius;
-			point.y = UnityEngine.Random.Range(0, maxHeight);
-			point.z = Mathf.Sin(radian) * radius;
+			Vector3 point;
+			float radian;
+			float radius;
 
-			nodes[i] = point;
+			for (int i = 0; i < nodeCount; i++)
+			{
+				radian = 2 * Mathf.PI * i / nodeCount;
+				radius = UnityEngine.Random.Range(minRadius, maxRadius);
+
+				point.x = Mathf.Cos(radian) * radius;
+				point.y = UnityEngine.Random.Range(0, maxHeight);
+				point.z = Mathf.Sin(radian) * radius;
+
+				nodes[i] = point;
+			}
+
+			var path = GetComponent<CardinalPath>();
+			path.SetNodes(nodes, true);
 		}
-
-		var path = GetComponent<CardinalPath>();
-		path.SetNodes(nodes, true);
 	}
 }

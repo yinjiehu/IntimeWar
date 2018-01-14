@@ -194,7 +194,12 @@ namespace WhiteCat.Paths
 		{
 			if (_space == RotationSpace.Path) value = path.TransformRotation(value);
 			EditorKit.HandlesDrawAALine(position, position + handleSize * (value * Vector3.up));
+
+#if UNITY_5_6_OR_NEWER
+			Handles.ArrowHandleCap(0, position, value, handleSize, EventType.Ignore);
+#else
 			Handles.ArrowCap(0, position, value, handleSize);
+#endif
 		}
 
 

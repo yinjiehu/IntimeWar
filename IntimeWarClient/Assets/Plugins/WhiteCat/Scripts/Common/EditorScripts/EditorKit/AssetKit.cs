@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 
 using System.IO;
+using System.Collections.Generic;
 using UnityEditor;
 using WhiteCat;
 using UnityObject = UnityEngine.Object;
@@ -87,6 +88,60 @@ namespace WhiteCatEditor
 			string typeName = typeof(T).Name;
 			string name = "New" + typeName + ".asset";
 			CreateAsset(unityObject, activeDirectory + '/' + name, true, false);
+		}
+
+
+		/// <summary>
+		/// 查找指定类型的单个资源
+		/// </summary>
+		public static T FindAsset<T>() where T : UnityObject
+		{
+			var guids = AssetDatabase.FindAssets("t:" + typeof(T).FullName);
+
+			if (!Kit.IsNullOrEmpty(guids))
+			{
+				return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guids[0]));
+			}
+
+			return null;
+		}
+
+
+		/// <summary>
+		/// 查找指定类型的所有孤立资源, 孤立资源指单个文件对应单个对象的资源
+		/// </summary>
+		public static List<T> FindIsolatedAssets<T>() where T : UnityObject
+		{
+			var guids = AssetDatabase.FindAssets("t:" + typeof(T).FullName);
+			List<T> results = new List<T>();
+
+			foreach(var guid in guids)
+			{
+				results.Add(AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid)));
+			}
+
+			return results;
+		}
+
+
+		/// <summary>
+		/// 查找指定类型的所有组合资源, 组合资源指单个文件可能对应多个对象的资源
+		/// 结果也包含孤立资源
+		/// </summary>
+		public static List<T> FindCombinedAssets<T>() where T : UnityObject
+		{
+			var guids = AssetDatabase.FindAssets("t:" + typeof(T).FullName);
+			List<T> results = new List<T>();
+
+			foreach (var guid in guids)
+			{
+				foreach(var asset in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GUIDToAssetPath(guid)))
+				{
+					if (asset is T) results.Add(asset as T);
+				}
+			}
+
+			return results;
 		}
 
 	} // struct EditorKit

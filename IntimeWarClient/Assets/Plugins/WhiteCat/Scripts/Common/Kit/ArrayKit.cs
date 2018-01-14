@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WhiteCat
 {
@@ -11,7 +13,7 @@ namespace WhiteCat
 		/// 设置一维数组中一个区段的元素的值
 		/// </summary>
 		/// <param name="index"> 开始设置值的下标 </param>
-		/// <param name="count"> 连续设置值的元素数, 非正值表示直到数组边界 </param>
+		/// <param name="count"> 连续设置值的元素数, 非正值表示直到数组尾部 </param>
 		public static void SetElementsInArray<T>(
 			T[] array,
 			T value,
@@ -48,6 +50,94 @@ namespace WhiteCat
 				for (int j = beginCol; j < endCol; j++)
 				{
 					array[i,j] = value;
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// 修改列表的元素数量, 新添加的元素是指定的默认值
+		/// </summary>
+		public static void Resize<T>(List<T> list, int newSize, T defaultValue)
+		{
+			if (list.Count != newSize)
+			{
+				if (list.Count > newSize)
+				{
+					list.RemoveRange(newSize, list.Count - newSize);
+				}
+				else
+				{
+					int addCount = newSize - list.Count;
+
+					while (addCount > 0)
+					{
+						list.Add(defaultValue);
+						addCount--;
+					}
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// 修改列表的元素数量, 新添加的元素是指定类型的默认值
+		/// </summary>
+		public static void Resize<T>(List<T> list, int newSize)
+		{
+			Resize<T>(list, newSize, default(T));
+		}
+
+
+		/// <summary>
+		/// 修改列表的元素数量, 新添加的元素是指定的默认值
+		/// </summary>
+		public static void Resize(IList list, int newSize, object defaultValue)
+		{
+			if (list.Count != newSize)
+			{
+				if (list.Count > newSize)
+				{
+					for (int i = list.Count - 1; i >= newSize; i--)
+					{
+						list.RemoveAt(i);
+					}
+				}
+				else
+				{
+					int addCount = newSize - list.Count;
+
+					while (addCount > 0)
+					{
+						list.Add(defaultValue);
+						addCount--;
+					}
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// 对列表中一段元素排序
+		/// </summary>
+		/// <param name="index"> 参与排序元素的开始下标 </param>
+		/// <param name="count"> 参与排序的元素数量, 非正值表示直到列表尾部 </param>
+		public static void Sort<T>(IList<T> list, Comparison<T> compare, int index = 0, int count = 0)
+		{
+			if (count <= 0) count = list.Count;
+			else count += index;
+
+			T temp;
+			for (int i = index; i < count; i++)
+			{
+				for (int j = i+1; j < count; j++)
+				{
+					if (compare(list[i], list[j]) > 0)
+					{
+						temp = list[i];
+						list[i] = list[j];
+						list[j] = temp;
+					}
 				}
 			}
 		}

@@ -18,40 +18,6 @@ namespace WhiteCat.Tween
 
 #if UNITY_EDITOR
 
-		SerializedProperty _fromProperty;
-		SerializedProperty _toProperty;
-
-
-		protected override void Editor_OnEnable()
-		{
-			base.Editor_OnEnable();
-
-			_fromProperty = editor.serializedObject.FindProperty("_from");
-			_toProperty = editor.serializedObject.FindProperty("_to");
-		}
-
-
-		protected override void Editor_OnDisable()
-		{
-			base.Editor_OnDisable();
-			_fromProperty = null;
-			_toProperty = null;
-		}
-
-
-		protected override void DrawExtraFields()
-		{
-			DrawFromToValues();
-        }
-
-
-		protected void DrawFromToValues()
-		{
-			EditorGUILayout.PropertyField(_fromProperty);
-			EditorGUILayout.PropertyField(_toProperty);
-		}
-
-
 		protected void DrawClampedFromToValues(float min, float max)
 		{
 			_fromProperty.floatValue = Mathf.Clamp(EditorGUILayout.FloatField("From", _fromProperty.floatValue), min, max);

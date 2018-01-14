@@ -288,7 +288,7 @@ namespace WhiteCat.Paths
 			for (int i = 1; i <= segments; i++)
 			{
 				current = GetPoint((float)i / segments);
-				closest01 = Kit.ClosestPoint01(last, current, point);
+				closest01 = Kit.ClosestPointOnSegmentFloat(point, last, current);
 				sqrMagnitude = (last + (current - last) * closest01 - point).sqrMagnitude;
 
 				if (sqrMagnitude < bestSqrMagnitude)

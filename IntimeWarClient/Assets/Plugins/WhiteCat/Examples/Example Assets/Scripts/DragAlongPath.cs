@@ -1,35 +1,38 @@
 ﻿using UnityEngine;
 using WhiteCat.Paths;
 
-[RequireComponent(typeof(MoveAlongPathPhysics))]
-public class DragAlongPath : MonoBehaviour
+namespace WhiteCat.Example
 {
-	public float forceScale = 0.1f;
-	public Vector3 gravity = new Vector3(0f, -10f, 0f);
-
-	MoveAlongPathPhysics _move;
-
-
-	void Awake()
+	[RequireComponent(typeof(MoveAlongPathPhysics))]
+	public class DragAlongPath : MonoBehaviour
 	{
-		_move = GetComponent<MoveAlongPathPhysics>();
-	}
+		public float forceScale = 0.1f;
+		public Vector3 gravity = new Vector3(0f, -10f, 0f);
+
+		MoveAlongPathPhysics _move;
 
 
-	void Update()
-	{
-		if (Input.GetMouseButton(0))
+		void Awake()
 		{
-			var point = Camera.main.WorldToScreenPoint(transform.position);
-			_move.force = (Input.mousePosition - point) * forceScale + gravity;
-
-			Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			mouse.z = 0f;
-			Debug.DrawLine(transform.position, mouse, Color.white);
+			_move = GetComponent<MoveAlongPathPhysics>();
 		}
-		else
+
+
+		void Update()
 		{
-			_move.force = gravity;
+			if (Input.GetMouseButton(0))
+			{
+				var point = Camera.main.WorldToScreenPoint(transform.position);
+				_move.force = (Input.mousePosition - point) * forceScale + gravity;
+
+				Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				mouse.z = 0f;
+				Debug.DrawLine(transform.position, mouse, Color.white);
+			}
+			else
+			{
+				_move.force = gravity;
+			}
 		}
 	}
 }

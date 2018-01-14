@@ -237,13 +237,13 @@ namespace WhiteCat.Paths
 
 						// 绘制个性色
 
-						EditorKit.RecordAndSetGUIColor(EditorKit.defaultContentColor);
+						EditorKit.BeginGUIColor(EditorKit.defaultContentColor);
 						GUI.DrawTexture(rect, EditorAssets.bigDiamondTexture);
-						EditorKit.RestoreGUIColor();
+						EditorKit.EndGUIColor();
 
-						EditorKit.RecordAndSetGUIColor(keyframeList.personalizedColor);
+						EditorKit.BeginGUIColor(keyframeList.personalizedColor);
 						GUI.DrawTexture(rect, EditorAssets.smallDiamondTexture);
-						EditorKit.RestoreGUIColor();
+						EditorKit.EndGUIColor();
 
 						// 绘制关键帧列表名
 

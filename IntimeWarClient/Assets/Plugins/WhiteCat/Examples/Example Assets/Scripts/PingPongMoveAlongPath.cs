@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 using WhiteCat.Paths;
 
-[RequireComponent(typeof(MoveAlongPathWithSpeed))]
-public class PingPongMoveAlongPath : MonoBehaviour
+namespace WhiteCat.Example
 {
-	MoveAlongPathWithSpeed move;
-
-
-	void Awake()
+	[RequireComponent(typeof(MoveAlongPathWithSpeed))]
+	public class PingPongMoveAlongPath : MonoBehaviour
 	{
-		move = GetComponent<MoveAlongPathWithSpeed>();
-	}
+		MoveAlongPathWithSpeed move;
 
 
-	void LateUpdate()
-	{
-		if (move.distance <= 0f)
+		void Awake()
 		{
-			move.speed = 1.25f;
+			move = GetComponent<MoveAlongPathWithSpeed>();
 		}
-		else if (move.distance >= move.path.length)
+
+
+		void LateUpdate()
 		{
-			move.speed = -1.25f;
+			if (move.distance <= 0f)
+			{
+				move.speed = 1.25f;
+			}
+			else if (move.distance >= move.path.length)
+			{
+				move.speed = -1.25f;
+			}
 		}
 	}
 }

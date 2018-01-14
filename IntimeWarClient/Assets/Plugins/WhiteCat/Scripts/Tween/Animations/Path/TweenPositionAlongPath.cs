@@ -92,7 +92,12 @@ namespace WhiteCat.Tween
 				Handles.color = _beginColor;
 				Handles.DrawWireDisc(position, direction, handleSize * _discSize);
 				float arrowLength = handleSize * _arrowSize;
+
+#if UNITY_5_6_OR_NEWER
+				Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(_from > _to ? -direction : direction), arrowLength, EventType.Ignore);
+#else
 				Handles.ArrowCap(0, position, Quaternion.LookRotation(_from > _to ? -direction : direction), arrowLength);
+#endif
 
 				_toLocation = path.GetLocationByLength(_to, _toLocation.index);
 				position = path.GetPoint(_toLocation);
@@ -103,7 +108,12 @@ namespace WhiteCat.Tween
 				Handles.DrawWireDisc(position, direction, handleSize * _discSize);
 				arrowLength = handleSize * _arrowSize;
 				if (_from > _to) direction  = - direction;
-                Handles.ArrowCap(0, position - direction * arrowLength, Quaternion.LookRotation(direction), arrowLength);
+
+#if UNITY_5_6_OR_NEWER
+				Handles.ArrowHandleCap(0, position - direction * arrowLength, Quaternion.LookRotation(direction), arrowLength, EventType.Ignore);
+#else
+				Handles.ArrowCap(0, position - direction * arrowLength, Quaternion.LookRotation(direction), arrowLength);
+#endif
 			}
 		}
 
@@ -116,7 +126,7 @@ namespace WhiteCat.Tween
 			}
 			else
 			{
-				DrawFromToValues();
+				base.DrawExtraFields();
 			}
 		}
 

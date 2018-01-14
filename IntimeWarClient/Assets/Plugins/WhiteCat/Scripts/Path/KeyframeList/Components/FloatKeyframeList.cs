@@ -62,9 +62,9 @@ namespace WhiteCat.Paths
 
 		protected override float DrawKeyValue(float value, Rect rect)
 		{
-			EditorKit.RecordAndSetLabelWidth(38f);
+			EditorKit.BeginLabelWidth(38f);
 			value = EditorGUI.FloatField(rect, "Value", value);
-			EditorKit.RestoreLabelWidth();
+			EditorKit.EndLabelWidth();
 			return value;
 		}
 

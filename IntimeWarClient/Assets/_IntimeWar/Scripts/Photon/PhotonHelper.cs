@@ -167,29 +167,19 @@ namespace MechSquad
 			return p.GetUnitTeam();
 		}
 
-		public static void SetVehicleAndPaint(string vehicleID, string paintID)
+		public static void SetClassify(string classifyID)
 		{
-			PhotonNetwork.SetPlayerCustomProperties(new ExitGames.Client.Photon.Hashtable()
+            PhotonNetwork.SetPlayerCustomProperties(new ExitGames.Client.Photon.Hashtable()
 			{
-				{ PlayerPropertyKey.VehicleID, vehicleID },
-				{ PlayerPropertyKey.PaintID, paintID },
+				{ PlayerPropertyKey.ClassifyID, classifyID },
 			});
 		}
-		public static string GetVehicleID(this PhotonPlayer photonPlayer)
+		public static string GetClassify(this PhotonPlayer photonPlayer)
 		{
 			object value;
-			if (photonPlayer.CustomProperties.TryGetValue(PlayerPropertyKey.VehicleID, out value))
+			if (photonPlayer.CustomProperties.TryGetValue(PlayerPropertyKey.ClassifyID, out value))
 				return (string)value;
-
-			throw new Exception("Can not get vehicle id from photon player " + photonPlayer.ID);
-		}
-		public static string GetPaintID(this PhotonPlayer photonPlayer)
-		{
-			object value;
-			if (photonPlayer.CustomProperties.TryGetValue(PlayerPropertyKey.PaintID, out value))
-				return (string)value;
-
-			throw new Exception("Can not get paint id from photon player " + photonPlayer.ID);
+            return "";
 		}
 		public static void SetSeqInTeam(byte seq)
 		{
@@ -297,6 +287,7 @@ namespace MechSquad
 			PhotonNetwork.offlineMode = true;
 			SetUnitTeam(1);
 			SetSeqInTeam(0);
+            SetClassify("Test");
 			//SetInitialParameter(UnitInitialParameter.Create(GlobalCache.GetPlayerStatus()));
 		}
 		

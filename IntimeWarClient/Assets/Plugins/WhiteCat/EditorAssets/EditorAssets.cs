@@ -10,14 +10,12 @@ namespace WhiteCatEditor
 	/// </summary>
 	public class EditorAssets : FolderLocator<EditorAssets>
 	{
-		// 主要用于 Tween
-
 		public static readonly Texture addTexture;
+		public static readonly Texture removeTexture;
+
 		public static readonly Texture refreshTexture;
 		public static readonly Texture bigDiamondTexture;
 		public static readonly Texture smallDiamondTexture;
-
-		// 主要用于 Path
 
 		public static readonly Texture editTexture;
 
@@ -41,6 +39,8 @@ namespace WhiteCatEditor
 		static EditorAssets()
 		{
 			LoadAsset(ref addTexture, "add.png");
+			LoadAsset(ref removeTexture, "remove.png");
+
 			LoadAsset(ref refreshTexture, "refresh.png");
 			LoadAsset(ref bigDiamondTexture, "bigDiamond.png");
 			LoadAsset(ref smallDiamondTexture, "smallDiamond.png");

@@ -62,16 +62,16 @@ namespace WhiteCat.Paths
 					}
 
 					_toolBarContent[0].image = EditorAssets.selectLineTexture;
-					_toolBarContent[0].tooltip = "Select path segment";
+					_toolBarContent[0].tooltip = "Select Curve Tool";
 
 					_toolBarContent[1].image = EditorAssets.selectNodeTexture;
-					_toolBarContent[1].tooltip = "Select control point";
+					_toolBarContent[1].tooltip = "Select Node Tool";
 
 					_toolBarContent[2].image = EditorAssets.moveInPlaneTexture;
-					_toolBarContent[2].tooltip = "Free move control point";
+					_toolBarContent[2].tooltip = "Pan Tool";
 
 					_toolBarContent[3].image = EditorAssets.moveInSpaceTexture;
-					_toolBarContent[3].tooltip = "Move control point";
+					_toolBarContent[3].tooltip = "Move Tool";
 				}
 				return _toolBarContent;
 			}
@@ -143,7 +143,7 @@ namespace WhiteCat.Paths
 		void DoDrawGizmos()
 		{
 			_pathMatrix.SetTRS(transform.position, transform.rotation, new Vector3(_worldScale, _worldScale, _worldScale));
-			EditorKit.RecordAndSetHandlesMatrix(ref _pathMatrix);
+			EditorKit.BeginHandlesMatrix(ref _pathMatrix);
 
 			// 绘制路径
 
@@ -156,7 +156,7 @@ namespace WhiteCat.Paths
 
 			// 绘制箭头
 
-			EditorKit.RecordAndSetHandlesColor(_highlightColor);
+			EditorKit.BeginHandlesColor(_highlightColor);
 
 			Vector3 point = _localSegments[_localSegments.Count - 1].GetPoint(1f);
 			float scale = HandleUtility.GetHandleSize(point) / Mathf.Abs(_worldScale);
@@ -166,9 +166,9 @@ namespace WhiteCat.Paths
 			vector.x = -vector.x;
 			Handles.DrawLine(point, point + rotation * vector);
 
-			EditorKit.RestoreHandlesColor();
+			EditorKit.EndHandlesColor();
 
-			EditorKit.RestoreHandlesMatrix();
+			EditorKit.EndHandlesMatrix();
 		}
 
 
@@ -197,9 +197,9 @@ namespace WhiteCat.Paths
 			_rect.width = _editButtonWidth;
 
             EditorGUI.BeginChangeCheck();
-			EditorKit.RecordAndSetGUIContentColor(EditorKit.defaultContentColor);
+			EditorKit.BeginGUIContentColor(EditorKit.defaultContentColor);
 			bool edit = GUI.Toggle(_rect, _currentEditing == this, EditorAssets.editTexture, EditorKit.buttonStyle);
-            EditorKit.RestoreGUIContentColor();
+            EditorKit.EndGUIContentColor();
 			if (EditorGUI.EndChangeCheck())
             {
 				SetCurrentEditing(edit ? this : null);

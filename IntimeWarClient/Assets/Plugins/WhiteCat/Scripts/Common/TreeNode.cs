@@ -193,7 +193,7 @@ namespace WhiteCat
 		/// 作为第一个子节点附着到一个父节点下
 		/// 注意: 如果 parent 存在于当前节点为根的子树中, 那么此操作的结果是未定义的
 		/// </summary>
-		public void AttachFirst(TreeNode<T> parent)
+		public void AttachAsFirst(TreeNode<T> parent)
 		{
 			InternalValidateAttaching(parent);
 
@@ -213,7 +213,7 @@ namespace WhiteCat
 		/// 作为最后一个子节点附着到一个父节点下
 		/// 注意: 如果 parent 存在于当前节点为根的子树中, 那么此操作的结果是未定义的
 		/// </summary>
-		public void AttachLast(TreeNode<T> parent)
+		public void AttachAsLast(TreeNode<T> parent)
 		{
 			InternalValidateAttaching(parent);
 

@@ -2,13 +2,14 @@
 //using System.IO;
 //using System.Text;
 //using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace WhiteCat
 {
-	/// <summary>
-	/// IO 相关的方法
-	/// </summary>
+	// <summary>
+	// IO 相关的方法
+	// </summary>
 	public partial struct Kit
 	{
 		///// <summary>
@@ -58,40 +59,40 @@ namespace WhiteCat
 		//}
 
 
-		/// <summary> 对字节数组加密或解密 </summary>
-		/// <param name="key"> 密钥. 同一个密钥使用偶数次可以消除这个密钥对数据的影响 </param>
-		/// <param name="array"> 执行加密或解密的数组 </param>
-		/// <param name="index"> 数组开始加密或解密的下标 </param>
-		/// <param name="count"> 需要加密或解密的字节总数, 非正值表示直到数组尾部 </param>
-		/// <returns> 校验码. 如果同一个密钥在两次处理数据之间其他密钥处理次数都是偶数, 那么这两次返回的校验码是相同的. 校验码可以用来判断数据是否被修改 </returns>
-		public static int EncryptDecrypt(uint key, byte[] array, int index = 0, int count = 0)
-		{
-			Random random = new Random(key);
+		///// <summary> 对字节数组加密或解密 </summary>
+		///// <param name="key"> 密钥. 同一个密钥使用偶数次可以消除这个密钥对数据的影响 </param>
+		///// <param name="array"> 执行加密或解密的数组 </param>
+		///// <param name="index"> 数组开始加密或解密的下标 </param>
+		///// <param name="count"> 需要加密或解密的字节总数, 非正值表示直到数组尾部 </param>
+		///// <returns> 校验码. 如果同一个密钥在两次处理数据之间其他密钥处理次数都是偶数, 那么这两次返回的校验码是相同的. 校验码可以用来判断数据是否被修改 </returns>
+		//public static int EncryptDecrypt(uint key, byte[] array, int index = 0, int count = 0)
+		//{
+		//	Random random = new Random(key);
 
-			byte byte0 = (byte)random.Range(0, 256);
-			byte byte1 = (byte)random.Range(0, 256);
-			byte byte2 = byte0;
-			byte byte3 = byte1;
+		//	byte byte0 = (byte)random.Range(0, 256);
+		//	byte byte1 = (byte)random.Range(0, 256);
+		//	byte byte2 = byte0;
+		//	byte byte3 = byte1;
 
-			if (count > 0) count += index;
-			else count = array.Length;
+		//	if (count > 0) count += index;
+		//	else count = array.Length;
 
-			for (int i = index; i < count; i++)
-			{
-				byte0 += array[i];
-				byte1 -= array[i];
+		//	for (int i = index; i < count; i++)
+		//	{
+		//		byte0 += array[i];
+		//		byte1 -= array[i];
 
-				array[i] ^= (byte)random.Range(0, 256);
+		//		array[i] ^= (byte)random.Range(0, 256);
 
-				byte2 += array[i];
-				byte3 -= array[i];
-			}
+		//		byte2 += array[i];
+		//		byte3 -= array[i];
+		//	}
 
-			if (byte0 > byte2) Swap(ref byte0, ref byte2);
-			if (byte1 < byte3) Swap(ref byte1, ref byte3);
+		//	if (byte0 > byte2) Swap(ref byte0, ref byte2);
+		//	if (byte1 < byte3) Swap(ref byte1, ref byte3);
 
-			return (byte0 << 24) | (byte1 << 16) | (byte2 << 8) | (int)byte3;
-		}
+		//	return (byte0 << 24) | (byte1 << 16) | (byte2 << 8) | (int)byte3;
+		//}
 
 
 		///// <summary>
@@ -189,14 +190,53 @@ namespace WhiteCat
 
 
 		/// <summary>
+		/// 将 Vector2 值写入字节数组
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 8 </param>
+		/// <param name="value"> 被写入的值 </param>
+		public static void WriteVector2To(IList<byte> buffer, ref int offset, Vector2 value)
+		{
+			Union8 union = new Union8();
+
+			union.floatValue = value.x;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.y;
+			union.WriteFloatTo(buffer, ref offset);
+		}
+
+
+		/// <summary>
+		/// 从字节数组里读取 Vector2
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 8 </param>
+		/// <returns> 读取的 Vector2 值 </returns>
+		public static Vector2 ReadVector2From(IList<byte> buffer, ref int offset)
+		{
+			var value = new Vector2();
+			Union8 union = new Union8();
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.x = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.y = union.floatValue;
+
+			return value;
+		}
+
+
+		/// <summary>
 		/// 将 Vector3 值写入字节数组
 		/// </summary>
 		/// <param name="buffer"> 字节数组 </param>
 		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 12 </param>
 		/// <param name="value"> 被写入的值 </param>
-		public static void WriteToBuffer(byte[] buffer, ref int offset, Vector3 value)
+		public static void WriteVector3To(IList<byte> buffer, ref int offset, Vector3 value)
 		{
-			UnionValue union = new UnionValue();
+			Union8 union = new Union8();
 
 			union.floatValue = value.x;
             union.WriteFloatTo(buffer, ref offset);
@@ -215,10 +255,10 @@ namespace WhiteCat
 		/// <param name="buffer"> 字节数组 </param>
 		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 12 </param>
 		/// <returns> 读取的 Vector3 值 </returns>
-		public static Vector3 ReadVector3FromBuffer(byte[] buffer, ref int offset)
+		public static Vector3 ReadVector3From(IList<byte> buffer, ref int offset)
 		{
-			Vector3 value = new Vector3();
-			UnionValue union = new UnionValue();
+			var value = new Vector3();
+			Union8 union = new Union8();
 
 			union.ReadFloatFrom(buffer, ref offset);
 			value.x = union.floatValue;
@@ -234,14 +274,65 @@ namespace WhiteCat
 
 
 		/// <summary>
+		/// 将 Vector4 值写入字节数组
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 16 </param>
+		/// <param name="value"> 被写入的值 </param>
+		public static void WriteVector4To(IList<byte> buffer, ref int offset, Vector4 value)
+		{
+			Union8 union = new Union8();
+
+			union.floatValue = value.x;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.y;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.z;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.w;
+			union.WriteFloatTo(buffer, ref offset);
+		}
+
+
+		/// <summary>
+		/// 从字节数组里读取 Vector4
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 16 </param>
+		/// <returns> 读取的 Vector4 值 </returns>
+		public static Vector4 ReadVector4From(IList<byte> buffer, ref int offset)
+		{
+			var value = new Vector4();
+			Union8 union = new Union8();
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.x = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.y = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.z = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.w = union.floatValue;
+
+			return value;
+		}
+
+
+		/// <summary>
 		/// 将 Quaternion 值写入字节数组
 		/// </summary>
 		/// <param name="buffer"> 字节数组 </param>
 		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 16 </param>
 		/// <param name="value"> 被写入的值 </param>
-		public static void WriteToBuffer(byte[] buffer, ref int offset, Quaternion value)
+		public static void WriteQuaternionTo(IList<byte> buffer, ref int offset, Quaternion value)
 		{
-			UnionValue union = new UnionValue();
+			Union8 union = new Union8();
 
 			union.floatValue = value.x;
 			union.WriteFloatTo(buffer, ref offset);
@@ -263,10 +354,10 @@ namespace WhiteCat
 		/// <param name="buffer"> 字节数组 </param>
 		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 16 </param>
 		/// <returns> 读取的 Quaternion 值 </returns>
-		public static Quaternion ReadQuaternionFromBuffer(byte[] buffer, ref int offset)
+		public static Quaternion ReadQuaternionFrom(IList<byte> buffer, ref int offset)
 		{
-			Quaternion value = new Quaternion();
-			UnionValue union = new UnionValue();
+			var value = new Quaternion();
+			Union8 union = new Union8();
 
 			union.ReadFloatFrom(buffer, ref offset);
 			value.x = union.floatValue;
@@ -281,6 +372,178 @@ namespace WhiteCat
 			value.w = union.floatValue;
 
 			return value;
+		}
+
+
+		/// <summary>
+		/// 将 Color 值写入字节数组
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 16 </param>
+		/// <param name="value"> 被写入的值 </param>
+		public static void WriteColorTo(IList<byte> buffer, ref int offset, Color value)
+		{
+			Union8 union = new Union8();
+
+			union.floatValue = value.r;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.g;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.b;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.a;
+			union.WriteFloatTo(buffer, ref offset);
+		}
+
+
+		/// <summary>
+		/// 从字节数组里读取 Color
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 16 </param>
+		/// <returns> 读取的 Color 值 </returns>
+		public static Color ReadColorFrom(IList<byte> buffer, ref int offset)
+		{
+			var value = new Color();
+			Union8 union = new Union8();
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.r = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.g = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.b = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.a = union.floatValue;
+
+			return value;
+		}
+
+
+		/// <summary>
+		/// 将 Rect 值写入字节数组
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 16 </param>
+		/// <param name="value"> 被写入的值 </param>
+		public static void WriteRectTo(IList<byte> buffer, ref int offset, Rect value)
+		{
+			Union8 union = new Union8();
+
+			union.floatValue = value.x;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.y;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.width;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = value.height;
+			union.WriteFloatTo(buffer, ref offset);
+		}
+
+
+		/// <summary>
+		/// 从字节数组里读取 Rect
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 16 </param>
+		/// <returns> 读取的 Rect 值 </returns>
+		public static Rect ReadRectFrom(IList<byte> buffer, ref int offset)
+		{
+			var value = new Rect();
+			Union8 union = new Union8();
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.x = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.y = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.width = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			value.height = union.floatValue;
+
+			return value;
+		}
+
+
+		/// <summary>
+		/// 将 Bounds 值写入字节数组
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 写入字节数组的开始下标, 操作完成后增加 24 </param>
+		/// <param name="value"> 被写入的值 </param>
+		public static void WriteBoundsTo(IList<byte> buffer, ref int offset, Bounds value)
+		{
+			Union8 union = new Union8();
+
+			var v3 = value.center;
+
+			union.floatValue = v3.x;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = v3.y;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = v3.z;
+			union.WriteFloatTo(buffer, ref offset);
+
+			v3 = value.size;
+
+			union.floatValue = v3.x;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = v3.y;
+			union.WriteFloatTo(buffer, ref offset);
+
+			union.floatValue = v3.z;
+			union.WriteFloatTo(buffer, ref offset);
+		}
+
+
+		/// <summary>
+		/// 从字节数组里读取 Bounds
+		/// </summary>
+		/// <param name="buffer"> 字节数组 </param>
+		/// <param name="offset"> 从字节数组里开始读取的下标, 操作完成后增加 24 </param>
+		/// <returns> 读取的 Bounds 值 </returns>
+		public static Bounds ReadBoundsFrom(IList<byte> buffer, ref int offset)
+		{
+			Union8 union = new Union8();
+
+			var center = new Vector3();
+
+			union.ReadFloatFrom(buffer, ref offset);
+			center.x = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			center.y = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			center.z = union.floatValue;
+
+			var size = new Vector3();
+
+			union.ReadFloatFrom(buffer, ref offset);
+			size.x = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			size.y = union.floatValue;
+
+			union.ReadFloatFrom(buffer, ref offset);
+			size.z = union.floatValue;
+
+			return new Bounds(center, size);
 		}
 
 	} // struct Kit

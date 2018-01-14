@@ -32,7 +32,11 @@ namespace WhiteCat.Tween
 			set
 			{
 				var material = _property.material;
-				if (material) material.SetTextureScale(_property.propertyName, value);
+				if (material)
+				{
+					material.SetTextureScale(_property.propertyName, value);
+					_property.ValidateDynamicGI();
+				}
 			}
 		}
 

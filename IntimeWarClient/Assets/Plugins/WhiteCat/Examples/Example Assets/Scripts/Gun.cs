@@ -2,63 +2,66 @@
 using WhiteCat;
 using WhiteCat.FSM;
 
-public class Gun : BaseStateMachine
+namespace WhiteCat.Example
 {
-	public Transform muzzle;
-	public float bulletSpeed = 100f;
-	public int bulletGroupCount = 6;
-	public float normalIntervalTime = 0.1f;
-	public float groupIntervalTime = 0.3f;
-
-	GameObjectPool bulletPool;
-
-
-	void Start()
+	public class Gun : BaseStateMachine
 	{
-		bulletPool = GetComponent<GameObjectPool>();
+		public Transform muzzle;
+		public float bulletSpeed = 100f;
+		public int bulletGroupCount = 6;
+		public float normalIntervalTime = 0.1f;
+		public float groupIntervalTime = 0.3f;
 
-		var repeatingShoot = new SerializableState();
-		float shootIntervalTime = 0f;
-		int bulletCount = 0;
+		GameObjectPool bulletPool;
 
-		repeatingShoot.onEnter += () =>
+
+		void Start()
 		{
-			Shoot();
-			bulletCount++;
-			if (bulletCount == bulletGroupCount)
-			{
-				shootIntervalTime = groupIntervalTime;
-				bulletCount = 0;
-			}
-			else
-			{
-				shootIntervalTime = normalIntervalTime;
-			}
-		};
+			bulletPool = GetComponent<GameObjectPool>();
 
-		repeatingShoot.onUpdate += delta =>
+			var repeatingShoot = new SerializableState();
+			float shootIntervalTime = 0f;
+			int bulletCount = 0;
+
+			repeatingShoot.onEnter += () =>
+			{
+				Shoot();
+				bulletCount++;
+				if (bulletCount == bulletGroupCount)
+				{
+					shootIntervalTime = groupIntervalTime;
+					bulletCount = 0;
+				}
+				else
+				{
+					shootIntervalTime = normalIntervalTime;
+				}
+			};
+
+			repeatingShoot.onUpdate += delta =>
+			{
+				if (currentStateTime > shootIntervalTime)
+				{
+					currentState = repeatingShoot;
+				}
+			};
+
+			currentState = repeatingShoot;
+		}
+
+
+		public void Shoot()
 		{
-			if (currentStateTime > shootIntervalTime)
-			{
-				currentState = repeatingShoot;
-			}
-		};
-
-		currentState = repeatingShoot;
-	}
+			var bullet = bulletPool.TakeOut().transform;
+			bullet.position = muzzle.position;
+			bullet.rotation = muzzle.rotation;
+			bullet.GetComponent<Rigidbody>().velocity = muzzle.forward * bulletSpeed;
+		}
 
 
-	public void Shoot()
-	{
-		var bullet = bulletPool.TakeOut().transform;
-		bullet.position = muzzle.position;
-		bullet.rotation = muzzle.rotation;
-		bullet.GetComponent<Rigidbody>().velocity = muzzle.forward * bulletSpeed;
-	}
-
-
-	void FixedUpdate()
-	{
-		UpdateCurrentState(Time.deltaTime);
+		void FixedUpdate()
+		{
+			OnUpdate(Time.deltaTime);
+		}
 	}
 }

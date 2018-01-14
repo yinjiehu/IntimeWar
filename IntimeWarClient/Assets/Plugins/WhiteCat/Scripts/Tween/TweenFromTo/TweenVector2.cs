@@ -34,6 +34,15 @@ namespace WhiteCat.Tween
 		SerializedProperty[] _toProperties;
 
 
+		protected static SerializedProperty[] GetVector2Properties(SerializedProperty vector2Property)
+		{
+			SerializedProperty[] properties = new SerializedProperty[2];
+			properties[0] = vector2Property.FindPropertyRelative("x");
+			properties[1] = vector2Property.FindPropertyRelative("y");
+			return properties;
+		}
+
+
 		protected override void Editor_OnEnable()
 		{
 			base.Editor_OnEnable();
@@ -42,8 +51,8 @@ namespace WhiteCat.Tween
 			_toggleProperties[0] = editor.serializedObject.FindProperty("toggleX");
 			_toggleProperties[1] = editor.serializedObject.FindProperty("toggleY");
 
-			_fromProperties = GetVector2Properties(editor.serializedObject.FindProperty("_from"));
-			_toProperties = GetVector2Properties(editor.serializedObject.FindProperty("_to"));
+			_fromProperties = GetVector2Properties(_fromProperty);
+			_toProperties = GetVector2Properties(_toProperty);
 		}
 
 

@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using WhiteCat.Tween;
 
-public class CustomTweenSize : TweenFloat
+namespace WhiteCat.Example
 {
-	public override float current
+	public class CustomTweenSize : TweenFloat
 	{
-		get { return transform.localScale.x; }
-		set { transform.localScale = new Vector3(value, value, value); }
+		public override float current
+		{
+			get { return transform.localScale.x; }
+			set { transform.localScale = new Vector3(value, value, value); }
+		}
 	}
 }

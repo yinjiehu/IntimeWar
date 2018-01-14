@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 using WhiteCat.Tween;
 
-public class TweenTest : Tweener.TweenAnimation
+namespace WhiteCat.Example
 {
-	Vector3 position;
-
-
-	public override void OnRecord()
+	public class TweenTest : Tweener.TweenAnimation
 	{
-		position = transform.position;
-	}
+		Vector3 position;
 
 
-	public override void OnRestore()
-	{
-		transform.position = position;
-	}
+		public override void OnRecord()
+		{
+			position = transform.position;
+		}
 
 
-	public override void OnTween(float factor)
-	{
-		transform.position = new Vector3(0f, factor * 5f, 0f);
+		public override void OnRestore()
+		{
+			transform.position = position;
+		}
+
+
+		public override void OnTween(float factor)
+		{
+			transform.position = new Vector3(0f, factor * 5f, 0f);
+		}
 	}
 }

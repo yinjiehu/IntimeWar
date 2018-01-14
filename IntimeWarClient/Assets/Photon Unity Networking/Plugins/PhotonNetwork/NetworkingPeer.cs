@@ -2810,6 +2810,11 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
                 gameObject.SendMessage(methodName, callParameter, SendMessageOptions.DontRequireReceiver);
             }
         }
+
+        if(Application.isPlaying)
+        {
+            MechSquad.RegistedPlayMakerFsmForPhotonEvent.Instance.SendPhotonEvent(methodName, parameters);
+        }
     }
 
     // PHOTONVIEW/RPC related
