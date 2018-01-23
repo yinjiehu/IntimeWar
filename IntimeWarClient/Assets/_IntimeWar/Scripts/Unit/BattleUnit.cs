@@ -133,6 +133,7 @@ namespace MechSquad.Battle
 			{
 				if (_view != null)
 				{
+                    Debug.Log("BattleUnit seqNo:" + _view.viewID + "    CreatorActorNr:" + _view.CreatorActorNr + " viewField:" + _view);
 					_unitInfo.SeqNo = _view.viewID;
 					_unitInfo.ActorID = _view.CreatorActorNr;
 				}

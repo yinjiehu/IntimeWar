@@ -7,17 +7,23 @@ namespace MechSquad.RealTime
 	public class InRoom : FsmStateAction
 	{
         public FsmEvent Next;
+        float _elapsedTime;
 
 		public override void OnEnter()
 		{
 			base.OnEnter();
-            
-		}
+            _elapsedTime = 0;
+        }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
             if(PhotonNetwork.room.PlayerCount >=2)
+            {
+                Fsm.Event(Next);
+            }
+            _elapsedTime += Time.deltaTime;
+            if(_elapsedTime >= 10)
             {
                 Fsm.Event(Next);
             }

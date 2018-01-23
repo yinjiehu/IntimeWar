@@ -70,22 +70,20 @@ namespace  MechSquad.Battle
 				var position = _spawnPosition.RandomMember().position + positionVar;
 				var rotation = Quaternion.Euler(0, -randomAngle, 0);
 
-
-				PhotonCustomEventSender.RaiseInstantiateUnitEvent(
-					this.GetPhotonView(), "OnInstantiateUnit", new int[] { viewID }, position, rotation);
+				SpawnerManager.Instance.SendSpawnEvent(Name, "OnInstantiateUnit", viewID, position, rotation);
 			}
 		}
 
 		[PunRPC]
-		void OnInstantiateUnit(int[] viewID, Vector3 position, Quaternion rotation)
+		void OnInstantiateUnit(int viewID, Vector3 position, Quaternion rotation)
 		{
-			_spawnedUnits.Add(viewID[0]);
+			_spawnedUnits.Add(viewID);
 
 			var p = Instantiate(_prefab);
 			p.name = _prefab.name;
 
 			var view = p.GetComponent<PhotonView>();
-			view.viewID = viewID[0];
+			view.viewID = viewID;
 
 			p.transform.position = Vector3.zero;
 			p.transform.rotation = Quaternion.identity;
@@ -101,6 +99,7 @@ namespace  MechSquad.Battle
 			});
 
 			UnitManager.Instance.AddUnit(p);
+			
 
 			if (PhotonNetwork.isMasterClient && !string.IsNullOrEmpty(_afterFsmEvent))
 			{

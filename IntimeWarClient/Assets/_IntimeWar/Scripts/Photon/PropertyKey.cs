@@ -31,6 +31,8 @@ namespace MechSquad
         public const string SelectVehicleCountDownSeconds = "SelectVehicleCountDownSeconds";
         public const string BattlePrepairCountDownSeconds = "BattlePrepairCountDownSeconds";
         public const string InBattleCountDownSeconds = "InBattleCountDownSeconds";
+        public const string UnitSyncPrefix = "UnitSyncPrefix";
+        public const string UnitSpawnPrefix = "UnitSpawnPrefix";
     }
 
     public static class PhotonParameterCode

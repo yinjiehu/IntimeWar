@@ -44,39 +44,27 @@ namespace MechSquad.Battle
 			for (var i = 0; i < units.Length; i++)
 			{
 				var u = units[i];
-				var unitView = u.GetComponent<PhotonView>();
-				if (unitView != null)
+				u.Init(new BattleUnit.UnitCreateArgs()
 				{
-					if (PhotonNetwork.isMasterClient)
-					{
-						PhotonCustomEventSender.RaiseInstantiateUnitEvent(
-							this.GetPhotonView(), "OnPhotonInstantiate", new int[] { unitView.viewID });
-					}
-				}
-				else
-				{
-					units[i].Init(new BattleUnit.UnitCreateArgs()
-					{
-						Team = Team.None,
-					});
-				}
+					Team = Team.None,
+				});
 			}
 		}
 
-		[PunRPC]
-		void OnPhotonInstantiate(int[] viewIds)
-		{
-			var view = _photonViews.Find(v => v.viewID == viewIds[0]);
-			if (view == null)
-			{
-				Debug.LogErrorFormat("can not find view id {0}", viewIds[0]);
-				return;
-			}
+		//[PunRPC]
+		//void OnPhotonInstantiate(int[] viewIds)
+		//{
+		//	var view = _photonViews.Find(v => v.viewID == viewIds[0]);
+		//	if (view == null)
+		//	{
+		//		Debug.LogErrorFormat("can not find view id {0}", viewIds[0]);
+		//		return;
+		//	}
 
-			view.GetComponent<BattleUnit>().Init(new BattleUnit.UnitCreateArgs()
-			{
-				Team = Team.None,
-			});
-		}
+		//	view.GetComponent<BattleUnit>().Init(new BattleUnit.UnitCreateArgs()
+		//	{
+		//		Team = Team.None,
+		//	});
+		//}
 	}
 }

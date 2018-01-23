@@ -287,7 +287,7 @@ namespace MechSquad
 			PhotonNetwork.offlineMode = true;
 			SetUnitTeam(1);
 			SetSeqInTeam(0);
-            SetClassify("Test");
+            SetClassify("Player");
 			//SetInitialParameter(UnitInitialParameter.Create(GlobalCache.GetPlayerStatus()));
 		}
 		

@@ -169,7 +169,8 @@ public class PhotonView : Photon.MonoBehaviour
             // PhotonNetwork.networkingPeer.RemovePhotonView(this, true);
 
             this.ownerId = value / PhotonNetwork.MAX_VIEW_IDS;
-
+            if (value < 0)
+                ownerId = ownerId - 1;
             this.viewIdField = value;
 
             if (viewMustRegister)
@@ -223,7 +224,7 @@ public class PhotonView : Photon.MonoBehaviour
 
     public int CreatorActorNr
     {
-        get { return this.viewIdField / PhotonNetwork.MAX_VIEW_IDS; }
+        get { return this.viewIdField / PhotonNetwork.MAX_VIEW_IDS - (viewIdField < 0 ? 1 : 0); }
     }
 
     /// <summary>

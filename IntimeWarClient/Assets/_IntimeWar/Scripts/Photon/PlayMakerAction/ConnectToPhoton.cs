@@ -30,7 +30,7 @@ namespace MechSquad.RealTime
 				return;
             }
 
-			var serverAddress = "192.168.1.3";
+			var serverAddress = "192.168.1.9";
 			Debug.LogFormat("connect to photon server {0} {1}", serverAddress, ServerPort.Value);
 
             PhotonNetwork.sendRate = 10;

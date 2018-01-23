@@ -6,83 +6,102 @@ using HutongGames.PlayMaker;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace  MechSquad.Battle
+namespace MechSquad.Battle
 {
-	public class PlayerSpawner : MonoBehaviour, ISpawner
-	{
-		public string Name { get { return name; } }
+    [RequireComponent(typeof(PhotonView))]
+    public class PlayerSpawner : MonoBehaviour, ISpawner
+    {
+        public string Name { get { return name; } }
 
-		[SerializeField]
-		List<BattleUnit> _playerPrefab;
-		[SerializeField]
-		Transform _spawnPositionA;
-		[SerializeField]
-		Transform _spawnPositionB;
+        [SerializeField]
+        List<BattleUnit> _playerPrefab;
+        [SerializeField]
+        int _level;
+        [SerializeField]
+        Transform[] _spawnPositionsA;
 
-		[SerializeField]
-		string _afterFsmEvent;
+        [SerializeField]
+        Transform[] _spawnPositionsB;
 
-		public void SpawnUnit()
-		{
-			if (PhotonNetwork.offlineMode)
-				PhotonHelper.CreateOfflinePhotonPlayerProperties();
 
-			var seqNo = PhotonNetwork.playerList.Where(p => p.GetTeam() == PhotonNetwork.player.GetTeam()).OrderBy(p => p.ID).ToList().FindIndex(p => p.ID == PhotonNetwork.player.ID);
+        [SerializeField]
+        float _randomDistance = 50;
 
-			var team = PhotonNetwork.player.GetUnitTeam();
-			Vector3 centerPosition = team == Team.A ? _spawnPositionA.position : _spawnPositionB.position;
-            
-			var randomAngle = UnityEngine.Random.Range(0, 360f);
-			var rotation = Quaternion.Euler(0, -randomAngle, 0);
+        [SerializeField]
+        string _afterFsmEvent;
+        //public BattleUnit _spawnedUnit;
 
-            PhotonNetwork.RPC(GetComponent<PhotonView>(), "OnInstantiateUnit", PhotonTargets.All, true);
+        public void SpawnUnit()
+        {
+            if (PhotonNetwork.offlineMode)
+                PhotonHelper.CreateOfflinePhotonPlayerProperties();
+
+            //var seqNo = PhotonNetwork.playerList.Where(p => p.GetTeam() == PhotonNetwork.player.GetTeam()).OrderBy(p => p.ID).ToList().FindIndex(p => p.ID == PhotonNetwork.player.ID);
+
+            var team = PhotonNetwork.player.GetUnitTeam();
+
+            var players = PhotonNetwork.playerList.Where(p => p.GetUnitTeam() == team).OrderBy(p => p.NickName).ToList();
+            var index = players.FindIndex(p => p.NickName == PhotonNetwork.player.NickName);
+
+            Transform pos = team == Team.A ? _spawnPositionsA[index] : _spawnPositionsB[index];
 
             var viewID = PhotonNetwork.AllocateViewID();
-            PhotonCustomEventSender.RaiseInstantiateUnitEvent(
-				this.GetPhotonView(), "OnInstantiateUnit", new int[] { viewID }, PhotonNetwork.player.GetUnitTeam(), PhotonNetwork.player.GetClassify(), centerPosition);
-		}
+            SpawnerManager.Instance.SendSpawnEvent(Name, "OnInstantiateUnit", viewID, PhotonNetwork.player.GetUnitTeam(), PhotonNetwork.player.GetClassify(), pos.position);
+        }
 
-		[PunRPC]
-		void OnInstantiateUnit(int[] viewID, byte team, string classifyID, Vector3 position)
-		{
-			var actorID = viewID[0] / PhotonNetwork.MAX_VIEW_IDS;
-			var photonPlayer = PhotonHelper.GetPlayer(actorID);
+        [PunRPC]
+        void OnInstantiateUnit(int viewID, byte team, string classify, Vector3 position)
+        {
+            var actorID = viewID < 0 ? -1 : viewID / PhotonNetwork.MAX_VIEW_IDS;
+            var photonPlayer = PhotonHelper.GetPlayer(actorID);
+            if (photonPlayer == null)
+                return;
 
-			var prefab = _playerPrefab.Find(temp => temp.name == classifyID);
-			if (prefab == null)
-			{
-				return;
-			}
-
-			var p = Instantiate(prefab);
-			p.name = classifyID;
-
-			var view = p.GetComponent<PhotonView>();
-			view.viewID = viewID[0];
-
-			p.transform.position = Vector3.zero;
-			p.transform.rotation = Quaternion.identity;
-			p.Model.position = position;
-			p.Model.rotation = Quaternion.identity;
-
-			p.Init(new BattleUnit.UnitCreateArgs()
-			{
-				Team = team,
-				Tag = "Player",
-				InitialParameter = PhotonHelper.GetInitialParameter(photonPlayer)
-			});
-			
-			UnitManager.Instance.AddPlayerUnit(p);
-
-			if (p.IsPlayerForThisClient)
-			{
-				Camera.main.GetComponent<Deftly.DeftlyCamera>().ApplyTargetPositionImmidiatly();
-
-				UnitManager.Instance.SetThisClientPlayerUnit(p);
-
-                p.Fsm.SendEvent(_afterFsmEvent);
+            var prefab = _playerPrefab.Find(temp => temp.name == classify);
+            if (prefab == null)
+            {
+                Debug.LogFormat("Can not find vehicle prefab for classify {0}", classify);
+                return;
             }
 
-		}
-	}
+            var p = Instantiate(prefab);
+            p.name = classify;
+
+            var view = p.GetComponent<PhotonView>();
+            view.viewID = viewID;
+
+            p.transform.position = Vector3.zero;
+            p.transform.rotation = Quaternion.identity;
+            p.Model.position = position;
+            p.Model.rotation = Quaternion.identity;
+
+            p.Init(new BattleUnit.UnitCreateArgs()
+            {
+                Team = team,
+                Level = _level,
+                Tag = "Player",
+                InitialParameter = PhotonHelper.GetInitialParameter(photonPlayer)
+            });
+
+            UnitManager.Instance.AddPlayerUnit(p);
+            Debug.Log(string.Format("return _view != null value:{0} && !_view.isSceneView value:{1} &&" +
+                " _view.CreatorActorNr == PhotonNetwork.player.ID value:{2}", p.GetComponent<PhotonView>() != null, !p.GetComponent<PhotonView>().isSceneView, p.GetComponent<PhotonView>().CreatorActorNr == PhotonNetwork.player.ID));
+            Debug.Log("CreatorActorNr:" + p.GetPhotonView().CreatorActorNr);
+            Debug.Log("ViewID:" + p.GetPhotonView().viewID + "          " + PhotonNetwork.player.ID);
+            Debug.Log(p.GetPhotonView().viewID/1000);
+            if (p.IsPlayerForThisClient)
+            {
+                var camera = Camera.main.GetComponent<FollowCamera>();
+                camera.ClearTargets();
+                camera.AddTarget(p.Model);
+
+                UnitManager.Instance.SetThisClientPlayerUnit(p);
+
+                if (!string.IsNullOrEmpty(_afterFsmEvent))
+                {
+                    p.Fsm.SendEvent(_afterFsmEvent);
+                }
+            }
+        }
+    }
 }

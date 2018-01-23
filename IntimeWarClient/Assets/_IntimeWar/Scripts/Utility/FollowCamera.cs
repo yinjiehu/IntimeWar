@@ -6,19 +6,22 @@ public class FollowCamera : MonoBehaviour {
 
     [SerializeField]
     SpriteRenderer _map;
+    [SerializeField]
+    float _trackSpeed = 3;
 
     public List<Transform> Targets;
 
-    float _speed = 3f;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public void ClearTargets()
+    {
+        Targets.Clear();
+    }
+
+    public void AddTarget(Transform tf)
+    {
+        Targets.Add(tf);
+    }
+
 
     Transform _target;
 
@@ -59,8 +62,9 @@ public class FollowCamera : MonoBehaviour {
         }
 
         //CorrectAveragePositionByMapArea();
-
-        return averagePos / vectorArray.Length;
+        if(vectorArray.Length > 0)
+            return averagePos / vectorArray.Length;
+        return Vector3.zero;
     }
 
     void LateUpdate()
@@ -68,27 +72,14 @@ public class FollowCamera : MonoBehaviour {
 
         var averagePos = GetAveragePos();
         averagePos.z = -10;
-        Vector3 targetPosition = Vector3.Lerp(transform.position, averagePos, Time.deltaTime * _speed);
+        Vector3 targetPosition = Vector3.Lerp(transform.position, averagePos, Time.deltaTime * _trackSpeed);
         float width = (MapSize.x - CameraSize.x) / 2f;
         float height = (MapSize.y - CameraSize.y) / 2f;
-        if (averagePos.x > -width && averagePos.x < width)
-        {
-            targetPosition.x = averagePos.x;
-        }
-        else
-        {
-            targetPosition.x = transform.position.x;
-        }
-        if (averagePos.y > -height && averagePos.y < height)
-        {
-            targetPosition.y = averagePos.y;
-        }
-        else
-        {
-            targetPosition.y = transform.position.y;
-        }
+
+        targetPosition.x = Mathf.Clamp(targetPosition.x, -width, width);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, -height, height);
         targetPosition.z = averagePos.z;
-        transform.position = targetPosition;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * _trackSpeed); ;
     }
 
     Vector2 CameraSize
