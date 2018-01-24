@@ -4,7 +4,7 @@ using System.Collections;
 using System;
 using HutongGames.PlayMaker;
 
-namespace  MechSquad.Battle
+namespace  IntimeWar.Battle
 {
 	public class SpawnUtility
 	{

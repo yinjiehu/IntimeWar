@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace MechSquad
+namespace Haruna.Utility
 {
 	public static class Util
 	{

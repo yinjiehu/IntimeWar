@@ -6,7 +6,7 @@ using YJH.Unit;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace MechSquad.Battle
+namespace IntimeWar.Battle
 {
     [RequireComponent(typeof(PhotonView))]
     public class PlayerSpawner : MonoBehaviour, ISpawner
@@ -84,11 +84,6 @@ namespace MechSquad.Battle
             });
 
             UnitManager.Instance.AddPlayerUnit(p);
-            Debug.Log(string.Format("return _view != null value:{0} && !_view.isSceneView value:{1} &&" +
-                " _view.CreatorActorNr == PhotonNetwork.player.ID value:{2}", p.GetComponent<PhotonView>() != null, !p.GetComponent<PhotonView>().isSceneView, p.GetComponent<PhotonView>().CreatorActorNr == PhotonNetwork.player.ID));
-            Debug.Log("CreatorActorNr:" + p.GetPhotonView().CreatorActorNr);
-            Debug.Log("ViewID:" + p.GetPhotonView().viewID + "          " + PhotonNetwork.player.ID);
-            Debug.Log(p.GetPhotonView().viewID/1000);
             if (p.IsPlayerForThisClient)
             {
                 var camera = Camera.main.GetComponent<FollowCamera>();

@@ -42,7 +42,8 @@ namespace YJH.Unit
                     if (direction != null)
                     {
                         //_unit.GetAbility<IMainTurret>().SetTargetDirection(direction.Value);
-                        _mobility.SetTargetPosition(_unit.Model.position + direction.Value);
+                        //_mobility.SetTargetPosition(_unit.Model.position + direction.Value);
+                        _mobility.SetMoveDirection(direction.Value);
                         _lastInputDirection = direction.Value;
                         return;
                     }

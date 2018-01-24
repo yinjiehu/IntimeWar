@@ -47,4 +47,8 @@ MonoBehaviour:
   - TaggedPlayer
   - OnInstantiateUnit
   - OnPhotonInstantiate
+  - RPCAddDeathCount
+  - RPCAddKillCount
+  - RPCKillTip
+  - RPCDestroy
   DisableAutoOpenWizard: 1

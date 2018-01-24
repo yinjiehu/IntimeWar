@@ -20,7 +20,7 @@ namespace YJH.Unit
 
         void InitActiveAttachment()
         {
-            var slotAttachments = _unit.InitialParameter.GetActiveSlotAttachments();
+            //var slotAttachments = _unit.InitialParameter.GetActiveSlotAttachments();
             //var vehicleSettings = GlobalCache.GetVehicleSettingsCollection().Get(_unit.TypeID);
 
             //var keys = slotAttachments.Keys.ToList();

@@ -9,20 +9,8 @@ namespace IntimeWar.View
         [SerializeField]
         HarunaJoyStick _left;
         public HarunaJoyStick Left { get { return _left; } }
-
-        public override void Init()
-        {
-            base.Init();
-        }
-
-        public override void Show()
-        {
-            base.Show();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-        }
+        [SerializeField]
+        HarunaJoyStick _right;
+        public HarunaJoyStick Right { get { return _right; } }
     }
 }

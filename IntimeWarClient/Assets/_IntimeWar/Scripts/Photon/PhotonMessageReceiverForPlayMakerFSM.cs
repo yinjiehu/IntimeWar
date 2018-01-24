@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using HutongGames.PlayMaker;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	[RequireComponent(typeof(PlayMakerFSM))]
 	public class PhotonMessageReceiverForPlayMakerFSM : MonoBehaviour

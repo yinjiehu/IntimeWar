@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using YJH.Unit.Event;
-using MechSquad.Battle;
+using IntimeWar.Battle;
 using IntimeWar;
 
 namespace YJH.Unit
@@ -58,6 +58,7 @@ namespace YJH.Unit
         protected List<GameObject> _abilityPrefabs;
         List<IUnitAbility> _abilitityList = new List<IUnitAbility>();
 
+        public UnitBody Body { private set; get; }
         public UnitMobility Mobility { private set; get; }
         public UnitEventDispatcher EventDispatcher { private set; get; }
         public AIInput AI { private set; get; }
@@ -166,6 +167,7 @@ namespace YJH.Unit
             InitAnimatorStateAbilities();
             InitPlayerMakerStateAbilities();
 
+            Body = GetAbility<UnitBody>();
             Mobility = GetAbility<UnitMobility>();
             EventDispatcher = GetAbility<UnitEventDispatcher>();
             AI = GetAbility<AIInput>();
@@ -433,30 +435,6 @@ namespace YJH.Unit
                 return;
             }
 
-            //var parameterInfo = methodInfo.GetParameters();
-
-            ////foreach (var p in parameters)
-            ////{
-            ////	var type = p.GetType();
-            ////	Debug.Log("type : " + type.FullName + "  value : " + p);
-            ////}
-            ////foreach(var p in methodInfo.GetParameters())
-            ////{
-            ////	Debug.Log("method paramet type : " + p.ParameterType.FullName);
-            ////}
-
-            //if (parameterInfo.Length != parameters.Length)
-            //{
-            //	Debug.LogErrorFormat(this, "rpc call {0}.{1} failed. parameter length not equal", ability.Name, methodName);
-            //	return;
-            //}
-            //for (var i = 0; i < parameterInfo.Length; i++)
-            //{
-            //	if (parameterInfo[i].ParameterType == typeof(float) && parameters[i].GetType() == typeof(double))
-            //	{
-            //		parameters[i] = (float)((double)parameters[i]);
-            //	}
-            //}
             try
             {
                 methodInfo.Invoke(ability, parameters);
@@ -485,11 +463,6 @@ namespace YJH.Unit
                     ((IUnitAbilityUpdate)a).OnUpdate();
             };
         }
-
-        //public void OnUnitInactive()
-        //{
-        //	_unitState = UnitStateEnum.Inactive;
-        //}
 
         public void OnUnitDestroy()
         {

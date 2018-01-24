@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System;
-using MechSquad.Battle;
+using IntimeWar.Battle;
 
 namespace YJH.Unit
 {

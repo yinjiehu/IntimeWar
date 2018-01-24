@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 
-namespace MechSquad.Battle
+namespace IntimeWar.Battle
 {
 	public class CameraZoomControl : MonoBehaviour
 	{

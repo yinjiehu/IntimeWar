@@ -105,7 +105,7 @@ namespace Haruna.UI
 
 			_directionToActivePadInScreen = currentWorldPosition - _pressWorldPosition;
 			_directionToActivePadInMainCamera = Camera.main.transform.TransformDirection(_directionToActivePadInScreen);
-			_directionToActivePadInMainCamera.y = 0;
+			_directionToActivePadInMainCamera.z = 0;
 			
 			var padScreenPosition = _uiCamera.WorldToScreenPoint(_pad.transform.position);
 			padScreenPosition.z = 0;

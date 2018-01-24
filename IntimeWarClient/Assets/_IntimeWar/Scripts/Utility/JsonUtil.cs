@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public static class JsonUtil
 	{

@@ -2,7 +2,7 @@
 using View;
 using UnityEngine;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[ActionCategory("MechSquad_Photon")]
 	public class CheckPhotonState : FsmStateAction

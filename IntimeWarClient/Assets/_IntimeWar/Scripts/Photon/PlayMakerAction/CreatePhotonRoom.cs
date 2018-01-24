@@ -2,7 +2,7 @@
 using IntimeWar;
 using UnityEngine;
 
-namespace MechSquad.RealTime
+namespace IntimeWar.RealTime
 {
     [ActionCategory("MechSquad_Photon")]
     public class CreatePhotonRoom : FsmStateAction

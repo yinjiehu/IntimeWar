@@ -28,7 +28,13 @@ namespace YJH.Unit
 					continue;
 				_unit.AddAbilityToListOnSetup(abilities[i]);
 			}
-		}
+
+            while (transform.childCount != 0)
+            {
+                transform.GetChild(0).SetParent(_unit.transform);
+            }
+
+        }
 		
 		public virtual void Init()
 		{

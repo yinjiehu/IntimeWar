@@ -1,9 +1,9 @@
-﻿using MechSquad.Battle;
+﻿using IntimeWar.Battle;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public enum SeMultipleOverriadeTypeEnum
 	{

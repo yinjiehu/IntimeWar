@@ -7,7 +7,7 @@ using System;
 
 namespace IntimeWar
 {
-	public static class PlayerPropertyKey
+    public static class PlayerPropertyKey
     {
         public const string InSynchronization = "Sync";
         public const string Initialized = "Initialized";

@@ -2813,7 +2813,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
         if(Application.isPlaying)
         {
-            MechSquad.RegistedPlayMakerFsmForPhotonEvent.Instance.SendPhotonEvent(methodName, parameters);
+            IntimeWar.RegistedPlayMakerFsmForPhotonEvent.Instance.SendPhotonEvent(methodName, parameters);
         }
     }
 

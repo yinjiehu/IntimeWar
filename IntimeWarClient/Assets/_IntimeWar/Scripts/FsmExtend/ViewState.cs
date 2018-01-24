@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[ActionCategory("MechSquad_Common")]
 	public class ViewState : FsmStateAction

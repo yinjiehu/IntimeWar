@@ -34,7 +34,7 @@ namespace YJH.Unit
         }
         public virtual void SetTargetPosition(Vector3 targetWorldPosition)
         {
-            _targetWorldPosition = targetWorldPosition;
+            _targetWorldPosition = targetWorldPosition.normalized;
             _normalizedMoveDirection = (targetWorldPosition - _unit.Model.position).normalized;
         }
 

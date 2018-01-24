@@ -1,11 +1,11 @@
 ﻿using HutongGames.PlayMaker;
-using MechSquad.Battle;
+using IntimeWar.Battle;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using YJH.Unit;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[ActionCategory("MechSquad_Unit")]
 	public class DestroyUnitOnPlayerLeave : Photon.PunBehaviour

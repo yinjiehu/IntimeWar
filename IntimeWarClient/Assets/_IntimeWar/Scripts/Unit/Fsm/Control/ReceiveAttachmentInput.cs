@@ -6,7 +6,7 @@ using HutongGames.PlayMaker;
 namespace YJH.Unit
 {
     [HutongGames.PlayMaker.ActionCategory("MechSquad_Unit")]
-    public class ReceiveActiveAttachmentInput : FsmStateAbility
+    public class ReceiveAttachmentInput : FsmStateAbility
     {
         List<IUnitAttachmentInput> _inputs;
 

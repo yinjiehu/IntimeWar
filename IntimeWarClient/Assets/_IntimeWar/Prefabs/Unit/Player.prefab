@@ -84,19 +84,19 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1668349080601642}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 1.1235999
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &61343671871089218
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -283,15 +283,18 @@ MonoBehaviour:
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
   m_SynchronizeParameters:
-  - Type: 1
-    SynchronizeType: 0
-    Name: Move
   - Type: 4
     SynchronizeType: 0
     Name: IsDead
   - Type: 1
     SynchronizeType: 0
-    Name: MoveForward
+    Name: Idle
+  - Type: 1
+    SynchronizeType: 0
+    Name: VelocityX
+  - Type: 1
+    SynchronizeType: 0
+    Name: VelocityY
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

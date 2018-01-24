@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using YJH.Unit;
 using System.Collections.Generic;
+using Haruna.Utility;
 
-namespace  MechSquad.Battle
+namespace  IntimeWar.Battle
 {
 	public class CommonSpawner : MonoBehaviour, ISpawner
 	{

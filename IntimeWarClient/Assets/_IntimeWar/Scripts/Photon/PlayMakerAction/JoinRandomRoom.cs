@@ -3,7 +3,7 @@ using HutongGames.PlayMaker;
 using System;
 using UnityEngine;
 
-namespace MechSquad.RealTime
+namespace IntimeWar.RealTime
 {
     [ActionCategory("MechSquad_Photon")]
     public class JoinRandomRoom : FsmStateAction

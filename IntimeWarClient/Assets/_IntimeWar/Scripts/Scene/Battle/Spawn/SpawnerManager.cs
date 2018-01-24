@@ -8,7 +8,7 @@ using System.Reflection;
 using YJH.Unit;
 using IntimeWar;
 
-namespace MechSquad.Battle
+namespace IntimeWar.Battle
 {
 	public interface ISpawner
 	{

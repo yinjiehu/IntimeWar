@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using System;
 using UnityEditor;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[CustomActionEditor(typeof(CallViewMethod))]
 	public class CallViewMethodActionEditor : CustomActionEditor

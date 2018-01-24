@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public class PhotonMessageReceiver : MonoBehaviour
 	{

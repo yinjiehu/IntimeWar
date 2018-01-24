@@ -1,19 +1,19 @@
-﻿using MechSquad.Battle;
+﻿using IntimeWar.Battle;
 using System.Linq;
 using UnityEngine;
 
 namespace YJH.Unit
 {
-	public abstract class FsmStateAbility : HutongGames.PlayMaker.FsmStateAction, IUnitAbility
-	{
-		protected BattleUnit _unit;
-		protected Animator _animator;
+    public abstract class FsmStateAbility : HutongGames.PlayMaker.FsmStateAction, IUnitAbility
+    {
+        protected BattleUnit _unit;
+        protected Animator _animator;
 
-		[SerializeField]
-		bool _sendSynchronization;
-		public bool IsSyncAbility { get { return _sendSynchronization; } }
+        [SerializeField]
+        bool _sendSynchronization;
+        public bool IsSyncAbility { get { return _sendSynchronization; } }
 
-		public bool IsRunning { private set; get; }
+        public bool IsRunning { private set; get; }
 
         protected string _abilityID;
         public string AbilityID
@@ -29,19 +29,24 @@ namespace YJH.Unit
         }
 
         public virtual void SetupInstance(BattleUnit unit)
-		{
-			_unit = unit;
-			_animator = _unit.Animator;
-		}
+        {
+            _unit = unit;
+            _animator = _unit.Animator;
+        }
 
-		public virtual void Init()
-		{
+        public virtual void Init()
+        {
+        }
 
-		}
+        public virtual void LateInit()
+        {
+        }
 
-		public virtual void LateInit()
-		{
-		}
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            UpdateSendPermanentSynchronization();
+        }
 
         #region Permanent Synchronization
         public virtual float PermanentSynchronizeInterval { get { return -1; } }

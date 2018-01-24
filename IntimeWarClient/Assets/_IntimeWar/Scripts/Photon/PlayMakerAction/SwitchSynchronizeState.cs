@@ -1,7 +1,7 @@
 ﻿using HutongGames.PlayMaker;
 using UnityEngine;
 
-namespace MechSquad.Battle
+namespace IntimeWar.Battle
 {
     [ActionCategory("MechSquad_Photon")]
     public class SwitchSynchronizeState : FsmStateAction

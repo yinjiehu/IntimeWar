@@ -14,6 +14,7 @@ namespace YJH.Unit
         public bool Enabled { get { return enabled; } }
 
         HarunaJoyStick _leftJoystick;
+        HarunaJoyStick _rightJoystick;
         HarunaButton[] _activeAttachmentBtnInputs;
 
         #region mobility implement
@@ -61,6 +62,7 @@ namespace YJH.Unit
             if (joyStickView != null)
             {
                 _leftJoystick = joyStickView.Left;
+                _rightJoystick = joyStickView.Right;
             }
 
             var attachmentView = ViewManager.Instance.GetView<AttachmentView>();
@@ -77,7 +79,7 @@ namespace YJH.Unit
                 return;
 
             UpdateMoveDirection();
-
+            UpdateMainFireControl();
             UpdateAttachmentButtons();
         }
 
@@ -103,6 +105,16 @@ namespace YJH.Unit
                 _attachmentRelease[i] = input.PreviousDown && !input.CurrentDown;
 
                 _attachmentsClick[i] = input.Clicked;
+            }
+        }
+
+        void UpdateMainFireControl()
+        {
+            if (_rightJoystick != null)
+            {
+                _mainFireControlPress = !_rightJoystick.PreviousDown && _rightJoystick.CurrentDown;
+                _mainFireControlRelease = _rightJoystick.PreviousDown && !_rightJoystick.CurrentDown;
+                _mainFireControlHolding = _rightJoystick.Holding;
             }
         }
 

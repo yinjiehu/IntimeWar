@@ -3,7 +3,7 @@ using IntimeWar.View;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[ActionCategory("MechSquad_Common")]
 	public class ShowMessageBox : FsmStateAction

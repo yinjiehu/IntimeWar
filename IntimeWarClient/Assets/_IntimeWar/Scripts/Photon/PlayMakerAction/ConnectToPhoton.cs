@@ -2,7 +2,7 @@
 using HutongGames.PlayMaker;
 using UnityEngine;
 
-namespace MechSquad.RealTime
+namespace IntimeWar.RealTime
 {
     [ActionCategory("MechSquad_Photon")]
 	public class ConnectToPhoton : FsmStateAction

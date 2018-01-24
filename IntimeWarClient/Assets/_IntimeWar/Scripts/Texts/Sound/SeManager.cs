@@ -1,8 +1,8 @@
-﻿using MechSquad.Battle;
+﻿using IntimeWar.Battle;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public class SeManager : MonoBehaviour
 	{

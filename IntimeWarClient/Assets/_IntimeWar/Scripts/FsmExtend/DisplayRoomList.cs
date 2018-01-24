@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[ActionCategory("MechSquad_Common")]
 	public class DisplayRoomList : FsmStateAction

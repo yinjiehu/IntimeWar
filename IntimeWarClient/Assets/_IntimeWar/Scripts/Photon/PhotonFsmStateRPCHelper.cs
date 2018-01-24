@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 using HutongGames.PlayMaker;
 using System.Reflection;
-using MechSquad;
+using IntimeWar;
 
 namespace IntimeWar.Battle
 {
