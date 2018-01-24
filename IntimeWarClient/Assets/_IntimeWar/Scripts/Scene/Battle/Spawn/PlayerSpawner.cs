@@ -80,7 +80,7 @@ namespace IntimeWar.Battle
                 Team = team,
                 Level = _level,
                 Tag = "Player",
-                InitialParameter = PhotonHelper.GetInitialParameter(photonPlayer)
+                InitialParameter = PhotonNetwork.player.GetInitialParameter()
             });
 
             UnitManager.Instance.AddPlayerUnit(p);
