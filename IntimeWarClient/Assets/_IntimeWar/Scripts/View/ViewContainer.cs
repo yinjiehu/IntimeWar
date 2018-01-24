@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace MechSquad.View
+namespace View
 {
 	public class ViewContainer : MonoBehaviour
 	{

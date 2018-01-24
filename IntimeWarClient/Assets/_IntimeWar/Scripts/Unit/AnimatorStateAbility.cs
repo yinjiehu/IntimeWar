@@ -3,10 +3,10 @@
 namespace YJH.Unit
 {
 	public abstract class AnimatorStateAbility : StateMachineBehaviour, IUnitAbility
-	{
-		public virtual string Name { get { return name; } }
+    {
+        public virtual string AbilityID { get { return name; } }
 
-		protected BattleUnit _unit;
+        protected BattleUnit _unit;
 		protected Animator _animator;
 		
 		[SerializeField]
@@ -39,5 +39,9 @@ namespace YJH.Unit
 		{
 			IsRunning = false;
 		}
-	}
+
+        public void OnInitSynchronization(object data)
+        {
+        }
+    }
 }

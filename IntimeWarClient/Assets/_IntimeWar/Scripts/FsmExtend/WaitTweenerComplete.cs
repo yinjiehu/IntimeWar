@@ -1,5 +1,5 @@
 ﻿using HutongGames.PlayMaker;
-using MechSquad.View;
+using View;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

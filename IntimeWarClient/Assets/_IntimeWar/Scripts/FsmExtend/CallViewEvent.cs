@@ -1,11 +1,11 @@
 ﻿using HutongGames.PlayMaker;
-using MechSquad.View;
+using View;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[ActionCategory("MechSquad_Common")]
 	public class CallViewEvent : FsmStateAction

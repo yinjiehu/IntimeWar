@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace MechSquad.View
+namespace View
 {
 	[CustomEditor(typeof(BaseView), true)]
 	public class BaseViewEditor : Editor

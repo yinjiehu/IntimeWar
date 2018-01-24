@@ -1,33 +1,24 @@
 ﻿using HutongGames.PlayMaker;
 using UnityEngine;
 
-namespace MechSquad.RealTime
+namespace MechSquad.Battle
 {
-	[ActionCategory("MechSquad_Photon")]
-	public class SwitchSynchronizeState : FsmStateAction
-	{
+    [ActionCategory("MechSquad_Photon")]
+    public class SwitchSynchronizeState : FsmStateAction
+    {
         public FsmEvent _onPlayerStateChanged;
 
         public override void OnEnter()
         {
             base.OnEnter();
-            PhotonCustomEventSender.RaiseResendInstantiateEvent();
+            SpawnerManager.Instance.EnableSpawnSynchronization();
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
 
-            if (PhotonNetwork.player.IsInSynchronization())
-                Fsm.Event(_onPlayerStateChanged);
-
+            Fsm.Event(_onPlayerStateChanged);
         }
-
-        //public override void OnUpdate()
-        //{
-        //    base.OnUpdate();
-        //    //Debug.Log(IronFuryHot.PhotonHelper.GetBattlePrepairElapsedTime() + "  enable le =============");
-        //}
-
     }
 }

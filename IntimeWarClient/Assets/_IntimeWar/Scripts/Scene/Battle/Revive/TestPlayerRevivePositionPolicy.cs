@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class TestPlayerRevivePositionPolicy : MonoBehaviour, IPlayerRevivePositionPolicy
 	{

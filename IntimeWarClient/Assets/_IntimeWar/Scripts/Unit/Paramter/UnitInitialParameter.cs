@@ -8,6 +8,7 @@ namespace YJH.Unit
     public class UnitInitialParameter
     {
         Dictionary<string, float> _basicParameters = new Dictionary<string, float>();
+        Dictionary<string, string> _activeSlotAttachments = new Dictionary<string, string>();
 
         public float GetParameter(string type)
         {
@@ -28,6 +29,12 @@ namespace YJH.Unit
             {
                 _basicParameters.Add(type, value);
             }
+        }
+
+
+        public Dictionary<string, string> GetActiveSlotAttachments()
+        {
+            return _activeSlotAttachments;
         }
 
 

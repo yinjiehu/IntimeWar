@@ -3,6 +3,7 @@ using MechSquad.Battle;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using YJH.Unit;
 
 namespace MechSquad.Fsm
 {

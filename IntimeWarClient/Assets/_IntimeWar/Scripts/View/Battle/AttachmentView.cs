@@ -7,19 +7,13 @@ namespace IntimeWar.View
 {
     public class AttachmentView : BaseView
     {
-        public override void Init()
+        [SerializeField]
+        GameObject[] _buttons;
+
+        public GameObject[] GetButtons()
         {
-            base.Init();
+            return _buttons;
         }
 
-        public override void Show()
-        {
-            base.Show();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-        }
     }
 }

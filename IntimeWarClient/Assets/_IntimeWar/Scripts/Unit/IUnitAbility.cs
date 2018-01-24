@@ -7,15 +7,15 @@ namespace YJH.Unit
 {
 	public interface IUnitAbility
 	{
-		string Name { get; }
-		bool IsSyncAbility { get; }
+        string AbilityID { get; }
 
-		void SetupInstance(BattleUnit u);
+        void SetupInstance(BattleUnit u);
 
-		void Init();
+        void Init();
+        void LateInit();
 
-		void LateInit();
-	}
+        void OnInitSynchronization(object data);
+    }
 
 	public interface IUnitAbilityUpdate
 	{

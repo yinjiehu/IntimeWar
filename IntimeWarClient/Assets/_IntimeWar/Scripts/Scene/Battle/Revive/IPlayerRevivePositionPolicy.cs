@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public interface IPlayerRevivePositionPolicy
 	{

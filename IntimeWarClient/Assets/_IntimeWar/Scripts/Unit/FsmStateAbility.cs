@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using MechSquad.Battle;
+using System.Linq;
 using UnityEngine;
 
 namespace YJH.Unit
@@ -14,20 +15,20 @@ namespace YJH.Unit
 
 		public bool IsRunning { private set; get; }
 
-		protected string _name;
-		public new string Name
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(_name))
-				{
-					_name = string.Format("{0}$[{1}]", State.Name, State.Actions.ToList().IndexOf(this));
-				}
-				return _name;
-			}
-		}
+        protected string _abilityID;
+        public string AbilityID
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_abilityID))
+                {
+                    _abilityID = string.Format("{0}$[{1}]_{2}", State.Name, State.Actions.ToList().IndexOf(this), GetType().Name);
+                }
+                return _abilityID;
+            }
+        }
 
-		public virtual void SetupInstance(BattleUnit unit)
+        public virtual void SetupInstance(BattleUnit unit)
 		{
 			_unit = unit;
 			_animator = _unit.Animator;
@@ -41,5 +42,36 @@ namespace YJH.Unit
 		public virtual void LateInit()
 		{
 		}
-	}
+
+        #region Permanent Synchronization
+        public virtual float PermanentSynchronizeInterval { get { return -1; } }
+        float _permanentSynchronizationElapsedTime;
+
+        void UpdateSendPermanentSynchronization()
+        {
+            if (PermanentSynchronizeInterval > 0)
+            {
+                _permanentSynchronizationElapsedTime += Time.deltaTime;
+                if (_permanentSynchronizationElapsedTime > PermanentSynchronizeInterval)
+                {
+                    _permanentSynchronizationElapsedTime = 0;
+                    var data = OnSendPermanentSynchronization();
+                    if (data != null)
+                    {
+                        SpawnerManager.Instance.SendPermanentSyncDataForAbility(_unit.View.viewID, AbilityID, data);
+                    }
+                }
+            }
+        }
+
+        public virtual void OnInitSynchronization(object obj)
+        {
+        }
+
+        public virtual object OnSendPermanentSynchronization()
+        {
+            return null;
+        }
+        #endregion
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using HutongGames.PlayMaker;
-using MechSquad.View;
+using View;
 using UnityEngine;
 
 namespace MechSquad.Fsm

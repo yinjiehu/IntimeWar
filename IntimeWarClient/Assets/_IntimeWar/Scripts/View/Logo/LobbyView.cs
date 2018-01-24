@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using View;
 
-namespace MechSquad.View.RoomCreate
+namespace IntimeWar.View
 {
 	public class LobbyView : BaseView
 	{

@@ -5,10 +5,10 @@ using System;
 namespace YJH.Unit.Event
 {
 	public class UnitEventDispatcher : AbstractEventManager<EventBindingInfo, BattleUnitEvent>, IUnitAbility
-	{
-		public virtual string Name { get { return name; } }
-		
-		[SerializeField]
+    {
+        public virtual string AbilityID { get { return name; } }
+
+        [SerializeField]
 		bool _sendSynchronization;
 		public bool IsSyncAbility { get { return _sendSynchronization; } }
 
@@ -69,5 +69,9 @@ namespace YJH.Unit.Event
 		{
 			bindingInfo.Callback.DynamicInvoke(eventInfo, eventControl);
 		}
-	}
+
+        public void OnInitSynchronization(object data)
+        {
+        }
+    }
 }

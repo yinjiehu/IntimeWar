@@ -1,12 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using View;
+using Haruna.UI;
 
 namespace IntimeWar.View
 {
     public class JoystickView : BaseView
     {
+        [SerializeField]
+        HarunaJoyStick _left;
+        public HarunaJoyStick Left { get { return _left; } }
+
         public override void Init()
         {
             base.Init();

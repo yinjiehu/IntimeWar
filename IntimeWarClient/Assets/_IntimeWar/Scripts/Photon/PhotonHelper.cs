@@ -39,6 +39,7 @@ namespace IntimeWar
         CurrentSyncStatus = 10,
     }
 
+
     public static partial class PhotonHelper
 	{
         public static float GetBattlePrepairElapsedTime()

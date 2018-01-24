@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using View;
 
-namespace MechSquad.View
+namespace IntimeWar.View
 {
 	public class MessageBoxView : BaseView
 	{

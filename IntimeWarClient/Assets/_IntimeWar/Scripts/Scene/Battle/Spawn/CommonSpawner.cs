@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Collections;
-using System;
-using HutongGames.PlayMaker;
+using YJH.Unit;
 using System.Collections.Generic;
 
 namespace  MechSquad.Battle

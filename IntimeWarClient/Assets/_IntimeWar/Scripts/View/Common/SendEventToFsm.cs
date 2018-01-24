@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MechSquad.View
+namespace IntimeWar.View
 {
 	public class SendEventToFsm : MonoBehaviour
 	{

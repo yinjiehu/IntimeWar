@@ -8,10 +8,10 @@ using System;
 namespace YJH.Unit
 {
 	public class AbilityGroup : MonoBehaviour, IUnitAbility
-	{
-		public virtual string Name { get { return name; } }
-		
-		public bool IsSyncAbility { get { return false; } }
+    {
+        public virtual string AbilityID { get { return name; } }
+
+        public bool IsSyncAbility { get { return false; } }
 
 		protected BattleUnit _unit;
 		public BattleUnit Unit { get { return _unit; } }
@@ -37,5 +37,9 @@ namespace YJH.Unit
 		public void LateInit()
 		{
 		}
-	}
+
+        public void OnInitSynchronization(object data)
+        {
+        }
+    }
 }

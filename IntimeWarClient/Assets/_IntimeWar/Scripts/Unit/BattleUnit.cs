@@ -4,455 +4,515 @@ using System;
 using System.Linq;
 using System.Reflection;
 using YJH.Unit.Event;
-using YJH.Unit;
+using MechSquad.Battle;
 using IntimeWar;
 
 namespace YJH.Unit
 {
-	public enum UnitStateEnum
-	{
-		Paused,
-		Normal,
-		Inactive
-	}
+    public enum UnitStateEnum
+    {
+        Paused,
+        Normal,
+        Inactive
+    }
 
-	public class BattleUnit : MonoBehaviour, IPunObservable
-	{
-		static int _seqNo = -2000;
-		public static int AllocateSeqNo() { return _seqNo--; }
+    public class BattleUnit : MonoBehaviour, IPunObservable
+    {
+        static int _seqNo = -2000;
+        public static int AllocateSeqNo() { return _seqNo--; }
 
-		bool _initialized;
-		public bool Initialized { get { return _initialized; } }
+        bool _initialized;
+        public bool Initialized { get { return _initialized; } }
 
-		[SerializeField]
-		bool _noSequenceUnit;
-		public bool NoSequenceUnit { get { return _noSequenceUnit; } }
+        [SerializeField]
+        bool _noSequenceUnit;
+        public bool NoSequenceUnit { get { return _noSequenceUnit; } }
+
+        //UnitStateEnum _unitState = UnitStateEnum.Paused;
+        //public UnitStateEnum CurrentState { set { _unitState = value; } get { return _unitState; } }
+        //public bool IsNormal { get { return _unitState == UnitStateEnum.Normal; } }
+        //public bool IsInactive { get { return _unitState == UnitStateEnum.Inactive; } }
         public bool IsDead { get { return STS.IsDead; } }
 
         [SerializeField]
-		protected UnitInfo _unitInfo;
-		public UnitInfo Info { get { return _unitInfo; } }
+        protected UnitInfo _unitInfo;
+        public UnitInfo Info { get { return _unitInfo; } }
 
-		public bool IsSpawnFromUnit { get { return _unitInfo.IsSpawnFromUnit; } }
+        public bool IsSpawnFromUnit { get { return _unitInfo.IsSpawnFromUnit; } }
 
-		public string UnitTag { get { return _unitInfo.Tag; } }
-		public byte Team { get { return _unitInfo.Team; } }
-		public float Level { get { return _unitInfo.Level; } }
-		public int SeqNo { get { return _unitInfo.SeqNo; } }
-		public int ActorID { get { return _unitInfo.ActorID; } }
-		public string TypeID { get { return _unitInfo.TypeID; } }
+        public string UnitTag { get { return _unitInfo.Tag; } }
+        public byte Team { get { return _unitInfo.Team; } }
+        public float Level { get { return _unitInfo.Level; } }
+        public int SeqNo { get { return _unitInfo.SeqNo; } }
+        public int ActorID { get { return _unitInfo.ActorID; } }
+        public string TypeID { get { return _unitInfo.TypeID; } }
 
-		[SerializeField]
-		Animator _animator;
-		public Animator Animator { get { return _animator; } }
-		
-		PlayMakerFSM _playMakerFsm;
-		public PlayMakerFSM Fsm { set { _playMakerFsm = value; } get { return _playMakerFsm; } }
+        [SerializeField]
+        Animator _animator;
+        public Animator Animator { get { return _animator; } }
 
-		[SerializeField]
-		protected List<GameObject> _abilityPrefabs;
-		List<IUnitAbility> _abilitityList = new List<IUnitAbility>();
+        PlayMakerFSM _playMakerFsm;
+        public PlayMakerFSM Fsm { set { _playMakerFsm = value; } get { return _playMakerFsm; } }
 
-		public UnitEventDispatcher EventDispatcher { private set; get; }
+        [SerializeField]
+        protected List<GameObject> _abilityPrefabs;
+        List<IUnitAbility> _abilitityList = new List<IUnitAbility>();
+
+        public UnitMobility Mobility { private set; get; }
+        public UnitEventDispatcher EventDispatcher { private set; get; }
+        public AIInput AI { private set; get; }
 
         UnitStatusManager _statusManager;
         public UnitStatusManager STS { get { return _statusManager; } }
 
         PhotonView _view;
-		public PhotonView View { get { return _view; } }
-		public bool IsControlByThisClient
-		{
-			get
-			{
-				if (_view == null)
-					return true;
+        public PhotonView View { get { return _view; } }
+        public bool IsControlByThisClient
+        {
+            get
+            {
+                if (_view == null)
+                    return true;
 
-				if (_view != null)
-					return _view.IsControlByThisClient();
+                if (_view != null)
+                    return _view.IsControlByThisClient();
 
-				return false;
-			}
-		}
+                return false;
+            }
+        }
 
-		public bool IsPlayerForThisClient
-		{
-			get
-			{
-				return _view != null && !_view.isSceneView && _view.CreatorActorNr == PhotonNetwork.player.ID;
-			}
-		}
+        public bool IsPlayerForThisClient
+        {
+            get
+            {
+                return _view != null && !_view.isSceneView && _view.CreatorActorNr == PhotonNetwork.player.ID;
+            }
+        }
 
-		Dictionary<string, IUnitAbility> _idToAbilityMapping = new Dictionary<string, IUnitAbility>();
-		Dictionary<IUnitAbility, string> _abilityToIdMapping = new Dictionary<IUnitAbility, string>();
+        Dictionary<string, IUnitAbility> _idToAbilityMapping = new Dictionary<string, IUnitAbility>();
 
-		[SerializeField]
-		Transform _modelRoot;
-		public Transform Model
-		{
-			get
-			{
-				if (_modelRoot == null)
-					return transform;
-				return _modelRoot;
-			}
-		}
+        public Dictionary<string, IUnitAbility> AbilityMap
+        {
+            set { _idToAbilityMapping = value; }
+            get { return _idToAbilityMapping; }
+        }
 
-		UnitInitialParameter _initialparameter;
-		public UnitInitialParameter InitialParameter { get { return _initialparameter; } }
+        [SerializeField]
+        Transform _modelRoot;
+        public Transform Model
+        {
+            get
+            {
+                if (_modelRoot == null)
+                    return transform;
+                return _modelRoot;
+            }
+        }
 
-		public struct UnitCreateArgs
-		{
-			public byte Team;
-			public string Tag;
-			public float Level;
-			public UnitInfo SpawnFrom;
-			public UnitInitialParameter InitialParameter;
-		}
+        UnitInitialParameter _initialparameter;
+        public UnitInitialParameter InitialParameter { get { return _initialparameter; } }
 
-		public void Init(UnitCreateArgs args)
-		{
-			if (_initialized)
-			{
-				Debug.LogErrorFormat(this, "unit is already initialized!");
-				return;
-			}
-			_initialized = true;
+        public struct UnitCreateArgs
+        {
+            public byte Team;
+            public string Tag;
+            public float Level;
+            public UnitInfo SpawnFrom;
+            public UnitInitialParameter InitialParameter;
+        }
 
-			_unitInfo = new UnitInfo
-			{
-				Team = args.Team,
-				Tag = args.Tag,
-				Level = args.Level,
-				SpawnFrom = args.SpawnFrom,
-			};
+        public void Init(UnitCreateArgs args)
+        {
+            if (_initialized)
+            {
+                Debug.LogErrorFormat(this, "unit is already initialized!");
+                return;
+            }
+            _initialized = true;
 
-			_initialparameter = args.InitialParameter;
-			
-			_view = GetComponent<PhotonView>();
+            _unitInfo = new UnitInfo
+            {
+                Team = args.Team,
+                Tag = args.Tag,
+                Level = args.Level,
+                SpawnFrom = args.SpawnFrom,
+            };
 
-			_unitInfo.TypeID = name;
-			_unitInfo.Unit = this;
-			if (!_noSequenceUnit)
-			{
-				if (_view != null)
-				{
-                    Debug.Log("BattleUnit seqNo:" + _view.viewID + "    CreatorActorNr:" + _view.CreatorActorNr + " viewField:" + _view);
-					_unitInfo.SeqNo = _view.viewID;
-					_unitInfo.ActorID = _view.CreatorActorNr;
-				}
-				else
-				{
-					_unitInfo.SeqNo = AllocateSeqNo();
-					_unitInfo.ActorID = 0;
-				}
+            _initialparameter = args.InitialParameter;
 
-				name = string.Format("{0, 0:d4}_{1}", SeqNo, _unitInfo.TypeID);
-			}
+            _view = GetComponent<PhotonView>();
+
+            _unitInfo.TypeID = name;
+            _unitInfo.Unit = this;
+            if (!_noSequenceUnit)
+            {
+                if (_view != null)
+                {
+                    _unitInfo.SeqNo = _view.viewID;
+                    _unitInfo.ActorID = _view.CreatorActorNr;
+                }
+                else
+                {
+                    _unitInfo.SeqNo = AllocateSeqNo();
+                    _unitInfo.ActorID = 0;
+                }
+
+                name = string.Format("{0, 0:d4}_{1}", SeqNo, _unitInfo.TypeID);
+            }
 
             _statusManager = gameObject.AddComponent<UnitStatusManager>();
 
             InitCommonAbilities();
-			InitAnimatorStateAbilities();
-			InitPlayerMakerStateAbilities();
+            InitAnimatorStateAbilities();
+            InitPlayerMakerStateAbilities();
 
-			EventDispatcher = GetAbility<UnitEventDispatcher>();
+            Mobility = GetAbility<UnitMobility>();
+            EventDispatcher = GetAbility<UnitEventDispatcher>();
+            AI = GetAbility<AIInput>();
 
-			if (EventDispatcher == null)
-			{
-				EventDispatcher = gameObject.AddComponent<UnitEventDispatcher>();
-				_abilitityList.Add(EventDispatcher);
-				EventDispatcher.SetupInstance(this);
-			}
+            if (EventDispatcher == null)
+            {
+                EventDispatcher = gameObject.AddComponent<UnitEventDispatcher>();
+                _abilitityList.Add(EventDispatcher);
+                EventDispatcher.SetupInstance(this);
+            }
 
-			for (int i = 0, count = _abilitityList.Count; i < count; i++)
-			{
-				var a = _abilitityList[i];
-				CreateAbilityIDMap(a);
-			}
+            for (int i = 0, count = _abilitityList.Count; i < count; i++)
+            {
+                var a = _abilitityList[i];
+                CreateAbilityIDMap(a);
+            }
 
-			for (int i = 0, count = _abilitityList.Count; i < count; i++)
-			{
-				var ability = _abilitityList[i];
-				ability.Init();
-			}
+            for (int i = 0, count = _abilitityList.Count; i < count; i++)
+            {
+                var ability = _abilitityList[i];
+                ability.Init();
+            }
 
-			for (int i = 0, count = _abilitityList.Count; i < count; i++)
-			{
-				var ability = _abilitityList[i];
-				ability.LateInit();
-			}
-			
-			if (_view != null)
-			{
-				for (int i = 0; i < _abilitityList.Count; i++)
-				{
-					var ability = _abilitityList[i];
-					if (ability.IsSyncAbility && ability is Component)
-						_view.ObservedComponents.Add((Component)ability);
-				}
+            for (int i = 0, count = _abilitityList.Count; i < count; i++)
+            {
+                var ability = _abilitityList[i];
+                ability.LateInit();
+            }
 
-				var animatorIndex = _view.ObservedComponents.FindIndex(c => c is PhotonAnimatorView);
-				if(animatorIndex >= 0)
-				{
-					var v = _view.ObservedComponents[animatorIndex];
-					_view.ObservedComponents.RemoveAt(animatorIndex);
-					_view.ObservedComponents.Add(v);
-				}
-			}
-		}
+            if (_view != null)
+            {
+                var allSyncData = SpawnerManager.Instance.GetPermanentSyncDataForAllAbility(_view.viewID);
+                if (allSyncData != null)
+                {
+                    for (int i = 0; i < _abilitityList.Count; i++)
+                    {
+                        var ability = _abilitityList[i];
+                        if (ability is IPunObservable && ability is Component && !_view.ObservedComponents.Contains((Component)ability))
+                            _view.ObservedComponents.Add((Component)ability);
 
-		void InitCommonAbilities()
-		{
-			var childrenAbilites = GetComponentsInChildren<IUnitAbility>(true);
-			for (int i = 0; i < childrenAbilites.Length; i++)
-			{
-				var com = (Component)childrenAbilites[i];
-				if (com.gameObject == gameObject || com.GetComponentInParent<BattleUnit>() == this)
-				{
-					_abilitityList.Add(childrenAbilites[i]);
-				}
-			}
+                        object syncData;
+                        if (allSyncData.TryGetValue(ability.AbilityID, out syncData))
+                        {
+                            ability.OnInitSynchronization(syncData);
+                        }
+                    }
+                }
+                //var animatorIndex = _view.ObservedComponents.FindIndex(c => c is PhotonAnimatorView);
+                //if(animatorIndex >= 0)
+                //{
+                //	var v = _view.ObservedComponents[animatorIndex];
+                //	_view.ObservedComponents.RemoveAt(animatorIndex);
+                //	_view.ObservedComponents.Add(v);
+                //}
+            }
+        }
 
-			for (int i = 0; i < _abilityPrefabs.Count; i++)
-			{
-				var prefab = _abilityPrefabs[i];
-				if (prefab != null && prefab.GetComponent<IUnitAbility>() != null)
-				{
-					GameObject go = Instantiate(prefab);
-					go.transform.SetParent(transform);
-					go.transform.localPosition = Vector3.zero;
-					go.transform.localRotation = Quaternion.identity;
+        void InitCommonAbilities()
+        {
+            var childrenAbilites = GetComponentsInChildren<IUnitAbility>(true);
+            for (int i = 0; i < childrenAbilites.Length; i++)
+            {
+                var com = (Component)childrenAbilites[i];
+                if (com.gameObject == gameObject || com.GetComponentInParent<BattleUnit>() == this)
+                {
+                    _abilitityList.Add(childrenAbilites[i]);
+                }
+            }
 
-					var ab = go.GetComponent<IUnitAbility>();
-					if(ab != null)
-						_abilitityList.Add(ab);
-				}
-			}
+            for (int i = 0; i < _abilityPrefabs.Count; i++)
+            {
+                var prefab = _abilityPrefabs[i];
+                if (prefab != null && prefab.GetComponent<IUnitAbility>() != null)
+                {
+                    GameObject go = Instantiate(prefab);
+                    go.transform.SetParent(transform);
+                    go.transform.localPosition = Vector3.zero;
+                    go.transform.localRotation = Quaternion.identity;
 
-			for (int i = 0, count = _abilitityList.Count; i < count; i++)
-			{
-				var ability = _abilitityList[i];
-				ability.SetupInstance(this);
-			}
-		}
+                    var ab = go.GetComponent<IUnitAbility>();
+                    if (ab != null)
+                        _abilitityList.Add(ab);
+                }
+            }
 
-		void InitAnimatorStateAbilities()
-		{
-			if (_animator != null)
-			{
-				var stateAbility = _animator.GetBehaviours<AnimatorStateAbility>();
-				foreach (var s in stateAbility)
-				{
-					_abilitityList.Add(s);
-					s.SetupInstance(this);
-				}
-			}
-		}
+            for (int i = 0, count = _abilitityList.Count; i < count; i++)
+            {
+                var ability = _abilitityList[i];
+                ability.SetupInstance(this);
+            }
+        }
 
-		void InitPlayerMakerStateAbilities()
-		{
-			var fsms = GetComponentsInChildren<PlayMakerFSM>();
-			for(var i = 0; i < fsms.Length; i++)
-			{
-				var fsm = fsms[i];
-				for (var j = 0; j < fsm.FsmStates.Length; j++)
-				{
-					var s = fsm.FsmStates[j];
-					SetupFsmStates(s);
-				}
-			}
-		}
-		void SetupFsmStates(HutongGames.PlayMaker.FsmState state)
-		{
-			for (var j = 0; j < state.Actions.Length; j++)
-			{
-				var action = state.Actions[j];
-				if (action is IUnitAbility)
-				{
-					var ab = (IUnitAbility)action;
-					_abilitityList.Add(ab);
-					ab.SetupInstance(this);
-				}
-			}
-		}
+        void InitAnimatorStateAbilities()
+        {
+            if (_animator != null)
+            {
+                var stateAbility = _animator.GetBehaviours<AnimatorStateAbility>();
+                foreach (var s in stateAbility)
+                {
+                    _abilitityList.Add(s);
+                    s.SetupInstance(this);
+                }
+            }
+        }
 
-		public void Resume()
-		{
-			Fsm.SendEvent("Resume");
-		}
-		public void Pause()
-		{
-			Fsm.SetState("Pause");
-		}
+        void InitPlayerMakerStateAbilities()
+        {
+            var fsms = GetComponentsInChildren<PlayMakerFSM>();
+            for (var i = 0; i < fsms.Length; i++)
+            {
+                var fsm = fsms[i];
+                for (var j = 0; j < fsm.FsmStates.Length; j++)
+                {
+                    var s = fsm.FsmStates[j];
+                    SetupFsmStates(s);
+                }
+            }
+        }
+        void SetupFsmStates(HutongGames.PlayMaker.FsmState state)
+        {
+            for (var j = 0; j < state.Actions.Length; j++)
+            {
+                var action = state.Actions[j];
+                if (action is IUnitAbility)
+                {
+                    var ab = (IUnitAbility)action;
+                    _abilitityList.Add(ab);
+                    ab.SetupInstance(this);
+                }
+            }
+        }
 
-		public void CreateAbilityIDMap(IUnitAbility a)
-		{
-			var id = string.Format("{0}_{1}", a.Name, a.GetType().Name);
-			if (_idToAbilityMapping.ContainsKey(id))
-			{
-				Debug.LogErrorFormat(this, "id dupicate {0}", id);
-				Debug.Break();
-			}
-			_idToAbilityMapping.Add(id, a);
-			_abilityToIdMapping.Add(a, id);
-		}
+        public void Resume()
+        {
+            Fsm.SendEvent("Resume");
+        }
+        public void Pause()
+        {
+            Fsm.SetState("Pause");
+        }
 
-		public void AddAbilityToListOnSetup(IUnitAbility a)
-		{
-			_abilitityList.Add(a);
-			a.SetupInstance(this);
-		}
-		public void AddAbilityToListOnInit(IUnitAbility a)
-		{
-			_abilitityList.Add(a);
-			a.SetupInstance(this);
-			CreateAbilityIDMap(a);
+        public void EnableAI()
+        {
+            AI.EnableAI();
+        }
+        public void DisableAI()
+        {
+            AI.DisableAI();
+        }
 
-			a.Init();
-		}
-		public void AddAblityAndAfterInit(IUnitAbility a)
-		{
-			_abilitityList.Add(a);
-			a.SetupInstance(this);
-			CreateAbilityIDMap(a);
+        public void CreateAbilityIDMap(IUnitAbility a)
+        {
+            if (_idToAbilityMapping.ContainsKey(a.AbilityID))
+            {
+                Debug.LogErrorFormat(this, "id dupicate {0}", a.AbilityID);
+                Debug.Break();
+            }
+            _idToAbilityMapping.Add(a.AbilityID, a);
+        }
 
-			a.Init();
-			a.LateInit();
-		}
+        public void AddAbilityToListOnSetup(IUnitAbility a)
+        {
+            _abilitityList.Add(a);
+            a.SetupInstance(this);
+        }
+        public void AddAbilityToListOnInit(IUnitAbility a)
+        {
+            _abilitityList.Add(a);
+            a.SetupInstance(this);
+            CreateAbilityIDMap(a);
 
-		public IUnitAbility GetAbility(string abilityName)
-		{
-			for(var i = 0; i< _abilitityList.Count; i++)
-			{
-				if (_abilitityList[i].Name == abilityName)
-					return _abilitityList[i];
-			}
+            a.Init();
+        }
+        public void AddAblityAndAfterInit(IUnitAbility a)
+        {
+            _abilitityList.Add(a);
+            a.SetupInstance(this);
+            CreateAbilityIDMap(a);
 
-			return null;
-		}
+            a.Init();
+            a.LateInit();
+        }
 
-		public T GetAbility<T>()
-		{
-			for (var i = 0; i < _abilitityList.Count; i++)
-			{
-				if (_abilitityList[i] is T)
-					return (T)_abilitityList[i];
-			}
+        public IUnitAbility GetAbilityByID(string abilityID)
+        {
+            for (var i = 0; i < _abilitityList.Count; i++)
+            {
+                if (_abilitityList[i].AbilityID == abilityID)
+                    return _abilitityList[i];
+            }
 
-			return default(T);
-		}
+            return null;
+        }
 
-		public IEnumerable<T> GetAllAbilities<T>()
-		{
-			var ret = _abilitityList.Where(a => a is T).Select(a => (T)a);
-			return ret;
-		}
+        public T GetAbility<T>()
+        {
+            for (var i = 0; i < _abilitityList.Count; i++)
+            {
+                if (_abilitityList[i] is T)
+                    return (T)_abilitityList[i];
+            }
 
-		public T GetAbility<T>(string abilityName)
-		{
-			for (var i = 0; i < _abilitityList.Count; i++)
-			{
-				if (_abilitityList[i].Name == abilityName && _abilitityList[i] is T)
-					return (T)_abilitityList[i];
-			}
+            return default(T);
+        }
 
-			return default(T);
-		}
-		public T GetAbility<T>(Func<T, bool> match)
-		{
-			for (var i = 0; i < _abilitityList.Count; i++)
-			{
-				if (_abilitityList[i] is T && match((T)_abilitityList[i]))
-					return (T)_abilitityList[i];
-			}
+        public IEnumerable<T> GetAllAbilities<T>()
+        {
+            var ret = _abilitityList.Where(a => a is T).Select(a => (T)a);
+            return ret;
+        }
 
-			return default(T);
-		}
+        public T GetAbility<T>(string abilityID)
+        {
+            for (var i = 0; i < _abilitityList.Count; i++)
+            {
+                if (_abilitityList[i].AbilityID == abilityID && _abilitityList[i] is T)
+                    return (T)_abilitityList[i];
+            }
 
-		public void SendAbilityRPC(IUnitAbility ability, string methodName, object[] parameters)
-		{
-			if (PhotonNetwork.offlineMode || _view == null || !PhotonNetwork.connected)
-			{
-				CallAbilityMethod(ability, methodName, parameters);
-			}
-			else
-			{
-				PhotonNetwork.RPC(_view, "RPCAbilityMethod", PhotonTargets.All, false, _abilityToIdMapping[ability], methodName, parameters);
-				PhotonNetwork.SendOutgoingCommands();
-			}
-		}
+            return default(T);
+        }
+        public T GetAbility<T>(Func<T, bool> match)
+        {
+            for (var i = 0; i < _abilitityList.Count; i++)
+            {
+                if (_abilitityList[i] is T && match((T)_abilitityList[i]))
+                    return (T)_abilitityList[i];
+            }
 
-		[PunRPC]
-		void RPCAbilityMethod(string abilityID, string methodName, object[] parameters)
-		{
-			IUnitAbility ability;
-			if (!_idToAbilityMapping.TryGetValue(abilityID, out ability))
-			{
-				return;
-			}
+            return default(T);
+        }
 
-			CallAbilityMethod(ability, methodName, parameters);
-		}
+        public void SendAbilityRPC(IUnitAbility ability, string methodName, object[] parameters)
+        {
+            if (PhotonNetwork.offlineMode || _view == null || !PhotonNetwork.connected)
+            {
+                CallAbilityMethod(ability, methodName, parameters);
+            }
+            else
+            {
 
-		void CallAbilityMethod(IUnitAbility ability, string methodName, object[] parameters)
-		{
-			var methodInfo = ability.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-			if (methodInfo == null)
-			{
-				return;
-			}
-			try
-			{
-				methodInfo.Invoke(ability, parameters);
-			}
-			catch (Exception e)
-			{
-				Debug.LogException(e);
-			}
-		}
+                PhotonNetwork.RPC(_view, "RPCAbilityMethod", PhotonTargets.All, false, ability.AbilityID, methodName, parameters);
+                PhotonNetwork.SendOutgoingCommands();
+            }
+        }
 
-		public virtual void TriggerEvent(BattleUnitEvent @event)
-		{
-			if (EventDispatcher != null)
-				EventDispatcher.TriggerEvent(@event);
-		}
+        [PunRPC]
+        void RPCAbilityMethod(string abilityID, string methodName, object[] parameters)
+        {
+            IUnitAbility ability;
+            if (!_idToAbilityMapping.TryGetValue(abilityID, out ability))
+            {
+                return;
+            }
 
-		void Update()
-		{
-			if (!_initialized)
-				return;
 
-			for (var i = 0; i < _abilitityList.Count; i++)
-			{
-				var a = _abilitityList[i];
-				if (a is IUnitAbilityUpdate)
-					((IUnitAbilityUpdate)a).OnUpdate();
-			};
-		}
+            CallAbilityMethod(ability, methodName, parameters);
+        }
 
-		public void OnUnitDestroy()
-		{
-			for (var i = 0; i < _abilitityList.Count; i++)
-			{
-				if(_abilitityList[i] is IUnitAbilityDestroy)
-				{
-					((IUnitAbilityDestroy)_abilitityList[i]).BeforeDestroy();
-				}
-			}
-		}
+        void CallAbilityMethod(IUnitAbility ability, string methodName, object[] parameters)
+        {
+            var methodInfo = ability.GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (methodInfo == null)
+            {
+                return;
+            }
 
-		private void OnDestroy()
-		{
-			if (_view != null)
-			{
-				var viewID = _view.viewID;
-				PhotonNetwork.manuallyAllocatedViewIds.Remove(viewID);
-			}
-		}
+            //var parameterInfo = methodInfo.GetParameters();
 
-		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-		{
+            ////foreach (var p in parameters)
+            ////{
+            ////	var type = p.GetType();
+            ////	Debug.Log("type : " + type.FullName + "  value : " + p);
+            ////}
+            ////foreach(var p in methodInfo.GetParameters())
+            ////{
+            ////	Debug.Log("method paramet type : " + p.ParameterType.FullName);
+            ////}
 
-		}
-	}
+            //if (parameterInfo.Length != parameters.Length)
+            //{
+            //	Debug.LogErrorFormat(this, "rpc call {0}.{1} failed. parameter length not equal", ability.Name, methodName);
+            //	return;
+            //}
+            //for (var i = 0; i < parameterInfo.Length; i++)
+            //{
+            //	if (parameterInfo[i].ParameterType == typeof(float) && parameters[i].GetType() == typeof(double))
+            //	{
+            //		parameters[i] = (float)((double)parameters[i]);
+            //	}
+            //}
+            try
+            {
+                methodInfo.Invoke(ability, parameters);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        public virtual void TriggerEvent(BattleUnitEvent @event)
+        {
+            if (EventDispatcher != null)
+                EventDispatcher.TriggerEvent(@event);
+        }
+
+        void Update()
+        {
+            if (!_initialized)
+                return;
+
+            for (var i = 0; i < _abilitityList.Count; i++)
+            {
+                var a = _abilitityList[i];
+                if (a is IUnitAbilityUpdate)
+                    ((IUnitAbilityUpdate)a).OnUpdate();
+            };
+        }
+
+        //public void OnUnitInactive()
+        //{
+        //	_unitState = UnitStateEnum.Inactive;
+        //}
+
+        public void OnUnitDestroy()
+        {
+            for (var i = 0; i < _abilitityList.Count; i++)
+            {
+                if (_abilitityList[i] is IUnitAbilityDestroy)
+                {
+                    ((IUnitAbilityDestroy)_abilitityList[i]).BeforeDestroy();
+                }
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_view != null)
+            {
+                var viewID = _view.viewID;
+                PhotonNetwork.manuallyAllocatedViewIds.Remove(viewID);
+            }
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+        }
+    }
 }

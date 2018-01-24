@@ -3,7 +3,7 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMakerEditor;
 using UnityEngine;
 
-namespace MechSquad.Fsm
+namespace IntimeWar.Fsm
 {
 	[CustomActionEditor(typeof(CallViewEvent))]
 	public class CallViewEventActionEditor : CustomActionEditor

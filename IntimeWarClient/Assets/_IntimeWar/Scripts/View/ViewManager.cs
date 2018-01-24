@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MechSquad.View
+namespace View
 {
 	public class ViewManager : MonoBehaviour
 	{
