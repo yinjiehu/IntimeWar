@@ -7,7 +7,7 @@ using System;
 
 namespace YJH.Unit
 {
-	public class Ability : MonoBehaviour, IUnitAbility, IUnitAbilityUpdate, IUnitAbilityDestroy
+	public class AllInput : Ability, IUnitMobilityInput, IUnitAttachmentInput
 	{
 		public virtual string Name { get { return name; } }
 		
@@ -18,7 +18,24 @@ namespace YJH.Unit
 		protected BattleUnit _unit;
 		public BattleUnit Unit { get { return _unit; } }
 
-		protected bool _animatorBasedBahaviour;
+        public bool Enabled { set; get; }
+
+        public Vector3? NormalizedMoveDirection { set; get; }
+        public bool[] AttachmentPress { set; get; }
+
+        public bool[] AttachmentHolding { set; get; }
+
+        public bool[] AttachmentRelease { set; get; }
+
+        public bool[] AttachmentClicked { set; get; }
+
+        public bool MainFireControlPress { set; get; }
+
+        public bool MainFireControlHoding { set; get; }
+
+        public bool MainFireControlRelease { set; get; }
+
+        protected bool _animatorBasedBahaviour;
 
 		[Serializable]
 		public struct FollowUnitModel

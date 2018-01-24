@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class DataMixerFloat
 	{

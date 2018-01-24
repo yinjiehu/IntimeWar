@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-namespace MechSquad.Event
+namespace YJH.Unit.Event
 {
 	public abstract class AbstractEventManager<TBindingInfo, TEvent> : MonoBehaviour where TBindingInfo : EventBindingInfo
 	{

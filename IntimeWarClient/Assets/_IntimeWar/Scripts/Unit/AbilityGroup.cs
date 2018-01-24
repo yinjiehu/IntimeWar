@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
-namespace  MechSquad.Battle
+namespace YJH.Unit
 {
 	public class AbilityGroup : MonoBehaviour, IUnitAbility
 	{

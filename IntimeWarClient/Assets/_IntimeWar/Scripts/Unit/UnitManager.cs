@@ -4,7 +4,7 @@ using Haruna.Inspector;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class UnitManager : MonoBehaviour
 	{

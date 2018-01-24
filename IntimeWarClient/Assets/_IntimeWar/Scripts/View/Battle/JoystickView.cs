@@ -5,7 +5,7 @@ using View;
 
 namespace IntimeWar.View
 {
-    public class BattleView : BaseView
+    public class JoystickView : BaseView
     {
         public override void Init()
         {

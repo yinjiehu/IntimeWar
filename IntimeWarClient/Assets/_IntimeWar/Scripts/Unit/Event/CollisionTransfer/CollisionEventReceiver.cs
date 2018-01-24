@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class CollisionEventReceiver : Ability
 	{

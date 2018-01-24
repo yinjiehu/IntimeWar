@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Linq;
-using MechSquad.Event;
 
-namespace MechSquad.Battle
+namespace YJH.Unit.Event
 {
 	public class UnitEventDispatcher : AbstractEventManager<EventBindingInfo, BattleUnitEvent>, IUnitAbility
 	{

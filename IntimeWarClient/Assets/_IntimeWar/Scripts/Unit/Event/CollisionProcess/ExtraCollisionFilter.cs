@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public interface IExtraCollisionFilter
 	{

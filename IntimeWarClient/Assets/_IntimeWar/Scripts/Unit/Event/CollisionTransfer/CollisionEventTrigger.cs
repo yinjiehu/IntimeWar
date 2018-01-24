@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class CollisionEventTrigger : Ability
 	{

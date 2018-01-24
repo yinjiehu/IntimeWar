@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Reflection;
+using YJH.Unit.Event;
+using YJH.Unit;
+using IntimeWar;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public enum UnitStateEnum
 	{

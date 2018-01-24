@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public interface IDamageCreator
 	{

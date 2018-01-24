@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-namespace MechSquad
+namespace YJH.Unit
 {
     public class UnitInitialParameter
     {

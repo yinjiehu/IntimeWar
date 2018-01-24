@@ -2,7 +2,7 @@
 using System;
 using Haruna.Inspector;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public static class Team
 	{

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class OnCollisionHit : CollisionTiggerProcessor, IDamageCreator
 	{

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public abstract class FsmStateAbility : HutongGames.PlayMaker.FsmStateAction, IUnitAbility
 	{

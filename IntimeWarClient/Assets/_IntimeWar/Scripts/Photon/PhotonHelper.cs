@@ -2,11 +2,12 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using YJH.Unit;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace MechSquad
+namespace IntimeWar
 {
     public enum PhotonClientEvCodeEnum : byte
     {

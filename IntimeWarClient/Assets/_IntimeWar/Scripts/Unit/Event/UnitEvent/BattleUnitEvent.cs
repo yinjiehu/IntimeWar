@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public class BattleUnitEvent 
 	{

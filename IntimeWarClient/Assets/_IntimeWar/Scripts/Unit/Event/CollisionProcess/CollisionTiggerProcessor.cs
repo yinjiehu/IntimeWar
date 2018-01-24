@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MechSquad.Battle
+namespace YJH.Unit
 {
 	public abstract class CollisionTiggerProcessor : Ability
 	{

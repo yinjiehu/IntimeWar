@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public static class PlayerPropertyKey
     {
