@@ -1,6 +1,6 @@
 ﻿
 
-namespace MechSquad
+namespace IntimeWar
 {
 	[Newtonsoft.Json.JsonObject(MemberSerialization = Newtonsoft.Json.MemberSerialization.Fields)]
 	public class CustomPref

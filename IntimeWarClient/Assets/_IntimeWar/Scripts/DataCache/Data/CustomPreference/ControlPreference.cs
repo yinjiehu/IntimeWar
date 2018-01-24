@@ -1,6 +1,6 @@
 ﻿
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public class ControlPref
 	{

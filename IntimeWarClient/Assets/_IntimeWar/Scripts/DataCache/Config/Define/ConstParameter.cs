@@ -1,5 +1,5 @@
 ﻿
-namespace MechSquad
+namespace IntimeWar
 {
 	public static class ConstParameter
 	{

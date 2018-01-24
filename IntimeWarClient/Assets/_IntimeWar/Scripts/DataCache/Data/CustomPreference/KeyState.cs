@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public interface IKeyState
 	{

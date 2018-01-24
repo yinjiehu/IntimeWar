@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public class KeyboardMouseBinding
 	{

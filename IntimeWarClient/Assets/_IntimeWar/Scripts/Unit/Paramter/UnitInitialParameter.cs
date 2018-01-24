@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Shared.Models;
 
 namespace YJH.Unit
 {
@@ -39,6 +40,13 @@ namespace YJH.Unit
 
 
         public static UnitInitialParameter Create(string typeID)
+        {
+            var ret = new UnitInitialParameter();
+
+            return ret;
+        }
+
+        public static UnitInitialParameter Create(PlayerStatus player)
         {
             var ret = new UnitInitialParameter();
 

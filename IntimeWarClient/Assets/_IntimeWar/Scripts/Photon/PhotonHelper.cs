@@ -279,7 +279,7 @@ namespace IntimeWar
             SetUnitTeam(1);
             SetSeqInTeam(0);
             SetClassify("Player");
-            //SetInitialParameter(UnitInitialParameter.Create(GlobalCache.GetPlayerStatus()));
+            SetInitialParameter(UnitInitialParameter.Create(GlobalCache.GetPlayerStatus()));
             //PhotonNetwork.player.SetVehicleAndPaint(currentTankStatus.TankTypeID, currentTankStatus.Paints.CurrentSelectedPaintID);
             //PhotonNetwork.player.SetInitialParameter(UnitInitialParam.Create(currentTankStatus.TankTypeID, Save.Player));
         }

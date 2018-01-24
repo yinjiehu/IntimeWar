@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System;
+using Shared.Models;
 
-namespace MechSquad
+namespace IntimeWar
 {
 	public static partial class GlobalCacheKey
 	{
@@ -19,13 +20,12 @@ namespace MechSquad
 
 	public partial class GlobalCache
 	{
-
-        //public static Shared.PlayerStatus GetPlayerStatus()
-        //{
-        //    object ret;
-        //    if (GlobalCache.TryGet(GlobalCacheKey.PlayerStatus, out ret))
-        //        return ret as Shared.PlayerStatus;
-        //    return null;
-        //}
+        public static PlayerStatus GetPlayerStatus()
+        {
+            object ret;
+            if (GlobalCache.TryGet(GlobalCacheKey.PlayerStatus, out ret))
+                return ret as PlayerStatus;
+            return null;
+        }
     }
 }
