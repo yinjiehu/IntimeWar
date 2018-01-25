@@ -9,8 +9,5 @@ namespace IntimeWar.View
         [SerializeField]
         HarunaJoyStick _left;
         public HarunaJoyStick Left { get { return _left; } }
-        [SerializeField]
-        HarunaJoyStick _right;
-        public HarunaJoyStick Right { get { return _right; } }
     }
 }

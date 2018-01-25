@@ -7,6 +7,9 @@ namespace Shared.Models
     [Serializable]
 	public class PlayerStatus
 	{
-		
+        public string PlayerClassify;
+        public float Level;
+        public string NickName;
+
 	}
 }

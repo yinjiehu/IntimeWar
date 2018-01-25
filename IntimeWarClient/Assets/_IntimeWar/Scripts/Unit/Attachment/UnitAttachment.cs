@@ -9,17 +9,17 @@ namespace YJH.Unit
 {
     public abstract class UnitAttachment : Ability, IUnitAttachment
     {
-        string _attachmentID;
-        public virtual string AttachmentID { set { _attachmentID = value; } get { return _attachmentID; } }
+        string _skillID;
+        public virtual string SkillID { set { _skillID = value; } get { return _skillID; } }
 
-        string _attachToSlotID;
-        public virtual string AttachToSlotID { set { _attachToSlotID = value; } get { return _attachToSlotID; } }
+        string _slotID;
+        public virtual string SlotID { set { _slotID = value; } get { return _slotID; } }
 
         public override string AbilityID
         {
             get
             {
-                return string.Format("{0}_{1}", AttachToSlotID, _attachmentID);
+                return string.Format("{0}_{1}", SlotID, _skillID);
             }
         }
     }

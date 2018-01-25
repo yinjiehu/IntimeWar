@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1722803135888236}
+  m_IsPrefabParent: 1
+--- !u!1 &1722803135888236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4527967080531568}
+  - component: {fileID: 114474471827310100}
+  m_Layer: 0
+  m_Name: IconSpriteSettingsCollection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4527967080531568
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1722803135888236}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.57098347, y: -0.5667139, z: -0.1640625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114474471827310100
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1722803135888236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e3fc28f07cff8e4b81a14ec339531c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _path: Assets/_IntimeWar/Texture/Battle/Icon
+  _prefabs:
+  - {fileID: 21300000, guid: 205e81cb9a6f6814a88d26dd39d0f963, type: 3}
+  - {fileID: 21300000, guid: 99e7c1a3cfc7e2344a0bbf3c0d4b9368, type: 3}
+  - {fileID: 21300000, guid: 8cc32258a45ecaa41a14ea9ddc240944, type: 3}
+  - {fileID: 21300000, guid: 25d0976550439364e9edbcfa7c5e080c, type: 3}
+  - {fileID: 21300000, guid: ebd5799e68cdd19448482387745c6073, type: 3}
+  - {fileID: 21300000, guid: b2c73a49ed93d354582ce7d2d0b06837, type: 3}
+  - {fileID: 21300000, guid: 9678e94206aca7f49ba9501530b2d602, type: 3}
+  - {fileID: 21300000, guid: db14680685d8b4747b91f8c6140f64e2, type: 3}
+  - {fileID: 21300000, guid: d76114a0e9edde54fbe49d5a9ca52d3c, type: 3}
+  - {fileID: 21300000, guid: 5f802c9bd92d0a24e87ee4707e20ebe9, type: 3}
+  - {fileID: 21300000, guid: 60a48416c81a72d40ae447548c061af4, type: 3}
+  - {fileID: 21300000, guid: c4d68beb28389b24baae49cc6fc61f38, type: 3}

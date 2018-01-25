@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using Shared.Models;
+using IntimeWar.Data;
 
 namespace IntimeWar
 {
@@ -12,9 +13,9 @@ namespace IntimeWar
         public const string Control = "Control";
         public const string Graphic = "Graphic";
         public const string Keys = "Keys";
-        public const string VehicleSettingsCollection = "VehicleSettingsCollection";
+        public const string PlayerSettingsCollection = "PlayerSettingsCollection";
 
-		public const string ActiveAttachmentSettingsCollection = "ActiveAttachmentSettingsCollection";
+		public const string SkillSettingsCollection = "SkillSettingsCollection";
 		public const string PassiveAttachmentSettingsCollection = "PassiveAttachmentSettingsCollection";
 	}
 
@@ -25,6 +26,27 @@ namespace IntimeWar
             object ret;
             if (GlobalCache.TryGet(GlobalCacheKey.PlayerStatus, out ret))
                 return ret as PlayerStatus;
+            return null;
+        }
+
+        public static void SetPlayerStatus(PlayerStatus player)
+        {
+            GlobalCache.Set(GlobalCacheKey.PlayerStatus, player);
+        }
+
+        public static PlayerSettingsCollection GetPlayerSettings()
+        {
+            object ret;
+            if (GlobalCache.TryGet(GlobalCacheKey.PlayerSettingsCollection, out ret))
+                return ret as PlayerSettingsCollection;
+            return null;
+        }
+
+        public static SkillSettingsCollection GetSkillSettings()
+        {
+            object ret;
+            if (GlobalCache.TryGet(GlobalCacheKey.SkillSettingsCollection, out ret))
+                return ret as SkillSettingsCollection;
             return null;
         }
     }

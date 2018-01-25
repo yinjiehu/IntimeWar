@@ -3,9 +3,32 @@ using UnityEngine.EventSystems;
 
 namespace Haruna.UI
 {
-	public class HarunaJoyStick : Haruna.UI.HarunaButton
-	{
-		Vector3 _defaultPadPosition;
+	public class HarunaJoyStick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+    {
+        public const float CLICK_JUDGE_SECONDS = 0.15f;
+
+        public enum StateEnum
+        {
+            None,
+            Press,
+            Down,
+            Release,
+        }
+        protected StateEnum _state = StateEnum.None;
+        public StateEnum CurrentState { get { return _state; } }
+
+        protected bool _previousDown;
+        public bool PreviousDown { get { return _previousDown; } }
+        protected bool _currentDown;
+        public bool CurrentDown { get { return _currentDown; } }
+        protected float _elapsedSecondsSinceDown;
+        public float ElapsedSecondsSinceDown { get { return _elapsedSecondsSinceDown; } }
+        public bool Clicked { get { return !_currentDown && _previousDown && _elapsedSecondsSinceDown <= CLICK_JUDGE_SECONDS; } }
+        public bool Holding { get { return _currentDown && _elapsedSecondsSinceDown > CLICK_JUDGE_SECONDS; } }
+        protected Vector2 _pressScreenPosition;
+        protected Vector2 _currentScreenPosition;
+
+        Vector3 _defaultPadPosition;
 		Vector3 _defaultStickPosition;
 
 		[SerializeField]
@@ -33,7 +56,7 @@ namespace Haruna.UI
 
 		Vector3 _pressWorldPosition;
 
-		[SerializeField]
+        [SerializeField]
 		float _maxRadius = 20f;
 		public float NormalizedDragDistance { set; get; }
 
@@ -46,7 +69,7 @@ namespace Haruna.UI
 			_defaultStickPosition = _stick.transform.position;
 		}
 
-		public override void OnPointerDown(PointerEventData eventData)
+		public void OnPointerDown(PointerEventData eventData)
 		{
 			_currentDown = true;
 			_elapsedSecondsSinceDown = 0;
@@ -64,18 +87,23 @@ namespace Haruna.UI
 			}
 		}
 
-		public override void OnPointerUp(PointerEventData eventData)
+		public void OnPointerUp(PointerEventData eventData)
 		{
-			base.OnPointerUp(eventData);
 			_elapsedSecondsSinceRelease = 0;
+            _currentScreenPosition = eventData.position;
+            _currentDown = false;
 
-			_pad.transform.position = _defaultPadPosition;
+            _pad.transform.position = _defaultPadPosition;
 			_stick.transform.position = _defaultStickPosition;
 		}
 
-		protected override void Update()
+        public void OnDrag(PointerEventData eventData)
+        {
+            _currentScreenPosition = eventData.position;
+        }
+
+        protected void Update()
 		{
-			base.Update();
 			PressPositionMemoryCheck();
 			DirectionCaluate();
 			UpdateDragNormalizedDistance();
@@ -146,5 +174,5 @@ namespace Haruna.UI
 				NormalizedDragDistance = 0;
 			}
 		}
-	}
+    }
 }

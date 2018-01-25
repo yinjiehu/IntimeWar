@@ -8,14 +8,14 @@ namespace YJH.Unit
         protected float _maxSpeed = 30;
         public float MaxSpeed { get { return _maxSpeed; } }
 
-        [SerializeField]
-        float _turnSpeed = 360f;
+        Vector3 _lastDirection;
+        public Vector3 LastDirection { get { return _lastDirection; } }
 
         Animator _animator;
         public override void Init()
         {
             base.Init();
-            //_maxSpeed = _unit.InitialParameter.GetParameter(ConstParameter.MaxSpeed);
+            _maxSpeed = _unit.InitialParameter.GetParameter("Mobility");
         }
 
         public override void LateInit()
@@ -28,9 +28,9 @@ namespace YJH.Unit
         {
             if (!_unit.IsControlByThisClient)
                 return;
-
             if (_normalizedMoveDirection != Vector3.zero)
             {
+                _lastDirection = _normalizedMoveDirection;
                 _unit.Model.GetComponent<Rigidbody2D>().velocity = new Vector2(_normalizedMoveDirection.x, _normalizedMoveDirection.y);
             }
             else

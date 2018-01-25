@@ -9,6 +9,7 @@ namespace YJH.Unit
 {
     public interface IUnitAttachment
     {
-        string AttachmentID { get; }
+        string SkillID { get; }
+        string SlotID { get; }
     }
 }

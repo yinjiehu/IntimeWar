@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1389174624927676}
+  m_IsPrefabParent: 1
+--- !u!1 &1389174624927676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4541580017547840}
+  - component: {fileID: 114939322030288400}
+  m_Layer: 0
+  m_Name: SkillPrefabCollection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4541580017547840
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1389174624927676}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114939322030288400
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1389174624927676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70fed2a03301cd24b831c3d95ed7e6d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _path: Assets/_IntimeWar/Prefabs/Skill
+  _prefabs:
+  - {fileID: 1850376783847088, guid: eace4854facd9b9409570c6da1d07322, type: 2}
+  - {fileID: 1577494217173822, guid: f7c39316e6367974c94ac54cb9c5140a, type: 2}
+  - {fileID: 1946126978924352, guid: 2a93664700c4e1c42b30efdb8cd35a60, type: 2}
+  - {fileID: 1216931583391320, guid: 9f6a7dbde6ce54d4c85f16fcb1de603a, type: 2}

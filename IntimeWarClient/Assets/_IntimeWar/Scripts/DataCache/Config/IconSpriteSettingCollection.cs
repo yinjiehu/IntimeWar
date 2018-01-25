@@ -16,11 +16,11 @@ namespace IntimeWar
 
 #if UNITY_EDITOR
 			//var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Prefabs/Data/Resources/IconCollection");
-			var prefab = Resources.Load<IconSpriteSettingCollection>("IconCollection");
+			var prefab = Resources.Load<IconSpriteSettingCollection>("IconSpriteSettingsCollection");
 #else
-			var prefab = Resources.Load<IconSpriteSettingCollection>("IconCollection");
+			var prefab = Resources.Load<IconSpriteSettingCollection>("IconSpriteSettingsCollection");
 #endif
-			_instance = Instantiate(prefab).GetComponent<IconSpriteSettingCollection>();
+            _instance = Instantiate(prefab).GetComponent<IconSpriteSettingCollection>();
 			_instance.name = prefab.name;
 			DontDestroyOnLoad(_instance);
 			return _instance;
@@ -45,40 +45,7 @@ namespace IntimeWar
 
 			return null;
 		}
-
-		public Sprite GetPassiveIcon(string attachmentID, bool throwExceptionWhenNotFound = true)
-		{
-			var iconName = "Icon_Passive_Attachment_" + attachmentID;
-			return Get(iconName, throwExceptionWhenNotFound);
-		}
-
-		public Sprite GetAttPurposeIcon(string purposeType, bool throwExceptionWhenNotFound = true)
-		{
-			var iconName = "Icon_Attachment_Purpose_" + purposeType;
-			return Get(iconName, throwExceptionWhenNotFound);
-		}
-		public Sprite GetAttCategoryIcon(string category, bool throwExceptionWhenNotFound = true)
-		{
-			var iconName = "Icon_Attachment_Category_" + category;
-			return Get(iconName, throwExceptionWhenNotFound);
-		}
-		public Sprite GetAttButtonIcon(string category, bool throwExceptionWhenNotFound = true)
-		{
-			var iconName = "Icon_Attachment_Btn_" + category;
-			return Get(iconName, throwExceptionWhenNotFound);
-		}
-		public Sprite GetVehicleIcon(string vehicleIcon, bool throwExceptionWhenNotFound = true)
-		{
-			var iconName = "Icon_Vehicle_Icon_" + vehicleIcon;
-			return Get(iconName, throwExceptionWhenNotFound);
-		}
-		public Sprite GetVehicleImage(string vehicleIcon, bool throwExceptionWhenNotFound = true)
-		{
-			var iconName = "Icon_Vehicle_Image_" + vehicleIcon;
-			return Get(iconName, throwExceptionWhenNotFound);
-		}
-
-
+		
 
 #if UNITY_EDITOR
 		[SerializeField]

@@ -35,9 +35,11 @@ namespace Haruna.UI
 		public bool Clicked { get { return !_currentDown && _previousDown && _elapsedSecondsSinceDown <= CLICK_JUDGE_SECONDS; } }
 		public bool Holding { get { return _currentDown && _elapsedSecondsSinceDown > CLICK_JUDGE_SECONDS; } }
 
+        bool _tempDown = false;
+
 		public virtual void OnPointerDown(PointerEventData eventData)
 		{
-			_currentDown = true;
+            _tempDown = true;
 			_elapsedSecondsSinceDown = 0;
 			
 			_currentScreenPosition = _pressScreenPosition = eventData.pressPosition;
@@ -45,7 +47,7 @@ namespace Haruna.UI
 
 		public virtual void OnPointerUp(PointerEventData eventData)
 		{
-			_currentDown = false;
+            _tempDown = false;
 			_currentScreenPosition = eventData.position;
 		}
 
@@ -69,6 +71,8 @@ namespace Haruna.UI
 				_elapsedSecondsSinceDown += Time.deltaTime;
 
 			_previousDown = _currentDown;
+
+            _currentDown = _tempDown;
 		}
 	}
 }

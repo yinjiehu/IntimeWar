@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using HutongGames.PlayMaker;
+using IntimeWar.Battle;
 
 namespace YJH.Unit
 {
@@ -41,8 +42,14 @@ namespace YJH.Unit
                     var holding = IsAnyInputHolding(inputNo);
                     var click = IsAnyInputClick(inputNo);
 
-
-                    
+                    if (attachment is INormalAttack)
+                    {
+                        var normal = attachment as INormalAttack;
+                        if(press)
+                        {
+                            normal.Attack();
+                        }
+                    }
                 }
             }
         }

@@ -3,13 +3,14 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Shared.Models;
+using IntimeWar;
 
 namespace YJH.Unit
 {
     public class UnitInitialParameter
     {
         Dictionary<string, float> _basicParameters = new Dictionary<string, float>();
-        Dictionary<string, string> _activeSlotAttachments = new Dictionary<string, string>();
+        Dictionary<int, string> _skills = new Dictionary<int, string>();
 
         public float GetParameter(string type)
         {
@@ -33,9 +34,9 @@ namespace YJH.Unit
         }
 
 
-        public Dictionary<string, string> GetActiveSlotAttachments()
+        public Dictionary<int, string> GetSkills()
         {
-            return _activeSlotAttachments;
+            return _skills;
         }
 
 
@@ -48,8 +49,17 @@ namespace YJH.Unit
 
         public static UnitInitialParameter Create(PlayerStatus player)
         {
+            var collection = GlobalCache.GetPlayerSettings();
+            var settings = collection.Get(player.PlayerClassify);
             var ret = new UnitInitialParameter();
-
+            ret._basicParameters.Add("BodyHp", settings.GetParameter("BodyHp"));
+            ret._basicParameters.Add("Mobility", settings.GetParameter("Mobility"));
+            int n = 0;
+            foreach(var skill in settings.Skills)
+            {
+                ret._skills.Add(n, skill);
+                n++;
+            }
             return ret;
         }
 
@@ -62,6 +72,12 @@ namespace YJH.Unit
                 foreach (var kv in _basicParameters)
                 {
                     parameter.Add(kv.Key, kv.Value);
+                }
+                parameter = new ExitGames.Client.Photon.Hashtable();
+                ret.Add(1, parameter);
+                foreach (var sk in _skills)
+                {
+                    parameter.Add(sk.Key, sk.Value);
                 }
             }
 
@@ -76,6 +92,12 @@ namespace YJH.Unit
                 foreach (var kv in parameter)
                 {
                     ret._basicParameters.Add((string)kv.Key, (float)kv.Value);
+                }
+
+                parameter = table[1] as ExitGames.Client.Photon.Hashtable;
+                foreach(var sk in parameter)
+                {
+                    ret._skills.Add((int)sk.Key, (string)sk.Value);
                 }
             }
             return ret;

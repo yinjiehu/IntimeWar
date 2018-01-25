@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Linq;
 using YJH.Unit;
+using Shared.Models;
+using Demo;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -256,7 +258,7 @@ namespace IntimeWar
         public static UnitInitialParameter GetInitialParameter(this PhotonPlayer photonPlayer)
         {
             if (PhotonNetwork.offlineMode)
-                return null;
+                return UnitInitialParameter.Create(GlobalCache.GetPlayerStatus());
 
             object value;
             if (photonPlayer.CustomProperties.TryGetValue(PlayerPropertyKey.InitialParam, out value))
@@ -274,11 +276,16 @@ namespace IntimeWar
         public static void CreateOfflinePhotonPlayerProperties()
         {
             PhotonNetwork.offlineMode = true;
+            DemoPlayerSettings.InitSettings();
+            DemoSkillSettings.InitSettings();
             //PhotonNetwork.player.UserId = Save.Account.Uid;
             //PhotonNetwork.player.NickName = Save.Player.Basic.NickName;
+            var player = new PlayerStatus();
+            player.PlayerClassify = "Player_1_1";
+            GlobalCache.SetPlayerStatus(player);
             SetUnitTeam(1);
             SetSeqInTeam(0);
-            SetClassify("Player");
+            SetClassify("Player_1_1");
             SetInitialParameter(UnitInitialParameter.Create(GlobalCache.GetPlayerStatus()));
             //PhotonNetwork.player.SetVehicleAndPaint(currentTankStatus.TankTypeID, currentTankStatus.Paints.CurrentSelectedPaintID);
             //PhotonNetwork.player.SetInitialParameter(UnitInitialParam.Create(currentTankStatus.TankTypeID, Save.Player));
