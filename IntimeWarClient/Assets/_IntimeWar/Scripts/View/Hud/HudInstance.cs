@@ -72,7 +72,9 @@ namespace IntimeWar.View
 
             var worldPosition = _followTransform.position;
             var screenPoint = WorldCamera.WorldToScreenPoint(worldPosition);
+            screenPoint.z = 0;
             var uiPosition = _uiCamera.ScreenToWorldPoint(screenPoint);
+            //GetComponent<RectTransform>().anchoredPosition = uiPosition + _offset;
             transform.position = uiPosition + _offset;
             //transform.position = transform.parent.InverseTransformPoint(uiPosition);
 

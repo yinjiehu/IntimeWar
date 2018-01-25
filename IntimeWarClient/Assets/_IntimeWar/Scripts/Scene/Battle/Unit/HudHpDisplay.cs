@@ -23,7 +23,7 @@ namespace IntimeWar.Unit
 
             var hudInstance = ViewManager.Instance.GetView<HudView>().CreateFromPrefab(_hudPrefab);
             _hudHpInstance = hudInstance.GetComponent<HudHp>();
-            _hudHpInstance.SetUnitAndStartFollow(_unit, transform);
+            _hudHpInstance.SetUnitAndStartFollow(_unit, _unit.Model);
             _hudHpInstance.SetVisible(true);
         }
 

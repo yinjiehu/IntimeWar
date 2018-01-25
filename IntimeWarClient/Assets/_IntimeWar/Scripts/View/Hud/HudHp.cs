@@ -29,10 +29,6 @@ namespace IntimeWar.View
         BattleUnit _observerUnit;
         UnitBody _body;
 
-        [SerializeField]
-        Image _armorHpBack;
-        [SerializeField]
-        Image _armorHpFront;
 
         [SerializeField]
         Image _bodyHpBack;
@@ -48,9 +44,6 @@ namespace IntimeWar.View
 
         float _previousBodyHp;
         float _targetBodyHpAmount;
-
-        float _previousArmorHp;
-        float _targetArmorHpAmount;
 
         [SerializeField]
         float _frontDownSpeed;
@@ -179,19 +172,10 @@ namespace IntimeWar.View
             }
         }
 
-        //public void Show()
-        //{
-        //	_hideTweener.enabled = false;
-        //	_canvasGroup.alpha = 1;
-
-        //	_elapsedTime = 0;
-        //	_state = StateEnum.Shown;
-        //}
 
         public void SetVisible(bool visible)
         {
             _canvasGroup.alpha = visible ? 1 : 0;
-            //_state = StateEnum.Hided;
         }
     }
 }
