@@ -25,6 +25,32 @@ namespace IntimeWar.Unit
             _hudHpInstance = hudInstance.GetComponent<HudHp>();
             _hudHpInstance.SetUnitAndStartFollow(_unit, _unit.Model);
             _hudHpInstance.SetVisible(true);
+
+
+            OnBodyVisibleChange(_unit.STS.BodyVisible.GetValue());
+            OnUIVisibleChange(_unit.STS.UIVisible.Value);
+            _unit.STS.UIVisible.EvOnValueChange += OnUIVisibleChange;
+            _unit.STS.BodyVisible.EvOnValueChange += OnBodyVisibleChange;
+
+        }
+        private void OnBodyVisibleChange(bool visible)
+        {
+            _bodyVisible = visible;
+        }
+
+        private void OnUIVisibleChange(bool visible)
+        {
+            if (visible || _unit.Team != PhotonNetwork.player.GetUnitTeam())
+                _uiVisible = visible;
+
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            if (_hudHpInstance != null)
+                _hudHpInstance.SetVisible(_bodyVisible && _uiVisible);
         }
 
         public override void BeforeDestroy()

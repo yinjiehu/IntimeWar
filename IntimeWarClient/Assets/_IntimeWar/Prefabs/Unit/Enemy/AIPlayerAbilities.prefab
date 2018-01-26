@@ -384,12 +384,14 @@ MonoBehaviour:
       actionData:
         actionNames:
         - HutongGames.PlayMaker.Actions.Wait
+        - YJH.Unit.BasicStatusControl
         customNames:
         - 
-        actionEnabled: 01
-        actionIsOpen: 01
-        actionStartIndex: 00000000
-        actionHashCodes: 48c01101
+        - 
+        actionEnabled: 0101
+        actionIsOpen: 0101
+        actionStartIndex: 0000000003000000
+        actionHashCodes: 48c0110155047a05
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -411,7 +413,13 @@ MonoBehaviour:
           showInInspector: 0
           networkSync: 0
           value: 0.1
-        fsmIntParams: []
+        fsmIntParams:
+        - useVariable: 1
+          name: BodyVisibleControlSeq
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: -1
         fsmBoolParams: []
         fsmVector2Params: []
         fsmVector3Params: []
@@ -420,18 +428,22 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - FINISHED
-        byteData: 00
+        byteData: 00000000
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 0f0000001700000001000000
+        paramDataType: 0f000000170000000100000001000000100000000100000001000000
         paramName:
         - time
         - finishEvent
         - realTime
-        paramDataPos: 000000000000000000000000
-        paramByteDataSize: 000000000000000001000000
+        - IsDead
+        - BodyVisibleControlSeq
+        - BodyVisible
+        - UIVisible
+        paramDataPos: 00000000000000000000000001000000000000000200000003000000
+        paramByteDataSize: 00000000000000000100000001000000000000000100000001000000
     - name: Normal
       description: 
       colorIndex: 0
@@ -459,15 +471,17 @@ MonoBehaviour:
         - YJH.Unit.ReceiveAttachmentInput
         - IntimeWar.Unit.PathFinding
         - YJH.Unit.ReceiveDamageEvent
+        - YJH.Unit.BasicStatusControl
         customNames:
         - 
         - 
         - 
         - 
-        actionEnabled: 01010101
-        actionIsOpen: 01010101
-        actionStartIndex: 00000000000000000000000001000000
-        actionHashCodes: 00000000000000008861160400000000
+        - 
+        actionEnabled: 0101010101
+        actionIsOpen: 0101010101
+        actionStartIndex: 0000000000000000000000000100000001000000
+        actionHashCodes: 0000000000000000886116040000000055047a05
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -483,7 +497,13 @@ MonoBehaviour:
         fsmArrayParams: []
         fsmEnumParams: []
         fsmFloatParams: []
-        fsmIntParams: []
+        fsmIntParams:
+        - useVariable: 1
+          name: BodyVisibleControlSeq
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: -1
         fsmBoolParams: []
         fsmVector2Params: []
         fsmVector3Params: []
@@ -492,16 +512,20 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - Next
-        byteData: 
+        byteData: 000101
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 17000000
+        paramDataType: 1700000001000000100000000100000001000000
         paramName:
         - Next
-        paramDataPos: 00000000
-        paramByteDataSize: 00000000
+        - IsDead
+        - BodyVisibleControlSeq
+        - BodyVisible
+        - UIVisible
+        paramDataPos: 0000000000000000000000000100000002000000
+        paramByteDataSize: 0000000001000000000000000100000001000000
     - name: RandomAttack
       description: 
       colorIndex: 0
@@ -527,13 +551,15 @@ MonoBehaviour:
         actionNames:
         - IntimeWar.Unit.RandomAttack
         - YJH.Unit.ReceiveDamageEvent
+        - YJH.Unit.BasicStatusControl
         customNames:
         - 
         - 
-        actionEnabled: 0101
-        actionIsOpen: 0101
-        actionStartIndex: 0000000001000000
-        actionHashCodes: 8861160400000000
+        - 
+        actionEnabled: 010101
+        actionIsOpen: 010101
+        actionStartIndex: 000000000100000001000000
+        actionHashCodes: 886116040000000055047a05
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -549,7 +575,13 @@ MonoBehaviour:
         fsmArrayParams: []
         fsmEnumParams: []
         fsmFloatParams: []
-        fsmIntParams: []
+        fsmIntParams:
+        - useVariable: 1
+          name: BodyVisibleControlSeq
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: -1
         fsmBoolParams: []
         fsmVector2Params: []
         fsmVector3Params: []
@@ -558,16 +590,20 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - Next
-        byteData: 
+        byteData: 000101
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 17000000
+        paramDataType: 1700000001000000100000000100000001000000
         paramName:
         - Next
-        paramDataPos: 00000000
-        paramByteDataSize: 00000000
+        - IsDead
+        - BodyVisibleControlSeq
+        - BodyVisible
+        - UIVisible
+        paramDataPos: 0000000000000000000000000100000002000000
+        paramByteDataSize: 0000000001000000000000000100000001000000
     - name: Dead
       description: 
       colorIndex: 0
@@ -592,12 +628,14 @@ MonoBehaviour:
       actionData:
         actionNames:
         - IntimeWar.Unit.Dead
+        - YJH.Unit.BasicStatusControl
         customNames:
         - 
-        actionEnabled: 01
-        actionIsOpen: 01
-        actionStartIndex: 00000000
-        actionHashCodes: 88611604
+        - 
+        actionEnabled: 0101
+        actionIsOpen: 0101
+        actionStartIndex: 0000000001000000
+        actionHashCodes: 8861160455047a05
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -613,7 +651,13 @@ MonoBehaviour:
         fsmArrayParams: []
         fsmEnumParams: []
         fsmFloatParams: []
-        fsmIntParams: []
+        fsmIntParams:
+        - useVariable: 1
+          name: BodyVisibleControlSeq
+          tooltip: 
+          showInInspector: 0
+          networkSync: 0
+          value: -1
         fsmBoolParams: []
         fsmVector2Params: []
         fsmVector3Params: []
@@ -622,16 +666,20 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - Next
-        byteData: 
+        byteData: 010000
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 17000000
+        paramDataType: 1700000001000000100000000100000001000000
         paramName:
         - Next
-        paramDataPos: 00000000
-        paramByteDataSize: 00000000
+        - IsDead
+        - BodyVisibleControlSeq
+        - BodyVisible
+        - UIVisible
+        paramDataPos: 0000000000000000000000000100000002000000
+        paramByteDataSize: 0000000001000000000000000100000001000000
     events:
     - name: FINISHED
       isSystemEvent: 1
@@ -642,7 +690,13 @@ MonoBehaviour:
     globalTransitions: []
     variables:
       floatVariables: []
-      intVariables: []
+      intVariables:
+      - useVariable: 1
+        name: BodyVisibleControlSeq
+        tooltip: 
+        showInInspector: 0
+        networkSync: 0
+        value: -1
       boolVariables: []
       stringVariables: []
       vector2Variables: []
@@ -658,7 +712,7 @@ MonoBehaviour:
       enumVariables: []
       categories:
       - 
-      variableCategoryIDs: 
+      variableCategoryIDs: 00000000
     description: 
     docUrl: 
     showStateLabel: 1

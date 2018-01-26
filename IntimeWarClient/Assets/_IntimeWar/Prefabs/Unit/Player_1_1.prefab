@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 114433862618892424}
   - component: {fileID: 114904029370608130}
   - component: {fileID: 61501831846787028}
+  - component: {fileID: 114508313776549346}
   m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
@@ -249,6 +250,7 @@ MonoBehaviour:
     CustomFollowName: 
     FollowModelPosition: 0
     FollowModelRotation: 0
+  _isPartialUnit: 0
 --- !u!114 &114499089803700482
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -314,6 +316,22 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &114508313776549346
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668349080601642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8845a4e096fa3be4082df213d928e990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _followParameter:
+    FollowType: 0
+    CustomFollowName: 
+    FollowModelPosition: 0
+    FollowModelRotation: 0
 --- !u!114 &114534148523174952
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -10,6 +10,7 @@ namespace Shared.Models
         public string PlayerClassify;
         public float Level;
         public string NickName;
+        public int Money;
 
 	}
 }

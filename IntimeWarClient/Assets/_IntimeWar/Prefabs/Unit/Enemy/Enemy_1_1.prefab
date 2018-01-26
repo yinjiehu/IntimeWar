@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 61799472783526236}
   - component: {fileID: 114556373494067916}
   - component: {fileID: 114842489012289172}
+  - component: {fileID: 114765817155328084}
   m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
@@ -330,6 +331,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f11c3099f59f7dc4a97b758fb55f8c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _followParameter:
+    FollowType: 0
+    CustomFollowName: 
+    FollowModelPosition: 0
+    FollowModelRotation: 0
+  _isPartialUnit: 0
+--- !u!114 &114765817155328084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668349080601642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8845a4e096fa3be4082df213d928e990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _followParameter:

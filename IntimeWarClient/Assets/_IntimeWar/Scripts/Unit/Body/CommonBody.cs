@@ -14,7 +14,6 @@ namespace YJH.Unit
 
         HudView _hudView;
 
-
         public override void Init()
         {
             _currentHp = _maxHp;
@@ -28,8 +27,8 @@ namespace YJH.Unit
                 if (v)
                     ResetToMaxHP();
             };
-        }
 
+        }
 
         public override void OnUpdate()
         {
