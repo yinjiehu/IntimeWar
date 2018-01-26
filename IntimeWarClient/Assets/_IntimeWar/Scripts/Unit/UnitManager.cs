@@ -62,7 +62,39 @@ namespace YJH.Unit
 			return null;
 		}
 
-		public void AddUnit(BattleUnit unit)
+        public BattleUnit GetNearestPlayer(Vector3 position)
+        {
+            BattleUnit unit = null;
+            float distance = float.MaxValue;
+            foreach(var p in _playerUnits)
+            {
+                var temp = Vector3.Distance(p.Model.position, position);
+                if (temp < distance)
+                {
+                    unit = p;
+                    distance = temp;
+                }
+            }
+            return unit;
+        }
+
+        public BattleUnit GetNearestUnit(int seqNo, Vector3 position, float range)
+        {
+            BattleUnit unit = null;
+            float distance = range;
+            foreach (var p in _allUnitList)
+            {
+                var temp = Vector3.Distance(p.Model.position, position);
+                if (temp < distance && p.Info.SeqNo != seqNo)
+                {
+                    unit = p;
+                    distance = temp;
+                }
+            }
+            return unit;
+        }
+
+        public void AddUnit(BattleUnit unit)
 		{
 			if(unit.NoSequenceUnit)
 			{
@@ -75,30 +107,16 @@ namespace YJH.Unit
 			else
 				_unitsInAllTeam.Add(unit);
 
-			//Event.CurrentSceneEventManager.Instance.TriggerEvent(new UnitGenerateEvent()
-			//{
-			//	Unit = unit
-			//});
 		}
 
 		public void DestroyUnitItsSelf(BattleUnit unit, bool destroyGameObject = true)
 		{
 			DestroyUnit(unit, destroyGameObject);
-			//Event.CurrentSceneEventManager.Instance.TriggerEvent(new UnitDestroyEvent()
-			//{
-			//	DestroyType = UnitDestroyEvent.DestroyTypeEnum.Disappear,
-			//	Unit = unit
-			//});
 		}
 
 		public void DestroyUnitByAttack(BattleUnit unit, bool destroyGameObject = true)
 		{
 			DestroyUnit(unit, destroyGameObject);
-			//Event.CurrentSceneEventManager.Instance.TriggerEvent(new UnitDestroyEvent()
-			//{
-			//	DestroyType = UnitDestroyEvent.DestroyTypeEnum.ByAttack,
-			//	Unit = unit
-			//});
 		}
 
 		void DestroyUnit(BattleUnit unit, bool destroyGameObject)
@@ -116,20 +134,4 @@ namespace YJH.Unit
 			}
 		}
 	}
-
-	//public class UnitGenerateEvent : Event.CurrentSceneEvent
-	//{
-	//	public BattleUnit Unit;
-	//}
-
-	//public class UnitDestroyEvent : Event.CurrentSceneEvent
-	//{
-	//	public enum DestroyTypeEnum
-	//	{
-	//		ByAttack,
-	//		Disappear
-	//	}
-	//	public DestroyTypeEnum DestroyType;
-	//	public BattleUnit Unit;
-	//}
 }

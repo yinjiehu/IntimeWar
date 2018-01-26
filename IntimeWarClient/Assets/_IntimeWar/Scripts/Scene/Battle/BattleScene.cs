@@ -21,6 +21,9 @@ namespace IntimeWar.Battle
 
         public void AddKillCount(int attackerActorID, int receiverActorID)
         {
+            if (PhotonNetwork.offlineMode)
+                return;
+
             this.GetPhotonView().RPC("RPCKillTip", PhotonTargets.All, PhotonHelper.GetPlayer(attackerActorID), PhotonHelper.GetPlayer(receiverActorID));
             if (PhotonNetwork.player.ID == attackerActorID)
             {

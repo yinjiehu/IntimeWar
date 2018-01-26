@@ -8,5 +8,6 @@ namespace YJH.Unit
 		public UnitInfo Attacker { set; get; }
 		public Vector3 HitPosition { set; get; }
 		public Vector3 Direction { set; get; }
-	}
+        public Collider HitCollider { set; get; }
+    }
 }

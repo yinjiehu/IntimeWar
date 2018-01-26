@@ -62,6 +62,7 @@ namespace YJH.Unit
         public UnitMobility Mobility { private set; get; }
         public UnitEventDispatcher EventDispatcher { private set; get; }
         public AIInput AI { private set; get; }
+        public bool IsAI { private set; get; }
 
         UnitStatusManager _statusManager;
         public UnitStatusManager STS { get { return _statusManager; } }
@@ -311,10 +312,12 @@ namespace YJH.Unit
 
         public void EnableAI()
         {
+            IsAI = true;
             AI.EnableAI();
         }
         public void DisableAI()
         {
+            IsAI = false;
             AI.DisableAI();
         }
 

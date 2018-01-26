@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace YJH.Unit
 {
-	public class OnCollisionHit : CollisionTiggerProcessor, IDamageCreator
+	public class OnCollisionHit : CollisionTiggerProcessor
 	{
 		[SerializeField]
 		float _toUnitDamage;

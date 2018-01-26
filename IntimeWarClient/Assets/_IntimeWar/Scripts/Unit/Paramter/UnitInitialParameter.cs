@@ -42,8 +42,17 @@ namespace YJH.Unit
 
         public static UnitInitialParameter Create(string typeID)
         {
+            var collection = GlobalCache.GetPlayerSettings();
+            var settings = collection.Get(typeID);
             var ret = new UnitInitialParameter();
-
+            ret._basicParameters.Add("BodyHp", settings.GetParameter("BodyHp"));
+            ret._basicParameters.Add("Mobility", settings.GetParameter("Mobility"));
+            int n = 0;
+            foreach (var skill in settings.Skills)
+            {
+                ret._skills.Add(n, skill);
+                n++;
+            }
             return ret;
         }
 

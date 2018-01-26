@@ -3,6 +3,7 @@ using View;
 using IntimeWar.View;
 using YJH.Unit.Event;
 using IntimeWar.Battle;
+using IntimeWar.Unit;
 
 namespace YJH.Unit
 {
@@ -66,7 +67,7 @@ namespace YJH.Unit
         [PunRPC]
         void RPCDestroy()
         {
-            UnitManager.Instance.DestroyUnitByAttack(_unit);
+            UnitManager.Instance.DestroyUnitByAttack(_unit, _unit.GetAbility<Revive>() == null);
         }
 
         void ShowDamage(int damage, DamageEvent ev)

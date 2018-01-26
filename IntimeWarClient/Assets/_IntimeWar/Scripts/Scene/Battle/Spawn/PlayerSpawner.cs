@@ -84,6 +84,9 @@ namespace IntimeWar.Battle
             });
 
             UnitManager.Instance.AddPlayerUnit(p);
+
+            p.DisableAI();
+
             if (p.IsPlayerForThisClient)
             {
                 var camera = Camera.main.GetComponent<FollowCamera>();

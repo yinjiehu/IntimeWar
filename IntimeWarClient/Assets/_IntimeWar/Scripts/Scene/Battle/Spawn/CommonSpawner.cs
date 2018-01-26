@@ -64,16 +64,15 @@ namespace  IntimeWar.Battle
 				var viewID = PhotonNetwork.AllocateSceneViewID();
 
 				var randomAngle = UnityEngine.Random.Range(0, 360f);
-				var positionVar = Quaternion.Euler(0, randomAngle, 0) * Vector3.forward * UnityEngine.Random.Range(0, _randomDistance);
+				var positionVar = Quaternion.Euler(0, 0, randomAngle) * Vector3.forward * UnityEngine.Random.Range(0, _randomDistance);
 				var position = _spawnPosition.RandomMember().position + positionVar;
-				var rotation = Quaternion.Euler(0, -randomAngle, 0);
-
-				SpawnerManager.Instance.SendSpawnEvent(Name, "OnInstantiateUnit", viewID, position, rotation);
+                position.z = 0;
+				SpawnerManager.Instance.SendSpawnEvent(Name, "OnInstantiateUnit", viewID, position);
 			}
 		}
 
 		[PunRPC]
-		void OnInstantiateUnit(int viewID, Vector3 position, Quaternion rotation)
+		void OnInstantiateUnit(int viewID, Vector3 position)
 		{
 			_spawnedUnits.Add(viewID);
 
@@ -86,18 +85,19 @@ namespace  IntimeWar.Battle
 			p.transform.position = Vector3.zero;
 			p.transform.rotation = Quaternion.identity;
 			p.Model.position = position;
-			p.Model.rotation = rotation;
+			p.Model.rotation = Quaternion.identity;
 
 			p.Init(new BattleUnit.UnitCreateArgs()
 			{
 				Team = Team.C,
 				Level = _level,
 				Tag = _tag,
-				InitialParameter = UnitInitialParameter.Create(_prefab.name)
+				InitialParameter = UnitInitialParameter.Create("Player_1_1")
 			});
 
 			UnitManager.Instance.AddUnit(p);
-			
+
+            p.EnableAI();
 
 			if (PhotonNetwork.isMasterClient && !string.IsNullOrEmpty(_afterFsmEvent))
 			{

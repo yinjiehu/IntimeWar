@@ -21,14 +21,19 @@ namespace YJH.Unit
 
         public void Attack()
         {
-            Debug.Log("attack:" + SkillID + "   " + SlotID);
             if (IsReloading)
                 return;
+            Debug.DrawLine(_unit.Model.position, _unit.Model.position + _unit.Model.forward * 5, Color.red);
+            var nearestUnit = UnitManager.Instance.GetNearestUnit(_unit.Info.SeqNo, _unit.Model.position, 5);
+            if (nearestUnit == null)
+                return;
             Reload();
-            var angle = Vector2.Angle(_mobility.LastDirection, Vector2.up);
-            float dir = (Vector2.Dot(Vector2.up, _mobility.LastDirection) < 0 ? -1 : 1);
-            angle *= dir;
-            _attackFx.Show(_unit.Model.position, angle);
+            var direction = nearestUnit.Model.position - _unit.Model.position;
+            var angle = Vector2.SignedAngle(Vector2.up, direction);
+            _attackFx.Show(_unit.Model, angle);
+            var damageInfo = new DamageInfo();
+            damageInfo.Damage = 20;
+            DamageCalculator.CreateRaycastLine2DDamge(_unit.Info, damageInfo, _unit.Model.position, direction, 5, LayerMask.NameToLayer("Unit"), null);
         }
     }
 }

@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldFollowTransform: 1
-  _offset: {x: 0, y: 0, z: 0}
+  _offset: {x: 0, y: 0.55, z: 0}
 --- !u!114 &114102970318784744
 MonoBehaviour:
   m_ObjectHideFlags: 1

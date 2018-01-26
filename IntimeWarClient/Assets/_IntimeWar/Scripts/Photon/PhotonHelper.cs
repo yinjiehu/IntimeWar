@@ -208,6 +208,8 @@ namespace IntimeWar
 
         public static void AddKillCount()
         {
+            if (PhotonNetwork.offlineMode)
+                return;
             var team = PhotonNetwork.player.GetUnitTeam();
             Room room = PhotonNetwork.room;
             var current = room.GetRoomKillCountByTeam(team);

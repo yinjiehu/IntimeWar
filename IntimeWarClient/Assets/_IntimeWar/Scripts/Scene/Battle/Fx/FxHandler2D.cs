@@ -18,8 +18,11 @@ namespace IntimeWar
         [SerializeField]
         float _duration = 1;
         public float Duration { set { _duration = value; } get { return _duration; } }
+        [SerializeField]
+        bool _isFollow = false;
 
         float _elapsedTime;
+        Transform _followTarget;
 
         [SerializeField]
         UnityEngine.Events.UnityEvent _onShow;
@@ -45,6 +48,17 @@ namespace IntimeWar
             var ret = _show();
             ret.transform.position = position;
 
+            ret.transform.localEulerAngles = new Vector3(0, 0, z);
+            if (_onShow != null)
+                _onShow.Invoke();
+            return ret;
+        }
+
+        public FxHandler2D Show(Transform target, float z)
+        {
+            var ret = _show();
+            ret.transform.position = target.position;
+            ret._followTarget = target;
             ret.transform.localEulerAngles = new Vector3(0, 0, z);
             if (_onShow != null)
                 _onShow.Invoke();
@@ -77,6 +91,7 @@ namespace IntimeWar
 
         public void Hide()
         {
+            _followTarget = null;
             _elapsedTime = 0;
 
             if (_destroyType == DestroyTypeEnum.UsePool)
@@ -114,6 +129,10 @@ namespace IntimeWar
 
         private void Update()
         {
+            if(_isFollow && _followTarget != null)
+            {
+                transform.position = _followTarget.position;
+            }
             _elapsedTime += Time.deltaTime;
             if (_elapsedTime > _duration)
             {

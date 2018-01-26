@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 114199296767879156}
   - component: {fileID: 114230818098893302}
   m_Layer: 10
-  m_Name: Player_1_1
-  m_TagString: Untagged
+  m_Name: Enemy_1_1
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,9 +44,9 @@ GameObject:
   - component: {fileID: 114410058653455282}
   - component: {fileID: 61343671871089218}
   - component: {fileID: 114534148523174952}
-  - component: {fileID: 114433862618892424}
-  - component: {fileID: 114904029370608130}
-  - component: {fileID: 61501831846787028}
+  - component: {fileID: 61799472783526236}
+  - component: {fileID: 114556373494067916}
+  - component: {fileID: 114842489012289172}
   m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
@@ -126,7 +126,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.65, y: 0.65}
   m_EdgeRadius: 0
---- !u!61 &61501831846787028
+--- !u!61 &61799472783526236
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -218,7 +218,7 @@ MonoBehaviour:
     _level: 0
   _animator: {fileID: 95625425551292364}
   _abilityPrefabs:
-  - {fileID: 1868213331887720, guid: 45d0baa5476128041bb642573d453748, type: 2}
+  - {fileID: 1868213331887720, guid: 2284ecafbfc9daa43992207a663c8eba, type: 2}
   _modelRoot: {fileID: 4660972780691744}
 --- !u!114 &114410058653455282
 MonoBehaviour:
@@ -233,22 +233,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 1
---- !u!114 &114433862618892424
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1668349080601642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f11c3099f59f7dc4a97b758fb55f8c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _followParameter:
-    FollowType: 0
-    CustomFollowName: 
-    FollowModelPosition: 0
-    FollowModelRotation: 0
 --- !u!114 &114499089803700482
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,6 +321,39 @@ MonoBehaviour:
   _currentHp: 0
   _damageDisplay: {fileID: 114659950356000664, guid: 6c32d6957048e1842aeb80ec02f28ab7,
     type: 2}
+--- !u!114 &114556373494067916
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668349080601642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f11c3099f59f7dc4a97b758fb55f8c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _followParameter:
+    FollowType: 0
+    CustomFollowName: 
+    FollowModelPosition: 0
+    FollowModelRotation: 0
+--- !u!114 &114842489012289172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1668349080601642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2c48c1809eaccb43819f44a4fb455ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _followParameter:
+    FollowType: 0
+    CustomFollowName: 
+    FollowModelPosition: 0
+    FollowModelRotation: 0
+  _tagName: 
 --- !u!114 &114844873328560080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -366,23 +383,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
---- !u!114 &114904029370608130
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1668349080601642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2c48c1809eaccb43819f44a4fb455ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _followParameter:
-    FollowType: 0
-    CustomFollowName: 
-    FollowModelPosition: 0
-    FollowModelRotation: 0
-  _tagName: 
 --- !u!212 &212063951550203502
 SpriteRenderer:
   m_ObjectHideFlags: 1

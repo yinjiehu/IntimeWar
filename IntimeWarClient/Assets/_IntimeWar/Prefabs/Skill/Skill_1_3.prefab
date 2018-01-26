@@ -52,9 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _followParameter:
-    FollowType: 0
+    FollowType: 1
     CustomFollowName: 
-    FollowModelPosition: 0
+    FollowModelPosition: 1
     FollowModelRotation: 0
   _attackFx: {fileID: 114777501412009332, guid: a3f74fc446673a64a80dd5a47ffbd1ce,
     type: 2}

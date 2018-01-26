@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4087893468985854}
   - component: {fileID: 114538051354051672}
   m_Layer: 0
-  m_Name: PlayerAbilities
+  m_Name: AIPlayerAbilities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,64 +440,6 @@ MonoBehaviour:
         x: 272
         y: 105
         width: 100
-        height: 16
-      isBreakpoint: 0
-      isSequence: 0
-      hideUnused: 0
-      transitions: []
-      actionData:
-        actionNames:
-        - YJH.Unit.ReceiveMobilityInput
-        - YJH.Unit.ReceiveAttachmentInput
-        - YJH.Unit.ReceiveDamageEvent
-        customNames:
-        - 
-        - 
-        - 
-        actionEnabled: 010101
-        actionIsOpen: 010101
-        actionStartIndex: 000000000000000000000000
-        actionHashCodes: 000000000000000000000000
-        unityObjectParams: []
-        fsmGameObjectParams: []
-        fsmOwnerDefaultParams: []
-        animationCurveParams: []
-        functionCallParams: []
-        fsmTemplateControlParams: []
-        fsmEventTargetParams: []
-        fsmPropertyParams: []
-        layoutOptionParams: []
-        fsmStringParams: []
-        fsmObjectParams: []
-        fsmVarParams: []
-        fsmArrayParams: []
-        fsmEnumParams: []
-        fsmFloatParams: []
-        fsmIntParams: []
-        fsmBoolParams: []
-        fsmVector2Params: []
-        fsmVector3Params: []
-        fsmColorParams: []
-        fsmRectParams: []
-        fsmQuaternionParams: []
-        stringParams: []
-        byteData: 
-        arrayParamSizes: 
-        arrayParamTypes: []
-        customTypeSizes: 
-        customTypeNames: []
-        paramDataType: 
-        paramName: []
-        paramDataPos: 
-        paramByteDataSize: 
-    - name: Dead
-      description: 
-      colorIndex: 0
-      position:
-        serializedVersion: 2
-        x: 377
-        y: 213
-        width: 100
         height: 32
       isBreakpoint: 0
       isSequence: 0
@@ -507,19 +449,25 @@ MonoBehaviour:
           name: Next
           isSystemEvent: 0
           isGlobal: 0
-        toState: Revive
+        toState: RandomAttack
         linkStyle: 0
         linkConstraint: 0
         colorIndex: 0
       actionData:
         actionNames:
-        - IntimeWar.Unit.Dead
+        - YJH.Unit.ReceiveMobilityInput
+        - YJH.Unit.ReceiveAttachmentInput
+        - IntimeWar.Unit.PathFinding
+        - YJH.Unit.ReceiveDamageEvent
         customNames:
         - 
-        actionEnabled: 01
-        actionIsOpen: 01
-        actionStartIndex: 00000000
-        actionHashCodes: 88611604
+        - 
+        - 
+        - 
+        actionEnabled: 01010101
+        actionIsOpen: 01010101
+        actionStartIndex: 00000000000000000000000001000000
+        actionHashCodes: 00000000000000008861160400000000
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -554,13 +502,79 @@ MonoBehaviour:
         - Next
         paramDataPos: 00000000
         paramByteDataSize: 00000000
-    - name: Revive
+    - name: RandomAttack
       description: 
       colorIndex: 0
       position:
         serializedVersion: 2
-        x: 134
-        y: 252
+        x: 513
+        y: 121
+        width: 115
+        height: 32
+      isBreakpoint: 0
+      isSequence: 0
+      hideUnused: 0
+      transitions:
+      - fsmEvent:
+          name: Next
+          isSystemEvent: 0
+          isGlobal: 0
+        toState: Normal
+        linkStyle: 0
+        linkConstraint: 0
+        colorIndex: 0
+      actionData:
+        actionNames:
+        - IntimeWar.Unit.RandomAttack
+        - YJH.Unit.ReceiveDamageEvent
+        customNames:
+        - 
+        - 
+        actionEnabled: 0101
+        actionIsOpen: 0101
+        actionStartIndex: 0000000001000000
+        actionHashCodes: 8861160400000000
+        unityObjectParams: []
+        fsmGameObjectParams: []
+        fsmOwnerDefaultParams: []
+        animationCurveParams: []
+        functionCallParams: []
+        fsmTemplateControlParams: []
+        fsmEventTargetParams: []
+        fsmPropertyParams: []
+        layoutOptionParams: []
+        fsmStringParams: []
+        fsmObjectParams: []
+        fsmVarParams: []
+        fsmArrayParams: []
+        fsmEnumParams: []
+        fsmFloatParams: []
+        fsmIntParams: []
+        fsmBoolParams: []
+        fsmVector2Params: []
+        fsmVector3Params: []
+        fsmColorParams: []
+        fsmRectParams: []
+        fsmQuaternionParams: []
+        stringParams:
+        - Next
+        byteData: 
+        arrayParamSizes: 
+        arrayParamTypes: []
+        customTypeSizes: 
+        customTypeNames: []
+        paramDataType: 17000000
+        paramName:
+        - Next
+        paramDataPos: 00000000
+        paramByteDataSize: 00000000
+    - name: Dead
+      description: 
+      colorIndex: 0
+      position:
+        serializedVersion: 2
+        x: 289
+        y: 237
         width: 100
         height: 32
       isBreakpoint: 0
@@ -577,7 +591,7 @@ MonoBehaviour:
         colorIndex: 0
       actionData:
         actionNames:
-        - IntimeWar.Unit.Revive
+        - IntimeWar.Unit.Dead
         customNames:
         - 
         actionEnabled: 01

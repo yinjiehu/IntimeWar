@@ -269,7 +269,7 @@ RectTransform:
   m_GameObject: {fileID: 158307554}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 100, z: 0}
-  m_LocalScale: {x: 0.0069444445, y: 0.0069444445, z: 0.0069444445}
+  m_LocalScale: {x: 0.009259259, y: 0.009259259, z: 0.009259259}
   m_Children:
   - {fileID: 1810577936}
   - {fileID: 1137534257}
@@ -360,6 +360,34 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 671876730}
   m_Script: {fileID: 11500000, guid: 006308987e6a0564face7e843b745eb2, type: 3}
+--- !u!1 &331403679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 331403680}
+  m_Layer: 0
+  m_Name: PositionA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &331403680
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 331403679}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.61, y: 2.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1484681087}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355028474
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,6 +438,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &384575644
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4087893468985854, guid: 45d0baa5476128041bb642573d453748, type: 2}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 45d0baa5476128041bb642573d453748, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &469844623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2015,13 +2085,15 @@ MonoBehaviour:
         actionNames:
         - HutongGames.PlayMaker.Actions.Wait
         - IntimeWar.Battle.CallSpawner
+        - IntimeWar.Battle.CallSpawner
         customNames:
         - 
         - 
-        actionEnabled: 0101
-        actionIsOpen: 0101
-        actionStartIndex: 0000000003000000
-        actionHashCodes: 48c0110178c53001
+        - 
+        actionEnabled: 010101
+        actionIsOpen: 010101
+        actionStartIndex: 000000000300000004000000
+        actionHashCodes: 48c0110178c5300178c53001
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -2053,19 +2125,21 @@ MonoBehaviour:
         stringParams:
         - 
         - PlayerSpawner
+        - AISpawner
         byteData: 00
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 0f000000170000000100000003000000
+        paramDataType: 0f00000017000000010000000300000003000000
         paramName:
         - time
         - finishEvent
         - realTime
         - _spawnerName
-        paramDataPos: 00000000000000000000000001000000
-        paramByteDataSize: 00000000000000000100000000000000
+        - _spawnerName
+        paramDataPos: 0000000000000000000000000100000002000000
+        paramByteDataSize: 0000000000000000010000000000000000000000
     - name: ConnectionError
       description: 
       colorIndex: 0
@@ -3134,7 +3208,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 331403680}
   m_Father: {fileID: 1021703573}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3175,13 +3250,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627caecb909d0af4ea52ff141984a2a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tag: 
-  _prefab: {fileID: 0}
+  _tag: AI
+  _prefab: {fileID: 114230818098893302, guid: db879110f2ec13e458af578d8077ef08, type: 2}
   _level: 0
-  _spawnPosition: []
-  _randomDistance: 50
-  _maxCountInScene: 0
-  _totalCount: 0
+  _spawnPosition:
+  - {fileID: 331403680}
+  _randomDistance: 5
+  _maxCountInScene: 1
+  _totalCount: 1
   _afterFsmEvent: 
 --- !u!1 &1525976894
 GameObject:

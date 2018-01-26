@@ -54,6 +54,11 @@ namespace YJH.Unit
             return false;
         }
 
+        public virtual void ResetHp()
+        {
+            _currentHp = _maxHp;
+        }
+
         public virtual void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.isReading)
