@@ -2,7 +2,7 @@
 using View;
 using UnityEngine;
 
-namespace IntimeWar.Fsm
+namespace View.Fsm
 {
 	[ActionCategory("MechSquad_Common")]
 	public class TransitionControl : FsmStateAction

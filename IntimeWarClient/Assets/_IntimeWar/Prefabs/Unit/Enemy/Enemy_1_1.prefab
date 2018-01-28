@@ -322,6 +322,7 @@ MonoBehaviour:
   _currentHp: 0
   _damageDisplay: {fileID: 114659950356000664, guid: 6c32d6957048e1842aeb80ec02f28ab7,
     type: 2}
+  _deadFx: {fileID: 114875231917531316, guid: 1854a484767958f4c8a83c29cb2a4d23, type: 2}
 --- !u!114 &114556373494067916
 MonoBehaviour:
   m_ObjectHideFlags: 1

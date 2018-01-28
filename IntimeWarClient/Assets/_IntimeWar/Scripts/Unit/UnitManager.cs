@@ -62,14 +62,16 @@ namespace YJH.Unit
 			return null;
 		}
 
-        public BattleUnit GetNearestPlayer(Vector3 position)
+        public BattleUnit GetNearestPlayerUnit(int seqNo, byte team, Vector3 position, float range = float.MaxValue)
         {
             BattleUnit unit = null;
-            float distance = float.MaxValue;
-            foreach(var p in _playerUnits)
+            float distance = range;
+            foreach (var p in _playerUnits)
             {
+                if (p.IsDead)
+                    continue;
                 var temp = Vector3.Distance(p.Model.position, position);
-                if (temp < distance)
+                if (temp < distance && p.Info.SeqNo != seqNo && p.Team == team)
                 {
                     unit = p;
                     distance = temp;
@@ -78,14 +80,16 @@ namespace YJH.Unit
             return unit;
         }
 
-        public BattleUnit GetNearestUnit(int seqNo, Vector3 position, float range)
+        public BattleUnit GetNearestUnit(int seqNo, byte team, Vector3 position, float range = float.MaxValue)
         {
             BattleUnit unit = null;
             float distance = range;
             foreach (var p in _allUnitList)
             {
+                if (p.IsDead)
+                    continue;
                 var temp = Vector3.Distance(p.Model.position, position);
-                if (temp < distance && p.Info.SeqNo != seqNo)
+                if (temp < distance && p.Info.SeqNo != seqNo && p.Team == team)
                 {
                     unit = p;
                     distance = temp;

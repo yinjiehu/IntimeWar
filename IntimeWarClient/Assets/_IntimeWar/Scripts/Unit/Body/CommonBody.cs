@@ -4,6 +4,8 @@ using IntimeWar.View;
 using YJH.Unit.Event;
 using IntimeWar.Battle;
 using IntimeWar.Unit;
+using IntimeWar;
+using System.Collections.Generic;
 
 namespace YJH.Unit
 {
@@ -11,6 +13,10 @@ namespace YJH.Unit
     {
         [SerializeField]
         HudDamage _damageDisplay;
+        [SerializeField]
+        FxHandler2D _deadFx;
+        [SerializeField]
+        List<FxHandler2D> _reviveFxs;
 
         HudView _hudView;
 
@@ -20,14 +26,6 @@ namespace YJH.Unit
             _hudView = ViewManager.Instance.GetView<HudView>();
 
             _unit.EventDispatcher.ReigstEvent<DamageEvent>(OnDamage, 0);
-
-
-            _unit.STS.IsDead.EvOnValueChange += v =>
-            {
-                if (v)
-                    ResetToMaxHP();
-            };
-
         }
 
         public override void OnUpdate()
@@ -56,16 +54,21 @@ namespace YJH.Unit
                 }
             }
         }
-        
 
-        public void ResetToMaxHP()
+
+        public override void Revive()
         {
-            _currentHp = MaxHp;
+            base.Revive();
+            foreach(var fx in _reviveFxs)
+            {
+                fx.Show(_unit.Model.position);
+            }
         }
 
         [PunRPC]
         void RPCDestroy()
         {
+            _deadFx.Show(_unit.Model.position);
             UnitManager.Instance.DestroyUnitByAttack(_unit, _unit.GetAbility<Revive>() == null);
         }
 

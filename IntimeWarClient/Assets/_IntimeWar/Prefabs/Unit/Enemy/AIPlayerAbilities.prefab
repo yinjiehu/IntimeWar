@@ -428,7 +428,7 @@ MonoBehaviour:
         fsmQuaternionParams: []
         stringParams:
         - FINISHED
-        byteData: 00000000
+        byteData: 00000101
         arrayParamSizes: 
         arrayParamTypes: []
         customTypeSizes: 
@@ -467,11 +467,11 @@ MonoBehaviour:
         colorIndex: 0
       actionData:
         actionNames:
+        - YJH.Unit.BasicStatusControl
         - YJH.Unit.ReceiveMobilityInput
         - YJH.Unit.ReceiveAttachmentInput
         - IntimeWar.Unit.PathFinding
         - YJH.Unit.ReceiveDamageEvent
-        - YJH.Unit.BasicStatusControl
         customNames:
         - 
         - 
@@ -480,8 +480,8 @@ MonoBehaviour:
         - 
         actionEnabled: 0101010101
         actionIsOpen: 0101010101
-        actionStartIndex: 0000000000000000000000000100000001000000
-        actionHashCodes: 0000000000000000886116040000000055047a05
+        actionStartIndex: 0000000004000000040000000400000005000000
+        actionHashCodes: 55047a0500000000000000008861160400000000
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -517,15 +517,15 @@ MonoBehaviour:
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 1700000001000000100000000100000001000000
+        paramDataType: 0100000010000000010000000100000017000000
         paramName:
-        - Next
         - IsDead
         - BodyVisibleControlSeq
         - BodyVisible
         - UIVisible
-        paramDataPos: 0000000000000000000000000100000002000000
-        paramByteDataSize: 0000000001000000000000000100000001000000
+        - Next
+        paramDataPos: 0000000000000000010000000200000000000000
+        paramByteDataSize: 0100000000000000010000000100000000000000
     - name: RandomAttack
       description: 
       colorIndex: 0
@@ -549,17 +549,19 @@ MonoBehaviour:
         colorIndex: 0
       actionData:
         actionNames:
+        - YJH.Unit.BasicStatusControl
         - IntimeWar.Unit.RandomAttack
         - YJH.Unit.ReceiveDamageEvent
-        - YJH.Unit.BasicStatusControl
+        - YJH.Unit.ReceiveAttachmentInput
         customNames:
         - 
         - 
         - 
-        actionEnabled: 010101
-        actionIsOpen: 010101
-        actionStartIndex: 000000000100000001000000
-        actionHashCodes: 886116040000000055047a05
+        - 
+        actionEnabled: 01010101
+        actionIsOpen: 01010101
+        actionStartIndex: 00000000040000000500000005000000
+        actionHashCodes: 55047a05886116040000000000000000
         unityObjectParams: []
         fsmGameObjectParams: []
         fsmOwnerDefaultParams: []
@@ -595,15 +597,15 @@ MonoBehaviour:
         arrayParamTypes: []
         customTypeSizes: 
         customTypeNames: []
-        paramDataType: 1700000001000000100000000100000001000000
+        paramDataType: 0100000010000000010000000100000017000000
         paramName:
-        - Next
         - IsDead
         - BodyVisibleControlSeq
         - BodyVisible
         - UIVisible
-        paramDataPos: 0000000000000000000000000100000002000000
-        paramByteDataSize: 0000000001000000000000000100000001000000
+        - Next
+        paramDataPos: 0000000000000000010000000200000000000000
+        paramByteDataSize: 0100000000000000010000000100000000000000
     - name: Dead
       description: 
       colorIndex: 0

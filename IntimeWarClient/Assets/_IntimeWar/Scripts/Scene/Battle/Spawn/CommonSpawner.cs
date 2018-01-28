@@ -10,7 +10,9 @@ namespace  IntimeWar.Battle
 		public string Name { get { return name; } }
 		[SerializeField]
 		string _tag;
-		[SerializeField]
+        [SerializeField]
+        byte _team;
+        [SerializeField]
 		BattleUnit _prefab;
 		[SerializeField]
 		int _level;
@@ -89,7 +91,7 @@ namespace  IntimeWar.Battle
 
 			p.Init(new BattleUnit.UnitCreateArgs()
 			{
-				Team = Team.C,
+				Team = _team,
 				Level = _level,
 				Tag = _tag,
 				InitialParameter = UnitInitialParameter.Create("Player_1_1")

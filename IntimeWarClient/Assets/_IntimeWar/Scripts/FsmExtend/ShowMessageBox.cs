@@ -1,9 +1,10 @@
 ﻿using HutongGames.PlayMaker;
-using IntimeWar.View;
+using View;
 using UnityEngine;
 using UnityEngine.Events;
+using IntimeWar.View;
 
-namespace IntimeWar.Fsm
+namespace View.Fsm
 {
 	[ActionCategory("MechSquad_Common")]
 	public class ShowMessageBox : FsmStateAction

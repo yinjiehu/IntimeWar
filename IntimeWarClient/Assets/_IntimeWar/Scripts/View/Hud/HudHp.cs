@@ -103,13 +103,6 @@ namespace IntimeWar.View
 
         private void Update()
         {
-            if (_observerUnit == null)
-            {
-                SetVisible(false);
-                _hudInstance.RecycleInstance();
-                return;
-            }
-
             UpdateBodyHp();
         }
 

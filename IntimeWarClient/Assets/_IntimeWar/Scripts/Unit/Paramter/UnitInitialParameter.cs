@@ -45,8 +45,9 @@ namespace YJH.Unit
             var collection = GlobalCache.GetPlayerSettings();
             var settings = collection.Get(typeID);
             var ret = new UnitInitialParameter();
-            ret._basicParameters.Add("BodyHp", settings.GetParameter("BodyHp"));
-            ret._basicParameters.Add("Mobility", settings.GetParameter("Mobility"));
+            ret._basicParameters.Add(ConstParameter.BodyHP, settings.GetParameter(ConstParameter.BodyHP));
+            ret._basicParameters.Add(ConstParameter.Mobility, settings.GetParameter(ConstParameter.Mobility));
+            ret._basicParameters.Add(ConstParameter.AttackRange, settings.GetParameter(ConstParameter.AttackRange));
             int n = 0;
             foreach (var skill in settings.Skills)
             {
@@ -61,8 +62,9 @@ namespace YJH.Unit
             var collection = GlobalCache.GetPlayerSettings();
             var settings = collection.Get(player.PlayerClassify);
             var ret = new UnitInitialParameter();
-            ret._basicParameters.Add("BodyHp", settings.GetParameter("BodyHp"));
-            ret._basicParameters.Add("Mobility", settings.GetParameter("Mobility"));
+            ret._basicParameters.Add(ConstParameter.BodyHP, settings.GetParameter(ConstParameter.BodyHP));
+            ret._basicParameters.Add(ConstParameter.Mobility, settings.GetParameter(ConstParameter.Mobility));
+            ret._basicParameters.Add(ConstParameter.AttackRange, settings.GetParameter(ConstParameter.AttackRange));
             int n = 0;
             foreach(var skill in settings.Skills)
             {

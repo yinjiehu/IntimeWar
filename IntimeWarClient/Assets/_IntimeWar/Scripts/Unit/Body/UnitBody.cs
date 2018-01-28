@@ -54,7 +54,7 @@ namespace YJH.Unit
             return false;
         }
 
-        public virtual void ResetHp()
+        public virtual void Revive()
         {
             _currentHp = _maxHp;
         }

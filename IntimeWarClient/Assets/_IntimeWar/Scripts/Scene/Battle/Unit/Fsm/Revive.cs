@@ -13,6 +13,7 @@ namespace IntimeWar.Unit
 
         float _elapsedTime;
 
+
         public override void OnEnter()
         {
             base.OnEnter();
@@ -25,17 +26,22 @@ namespace IntimeWar.Unit
             _elapsedTime += Time.deltaTime;
             if (_elapsedTime >= 5)
             {
-                if (_unit.IsControlByThisClient)
-                {
-                    _unit.SendAbilityRPC(this, "RPCReviveAddUnit", null);
-                }
+                
+            }
+        }
+
+        public void ReviveUnit()
+        {
+            if (_unit.IsControlByThisClient)
+            {
+                _unit.SendAbilityRPC(this, "RPCReviveAddUnit", null);
             }
         }
 
         void RPCReviveAddUnit()
         {
             Fsm.Event(Next);
-            _unit.Body.ResetHp();
+            _unit.Body.Revive();
             UnitManager.Instance.AddUnit(_unit);
         }
 

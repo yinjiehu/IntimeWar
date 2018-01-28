@@ -13,18 +13,20 @@ namespace YJH.Unit
 
         MobilityFull _mobility;
 
+        float _attackRange;
+
         public override void Init()
         {
             base.Init();
             _mobility = _unit.GetAbility<MobilityFull>();
+            _attackRange = _unit.InitialParameter.GetParameter(ConstParameter.AttackRange);
         }
 
         public void Attack()
         {
             if (IsReloading)
                 return;
-            Debug.DrawLine(_unit.Model.position, _unit.Model.position + _unit.Model.forward * 5, Color.red);
-            var nearestUnit = UnitManager.Instance.GetNearestUnit(_unit.Info.SeqNo, _unit.Model.position, 5);
+            var nearestUnit = UnitManager.Instance.GetNearestUnit(_unit.Info.SeqNo, _unit.Team, _unit.Model.position, _attackRange);
             if (nearestUnit == null)
                 return;
             Reload();

@@ -19,8 +19,9 @@ namespace Demo
                     PrefabName = "Player_1_1",
                     ExtraParameters = new System.Collections.Generic.Dictionary<string, float>()
                     {
-                        { "BodyHp", 500 },
-                        {  "Mobility", 3 },
+                        { ConstParameter.BodyHP, 500 },
+                        {  ConstParameter.Mobility, 3 },
+                        {  ConstParameter.AttackRange, 1 },
                     },
                     Skills = new System.Collections.Generic.List<string>()
                     {

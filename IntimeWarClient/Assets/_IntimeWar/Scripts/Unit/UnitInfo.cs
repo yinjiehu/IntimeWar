@@ -32,7 +32,7 @@ namespace YJH.Unit
 		[HarunaInspect(HideInEditorMode = true)]
 		[SerializeField]
 		int _actorID;
-		public int ActorID { set { _seqNo = value; } get { return _seqNo; } }
+		public int ActorID { set { _actorID = value; } get { return _actorID; } }
 
 		[SerializeField]
 		string _tag;
